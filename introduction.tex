@@ -72,12 +72,12 @@ Depending on the number of sample available and on the parameters of the method,
 Once the PDF of the QoI is available, it can be used to: \emph{(i)} observe the probability to exceed a threashold; \emph{(ii)} compute the probability to have a certain event; or just \emph{(iii)} get general statistics (mean, variance, quantiles).
 
 \subsection{Sensitivity Analysis}
-Sensitivity Analysis (SA) refers to the determination of the contribution of different parameters on quantities of interest~\cite{iooss2016}. The most natural way to do SA would be to consider the derivatives. But this information is known to be to local or general---although there are some work extending the capabilities of these methods~\cite{kucherenko2016}. In the literature, a distinction is made between local and global SA. In the following, only global-based SA methods are presented with variance-based SA and moment-based SA.
+Sensitivity Analysis (SA) refers to the determination of the contribution of different parameters on quantities of interest~\cite{saltelli2007,iooss2016}. The most natural way to do SA would be to consider the derivatives. But this information is known to be to local or general---although there are some work extending the capabilities of these methods~\cite{kucherenko2016}. In the literature, a distinction is made between local and global SA. In the following, only global-based SA methods are presented with variance-based SA and moment-based SA.
 
 \subsubsection{Variance-based Sensitivity Analysis}\label{sec:sa}
 Variance-based Sensitivity Analysis allow to obtain the contribution of the parameters on the QoI's variance~\cite{ferretti2016}. Here, classical \textit{Sobol'}~\cite{Sobol1993} method is presented which gives not only a ranking but also quantifies the importance factor using the variance. This method makes the hypothesis of the independence of the input variables. It uses a functional decomposition of the variance of the function to explore
 \begin{align}
-\mathbb{V}(Y) &= \sum_{i}^{n_{dim}} \mathbb{V}_i (Y) + \sum_{i<j}^{n_{dim}}\mathbb{V}_{ij} + ... + \mathbb{V}_{1,2,...,d},\\
+\mathbb{V}(Y) &= \sum_{i}^{d} \mathbb{V}_i (Y) + \sum_{i<j}^{d}\mathbb{V}_{ij} + ... + \mathbb{V}_{1,2,...,d},\\
 \mathbb{V}_i(Y) &= \mathbb{\mathbb{V}}[\mathbb{E}(Y|x_i)]\nonumber\\
 \mathbb{V}_{ij} &= \mathbb{\mathbb{V}}[\mathbb{E}(Y|x_i x_j)] - \mathbb{V}_i - \mathbb{V}_j,\nonumber
 \end{align}
@@ -94,7 +94,7 @@ S_{T_i} = S_i + \sum_j S_{ij} + \sum_{j,k} S_{ijk} + ... = 1 - \frac{\mathbb{V}[
 
 \Cref{fig:sobol}(b) is an example using \textit{Ishigami} function~\cite{ishigami1990}
 \begin{align}
-f(\mathbf{x}) = \sin x_1 + 7 \sin^2 x_2 + 0.1 x_3^4 \sin x_1,
+Y(\mathbf{x}) = \sin x_1 + 7 \sin^2 x_2 + 0.1 x_3^4 \sin x_1,
 \end{align}
 \noindent with $\mathbf{x} \in [-\pi, \pi]^3$. This function exhibits strong nonlinearity and nonmonotonicity. It is particularly interesting because the first order indice of $S_{x_3} = 0$ whereas it's total order is $S_{T_{x_3}} = 0.244$. Note that on second order indices, $S_{x_1,x_3} = 0.244$. It means that almost 25\% of the observed variance on the QoI is due to the correlations between $x_3$ and $x_1$, although $x_3$ by itself has no impact on the QoI.
 
@@ -110,7 +110,7 @@ Looking at \cref{fig:sobol}(a), it can be noted that the convergence of these in
 \caption{First and total \textit{Sobol'} indices on the Ishigami function.}
 \label{fig:sobol}
 \end{figure}
-Classical empirical formulations of \emph{Sobol'} indices require the use of 3 (resp. 4) matrices to compute first and total (resp. and second order indices). The computation requires two independent sampling $A$, $B$ of size $N$ and a matrice $AB$ which is a combination of both matrices (resp. $BA$). $AB_{n}$ corresponds to the matrice $A$ with the column $n$ from the matrice $B$. Hence the number of forward model evaluation is $N_s = N(d + 2)$. In~\cite{baudin2016}, they showed that \textit{Martinez}' formulation is stable and provides asymptotic confidence intervals---approximated with Fisher's transformation---for first order and total order indices. \textit{Martinez}' estimators write
+Classical empirical formulations of \emph{Sobol'} indices require the use of 3 (resp. 4) matrices to compute first and total (resp. and second order indices)~\cite{saltelli2010}. The computation requires two independent sampling $A$, $B$ of size $N$ and a matrice $AB$ which is a combination of both matrices (resp. $BA$). $AB_{n}$ corresponds to the matrice $A$ with the column $n$ from the matrice $B$. Hence the number of forward model evaluation is $N_s = N(d + 2)$. In~\cite{baudin2016}, they showed that \textit{Martinez}' formulation is stable and provides asymptotic confidence intervals---approximated with Fisher's transformation---for first order and total order indices. \textit{Martinez}' estimators write
 \begin{align}
 \hat{S_i} = \rho (Y(B), Y(AB_{n})) \quad \hat{S_{T_i}} = 1 - \rho (Y(A), Y(AB_n)),
 \end{align}
@@ -129,14 +129,14 @@ S_i = \frac{\displaystyle\sum_{l = 1}^{m} \mathbb{V} [\mathbf{Y}^l] S_i^{l}}{\di
 \end{figure}
 
 \subsubsection{Moment-based Sensitivity Analysis}
-Variance-based SA are standard methods (although elementary effects or classical regression are still well represented~\cite{ferretti2016}) but they do not come without flaws~\cite{borgonovo2016}:
+Variance-based SA are standard methods (although elementary effects or classical regression are still commonly used among practitioners~\cite{ferretti2016}) but they do not come without flaws~\cite{borgonovo2016}:
 
 \begin{itemize}
 \item Only the second order moment is taken into account,\\
-It means that if the QoI's PDF is higly skewed, multimodal or with heteroscedastic data, this information will be lost. Hence, the variance is only a good measure if the distribution is close to normal.
+It means that if the QoI's PDF is highly skewed, multimodal or with heteroscedastic data, this information will be lost. Hence, the variance is only a good measure if the distribution is close to normal.
 \item The parameters need to be uncorrelated,\\
 This assumption can be mitigated by using some correlation matrices but the procedure is not really trivial.
-\item Nul first order indices does not imply that the parameter is independent with the QoI,\\
+\item Null first order indices does not imply that the parameter is independent with the QoI,\\
 Computation of high order terms and total effect require a lot of samples to converge. It may be impractical to compute these quantities.
 \end{itemize}
 
@@ -165,35 +165,69 @@ Classical UQ methods, based on the Monte-Carlo approach, require a large number 
 
 Polynomial chaos (PC) approach has received much attention lately~\citep{dubreuil2014,sudret2008,xiu2010,xiu2002,Ciriello2013}. The PC surrogate model is formulated as a polynomial expansion, in which the basis is defined according to the distribution of the uncertain inputs $\mathbf{x}$ and the coefficients relate to the statistics of the output $\mathbf{Y}$. The coefficients are computed so as to fit the training set $(\mathbf{X}, \mathcal{Y})$, either using regression or spectral projection methods. The merits of PC surrogates were demonstrated in various fields, e.g.~structural mechanics~\citep{dubreuil2014,berveiller2005}, CFD~\citep{hosder2006,lucor2007,saad2007phd}, hydrology~\citep{deman2015}, hydraulics~\citep{ge2008,elmocaydphd}, wildfires~\citep{rochoux2014}. A complementary approach between PC and EnKF was presented in~\citet{lixiu2009} and tested in the framework of wildfire behaviour forecasting in~\citet{rochoux2014}. A PC surrogate was used in place of the forward model to estimate the Kalman gain and thereby design a cost-effective EnKF inferring new estimates of the input parameters (e.g.~biomass moisture and fuel aspect ratio) reducing bias in the fire front location prediction. The resulting algorithm achieved convergence in spite of the non-linear surface response, showing promising results for environmental risk monitoring. 
 
-Gaussian processes (GP) that are strongly related to Kriging in geostatistics also are of increasing interest~\citep{rasmussen2006,legratiet2017,lockwood2012,marrel2015}. The GP formalism treats the forward model response as a realization of a Gaussian stochastic process indexed by $\mathbf{x}$ and fully characterized with mean and covariance functions conditioned by the training set $(\mathbf{X}, \mathcal{Y})$. The GP surrogate is built first, by defining a covariance kernel function between output values and a trend function and then, by estimating the hyperparameters (e.g.~variance, characteristic length scale) that provide a good fit to the training set. GP surrogates were introduced in the context of SA for estimating \emph{Sobol'} indices~\citep{oakley2004,marrel2009,legratiet2014}.
+Gaussian processes (GP) that are strongly related to Kriging in geostatistics also are of increasing interest~\citep{rasmussen2006,legratiet2017,lockwood2012,marrel2015}. The GP formalism treats the forward model response as a realization of a Gaussian stochastic process indexed by $\mathbf{x}$ and fully characterized with mean and covariance functions conditioned by the training set $(\mathbf{X}, \mathcal{Y})$. The GP surrogate is built first, by defining a covariance kernel function between output values and a trend function and then, by estimating the hyperparameters (e.g.~variance, characteristic length scale) that provide a good fit to the training set. GP surrogates were introduced in the context of SA for estimating \emph{Sobol'} indices~\citep{oakley2004,marrel2009,legratiet2014}. In an industrial context---which is the case here---, some benefits of this method are:\textit{(i)} it does not require any prior knowledge on the probability distribution of the uncertainties on the input parameters ; \textit{(ii)} it does not need a specific sampling of the parameter space which could lead to \textit{curse-of-dimensionality} or mis-evaluation of the space ; and \textit{(iii)} it provides an estimation of the predictive error.
 
 PC and GP surrogate models have recently been compared for UQ and SA studies~\citep{legratiet2017,owen2015,schoebi2015}. \citet{owen2015} evaluated the performance of each type of surrogate in terms of output mean, variance and PDF estimation. \citet{legratiet2017} compared \emph{Sobol'} indices with applications in structural mechanics; for a given size of the training set, PC and GP surrogate models were found to feature a similar predictive quality---with respect to the predictive coefficient $Q_2$, also called Nash-Sutcliffe model efficiency coefficient, which is equivalent to the coefficient of determination $R^2$ for residuals' prediction~\citep{krause2005}. \citet{legratiet2017} also emphasized that the ranking between PC and GP approaches remains problem-dependent.
 
-Two types of surrogate models are used in the present work to approximate the behaviour of MASCARET with respect to $\mathbf{x} = (Q, K_{s_3})$ (the size of the input uncertainty space is $d = 2$): PC expansion on the one hand, GP regression combined with Proper Orthogonal Decomposition (POD) further denoted by pGP on the other hand. The common idea of PC and pGP approaches is to design for each curvilinear abscissa $a \in \{a_1, \cdots, a_M\}$ a surrogate water level with a weighted finite sum of basis functions:
+Before going further, let us clarify the nature of the forward model. The ensemble $\mathcal{Y}$ constitute a set of observed QoI. Each element can either be a scalar or a vectorial---or functional---QoI. When considering scalar QoI, a global physical parameter such as the mean temperature for instance, a single surrogate model mapping $Y^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$ can be constructed. In case of a multidimensional output the mapping comes to $\mathbf{Y}^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$. One can consider independent surrogate for each element but the computational cost can rapidly become intractable. Moreover, the elements of the vectorial QoI can be correlated. A classical solution is found through the use of a Proper Orthogonal Decomposition (POD)~\cite{anindyachatterjee2000}. By performing a POD on the QoI, each mode being orthogonal, they can be treated as independent and then a surrogate can be built on a reduced space. In~\cite{braconnier2011,margheri2016}, this method was used to reduce the computational cost and conserve the spatial/temporal correlation of the QoI.
+
+Two types of surrogate models are presented in this work to approximate the behaviour of forward models. PC expansion on the one hand, GP regression on the other hand. Considering the general case of a functional QoI, the common idea of PC and GP approaches is to design for each element (with or without considering a POD) $a \in \{a_1, \cdots, a_M\}$ a surrogate with a weighted finite sum of basis functions:
 \begin{equation}
-\widehat{h}_a\left(\mathbf{x}\right) = \displaystyle\sum_{i = 0}^{r}\,\gamma_{a,i}\,\Psi_{i}\left(\mathbf{x}\right),
+\widehat{Y}_a\left(\mathbf{x}\right) = \displaystyle\sum_{i = 0}^{r}\,\gamma_{a,i}\,\Psi_{i}\left(\mathbf{x}\right),
 \label{eq:SurrogateForm}
 \end{equation}
-where the coefficients $\gamma_{a,i}$ and the basis functions $\Psi_i$ are calibrated by the training set $\mathcal{D}_N$. For PC expansion, the maximum order of the decomposition and the basis functions are first chosen, then a spectral projection strategy is implemented to compute the decomposition coefficients in the polynomial basis. The pGP strategy is two-fold: the first step consists in transforming the sampled output space to an orthogonal one, eventually reducing its dimension; the second step consists in interpolating with a GP approach the principal components of this new space to express water level in the basis for any friction and discharge values. It should be noted that the GP model could be replaced by any other interpolator. The main difference between PC (Sect.~\ref{sec:PC}) and pGP (Sect.~\ref{sec:GP}) approaches stands in the nature of these models: pGP interpolates the training points and captures local variations, while PC is a regression method focusing on the global behaviour of the model. Basis functions and calibration methods also differ between these two approaches.
+where the coefficients $\gamma_{a,i}$ and the basis functions $\Psi_i$ are calibrated by the training set $\mathbf{X}^{N_s}$. The main difference between PC (Sect.~\ref{sec:PC}) and GP (Sect.~\ref{sec:GP}) approaches stands in the nature of these models: GP interpolates the training points and captures local variations, while PC is a regression method focusing on the global behaviour of the model. Basis functions and calibration methods also differ between these two approaches.
+
+\Cref{sec:POD} present the POD while \cref{sec:PC} and \cref{sec:GP} respectively define the PC and the GP surrogate methods.
+
+%For PC expansion, the maximum order of the decomposition and the basis functions are first chosen, then a spectral projection strategy is implemented to compute the decomposition coefficients in the polynomial basis. The GP strategy is two-fold: the first step consists in transforming the sampled output space to an orthogonal one, eventually reducing its dimension; the second step consists in interpolating with a GP approach the principal components of this new space to express water level in the basis for any friction and discharge values. It should be noted that the GP model could be replaced by any other interpolator. 
+
+\subsection{Snapshot method}\label{sec:POD}
+
+% TODO indices or not?
+
+The key idea of the snapshot method~\citep{sirovich1987} is to achieve a POD of the centred snapshot matrix $\mathcal{Y} \in \mathbb{M}_{M,N}(\mathbb{R})$, which gathers the discretized QoI for the $N_{s}$ snapshots, from which the sample mean is subtracted. For simplicity purpose, the QoI anomaly element $a$ is denoted $y$ in the following. Thus, $\mathcal{Y} = \left(y_{a_i}^{(j)}\right)_{1\leq i \leq M \atop 1\leq j \leq N_{s}}$. The snapshots correspond to the column vectors; the $k$th snapshot of size $M$ is denoted by $\mathbf{y}^{(k)}$.
+
+Based on many observations of a random vector, the POD gives the orthogonal directions of largest variances (or modes) in the probabilistic vector space in order to reduce the vector space dimension~\citep{chatterjee2000}. Note that for simplicity purpose, the adjective {\it centred} is dropped in the following when referring to the centred snapshot matrix $\mathcal{Y}$.
+
+The POD of the snapshot covariance matrix $\mathbf{C} = N_{s}^{-1}\,\mathcal{Y}^{\mathrm{T}}\,\mathcal{Y}\in \mathbb{M}_{N_{s}}(\mathbb{R})$ is equivalent to the Singular Value Decomposition (SVD) of the snapshot matrix $\mathcal{Y}$:
+\begin{equation}
+\mathcal{Y} = \mathbf{U}\,\mathbf{\Lambda}\,\mathbf{V}^{\mathrm{T}} = \displaystyle\sum_{k = 1}^{r_{p}}\,\lambda_k\,\mathbf{u}_k\,\mathbf{v}_k^{\mathrm{T}},
+\end{equation} 
+where $\mathbf{U} \in \mathbb{M}_M(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathcal{Y}\mathcal{Y}^{\mathrm{T}}$ ($\mathbf{u}_k$, the $k$th column of $\mathbf{U}$, is a left singular vector of $\mathcal{Y}$), where $\mathcal{V} \in \mathbb{M}_N(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathcal{Y}^{\mathrm{T}}\mathbf{Y}$ ($\mathbf{v}_k$, the $k$th column of $\mathbf{V}$, is a right singular vector of $\mathcal{Y}$), and where $\mathbf{\Lambda} \in \mathbb{M}_{M,N_{s}}(\mathbb{R})$ is a rectangular diagonal matrix including $r_{p}=\min(M,N_{s})$ singular values on its diagonal. The singular values $\lbrace \lambda_k \rbrace_{1 \leq k \leq r_{p}}$ are the square roots of the eigenvalues of $\mathbf{C}$. 
+Note that in this study, we do not reduce further the rank of the snapshot matrix $\mathcal{Y}$. %Since the number of stations ($M = 14$) is lower than the size of the training set $N$, the rank of $\mathbf{Y}$ is here $r_{p} = M$.
+
+For a given element $a$, any snapshot $h_a(\mathbf{x}^{(k)})$ can then be retrieved as a linear combination of $r_{p}$ modes $\{\Psi_i\}_{1\leq i \leq r_p}$:
+\begin{equation}\label{eq:gppod}
+y_a(\mathbf{x}^{(k)}) 
+= (\mathbf{U}\,\mathbf{\Lambda}\,\mathbf{V}^{\mathrm{T}})_{ak} 
+= U_{a:}(\mathbf{\Lambda}\,\mathbf{V}^T)_{:k}=\sum_{i=1}^{r_{p}}\,\gamma_{a,i}\,\Psi_i(\mathbf{x}^{(k)}),
+\end{equation}
+where for any $i\in\{1,\ldots,M\}$, $\gamma_{a,i}:=U_{a,i}$ and $\Psi_i(\mathbf{x}^{(k)}):=(\boldsymbol{\Lambda}\mathbf{V}^T)_{i,k}$. 
+%
+%In the present study, the size of the state vector $M$ is smaller than the size of the training set $N$, implying that there are $r_p = M$ non-zero singular values. This is usually not the case, but this does not change the methodology. As the objective is to compare PC and pGP and as there is a limited number of stations $M$, all modes are kept to avoid the loss of information, there is no need to reduce the rank of the singular matrix. Note that when moving to 2-D or 3-D cases (beyond the scope of the present work), the size of the state vector could be of the order of thousands components, making dimension reduction necessary. 
+
 
 %----Polynomial Chaos
 \subsection{Polynomial Chaos (PC) surrogate model}\label{sec:PC}
 
 The algorithm to build the PC surrogate proceeds as follows:
 \begin{enumerate}
-\item choose the polynomial basis $\lbrace\Psi_{i}\rbrace_{i\geq 0}$ according to the assumed PDF of the inputs $\mathbf{x} = (Q, K_{s_3})$,
+\item choose the polynomial basis $\lbrace\Psi_{i}\rbrace_{i\geq 0}$ according to the assumed PDF of the inputs $\mathbf{x}$,
 \item choose the total polynomial degree $P$ according to the complexity of the physical processes,
 \item truncate the expansion to $r_{\text{pc}}$ terms to keep the predominant information given by the forward model using standard truncation strategy ($r_{\text{pc}}$ depends on $d$ and $P$),
-\item apply spectral projection strategy (i.e.~Gaussian quadrature rule) to compute the coefficients $\lbrace\gamma_{a,i}\rbrace_{i\in\mathbb{N}^d\atop|i|\leq P}$ for each curvilinear abscissa $a$ using $N = (P+1)^{d}$ snapshots from the simulation database $\mathcal{D}_{N_{\text{ref}}}$,
-\item formulate the surrogate model $\mathcal{M}_{\text{pc}}$ at each curvilinear abscissa $a$, which can be evaluated for any new pair of parameters $\mathbf{x}^* = (Q^*, K_{s_3}^*)$.
+\item apply spectral projection strategy (i.e.~Gaussian quadrature rule) to compute the coefficients $\lbrace\gamma_{a,i}\rbrace_{i\in\mathbb{N}^d\atop|i|\leq P}$ for each element $a$ (can use a POD or not) using $N_{s} = (P+1)^{d}$ snapshots,
+\item formulate the surrogate model $\mathcal{M}_{\text{pc}}$ at each element $a$, which can be evaluated for any new pair of parameters $\mathbf{x}^*$.
 \end{enumerate}
 Note that we use standard truncation and projection strategies presented in~\cite{lemaitreknio2010} and \cite{xiu2010}.
 
 \subsubsection{Polynomial basis}
 
-Each component of the random vector $\mathbf{x}$ defined in the input physical space is standardized and noted $\boldsymbol{\zeta}$ in the following way: $\zeta_i=\frac{x_i-\mu_i}{\sigma_i}$ where $\mu_i=N^{-1}\sum_{k=1}^Nx_i^{(k)}$ and $\sigma_i=\sqrt{(N-1)^{-1}\sum_{k=1}^N\left(x_i^{(k)}-\mu_i\right)^2}$. Assuming that the SWE solution is of finite variance, each component $h_a$ of the water level vector $\mathbf{h}$ can be considered as a random variable for which there exists a polynomial expansion of the form~\eqref{eq:SurrogateForm} that represents how the water level $h_a$ varies according to changes in $Q$ and $K_{s_3}$. 
+Each component of the random vector $\mathbf{x}$ defined in the input physical space is standardized and noted $\boldsymbol{\zeta}$ in the following way: $\zeta_i=\frac{x_i-\mu_i}{\sigma_i}$ where $\mu_i=N_{s}^{-1}\sum_{k=1}^{N_{s}}x_i^{(k)}$ and $\sigma_i=\sqrt{(N_{s}-1)^{-1}\sum_{k=1}^{N_{s}}\left(x_i^{(k)}-\mu_i\right)^2}$. 
 
-$h_a$ is projected onto a stochastic space spanned by the orthonormal polynomial functions $\lbrace\Psi_{i}\rbrace_{i\geq 0}$. These functions are orthonormal with respect to the joint density $\rho(\boldsymbol{\zeta})$, i.e.
+%Assuming that the SWE solution is of finite variance, each component $h_a$ of the water level vector $\mathbf{h}$ can be considered as a random variable for which there exists a polynomial expansion of the form~\eqref{eq:SurrogateForm} that represents how the water level $h_a$ varies according to changes in $Q$ and $K_{s_3}$. 
+
+$y_a$ is projected onto a stochastic space spanned by the orthonormal polynomial functions $\lbrace\Psi_{i}\rbrace_{i\geq 0}$. These functions are orthonormal with respect to the joint density $\rho(\boldsymbol{\zeta})$, i.e.
 \begin{equation}
 \int_{Z}\,\Psi_i(\boldsymbol{\zeta})\,\Psi_j(\boldsymbol{\zeta})\,\rho(\boldsymbol{\zeta})\,\mathrm{d}\boldsymbol{\zeta} = \delta_{ij},
 \label{eq:pc_innerproduct}
@@ -207,59 +241,36 @@ In practice, the sum in Eq.~\eqref{eq:SurrogateForm} is truncated to a finite nu
 r_{\text{pc}} = \frac{(d + P)!}{d!\,P!},
 \label{eq:pc_order}
 \end{equation}
-meaning that all polynomials involving the $d$ random variables of total degree less or equal to $P$ are retained in the PC expansion. The PC approximated water level at curvilinear abscissa $h_{\text{pc}}(a)$ is formulated as:
+meaning that all polynomials involving the $d$ random variables of total degree less or equal to $P$ are retained in the PC expansion. The PC approximated the QoI at each element $y_{\text{pc}}(a)$ is formulated as:
 \begin{equation}
-\widehat{h}_{\text{pc},a}(\mathbf{x}) := \mathcal{M}_{\text{pc},a}(\boldsymbol{\zeta}) = \displaystyle\sum_{i\in\mathbb{N}^d\atop|i|\leq P}\,\gamma_{a,i}\,\Psi_i\left(\boldsymbol{\zeta}\right).
+\widehat{y}_{\text{pc},a}(\mathbf{x}) := \mathcal{M}_{\text{pc},a}(\boldsymbol{\zeta}) = \displaystyle\sum_{i\in\mathbb{N}^d\atop|i|\leq P}\,\gamma_{a,i}\,\Psi_i\left(\boldsymbol{\zeta}\right).
 \label{eq:SurrogatePC}
 \end{equation}
 Note that for small $d$, advanced truncation strategies that consist in eliminating high-order interaction terms or using sparse structure~\citep{blatman2009phd,migliorati2013} are not necessary.
 
 \subsubsection{Spectral projection strategy}
 
-We focus here on non-intrusive approaches to numerically compute the coefficients $\lbrace\gamma_{a,i}\rbrace_{i\in\mathbb{N}^d\atop |i|<P}$  in Eq.~\eqref{eq:SurrogatePC} using $N$ snapshots from $\mathcal{D}_N$. The spectral projection relies on the orthonormality property of the polynomial basis. The $i$th coefficient $\gamma_{a,i}$ is computed using Gaussian quadrature as:
+We focus here on non-intrusive approaches to numerically compute the coefficients $\lbrace\gamma_{a,i}\rbrace_{i\in\mathbb{N}^d\atop |i|<P}$  in Eq.~\eqref{eq:SurrogatePC} using $N_{s}$ snapshots from $\mathbf{X}^{N_s}$. The spectral projection relies on the orthonormality property of the polynomial basis. The $i$th coefficient $\gamma_{a,i}$ is computed using Gaussian quadrature as:
 \begin{equation}
-\gamma_{a,i} = <h_a,\Psi_i> \,\cong\,\displaystyle\sum_{k = 1}^{N}\,h_a^{(k)}\,\Psi_i(\boldsymbol{\zeta}^{(k)})\,w^{(k)},
+\gamma_{a,i} = <y_a,\Psi_i> \,\cong\,\displaystyle\sum_{k = 1}^{N_{s}}\,y_a^{(k)}\,\Psi_i(\boldsymbol{\zeta}^{(k)})\,w^{(k)},
 \label{eq:pc_quadrature}
 \end{equation}
-where $\mathbf{h}^{(k)} = \mathcal{M}(\mathbf{x}^{(k)})$ is the snapshot $\mathcal{D}_N$ corresponding to the MASCARET simulation for the $k$th quadrature root $\mathbf{x}^{(k)}$ of $\Psi_i$ (in the physical space), and where $w^{k}$ is the weight associated with $\mathbf{x}^{(k)}$. $(P+1)$ is the number of quadrature roots required in each uncertain direction to ensure an accurate calculation of the integral $<h_a,\Psi_i>$. Hence, $N = (P+1)^2$ for the PC surrogates built in this study.
+where $\mathbf{y}^{(k)} = \mathcal{M}(\mathbf{x}^{(k)})$ is the snapshot corresponding to the $k$th quadrature root $\mathbf{x}^{(k)}$ of $\Psi_i$ (in the physical space), and where $w^{k}$ is the weight associated with $\mathbf{x}^{(k)}$. $(P+1)$ is the number of quadrature roots required in each uncertain direction to ensure an accurate calculation of the integral $<y_a,\Psi_i>$. Hence, $N_{s} = (P+1)^2$.
 
 
 %----Gaussian process
-\subsection{POD-based Gaussian Process (pGP) surrogate}\label{sec:GP}
+\subsection{Gaussian Process surrogate}\label{sec:GP}
 
 The algorithm to build a Gaussian Process surrogate relies on a POD and proceeds as follows:
 \begin{enumerate}
 \item choose the size of the training set $N$,
-\item draw $N$ samples (or snapshots) in the input random space $\mathbf{x} = (Q, K_{s_3})$ with Halton's low discrepancy sequence{\color[rgb]{0.9,0.2,0.16}\footnote{From a Halton sequence, the nearest points (standardized Euclidean distance) of the database $\mathcal{D}_N$ are chosen.}} from the simulation database $\mathcal{D}_N$,
+\item draw $N$ samples (or snapshots) in the input random space $\mathbf{x}$,
 \item formulate the centred snapshot matrix $\mathbf{Y}$ from the $N$ water level snapshots,
 \item achieve a POD on $\mathbf{Y}$ using the snapshot method to derive the basis vectors $\lbrace\Psi_{i}\rbrace$ and the corresponding coefficients $\lbrace\gamma_{a,i}\rbrace$ (any snapshot can be expressed as a linear combination of the basis vectors and coefficients),
-\item replace each basis vector $\lbrace\Psi_i\rbrace$ associated to the $N$ snapshots by a basis function via Gaussian Process regression for any $\mathbf{x}^*$, 
-\item formulate the surrogate model $\mathcal{M}_{\text{gp}}$ for water level at each curvilinear abscissa $a$, which can be evaluated for any $\mathbf{x}^*$.
+\item replace each basis vector $\lbrace\Psi_i\rbrace$ associated to the $N_{s}$ snapshots by a basis function via Gaussian Process regression for any $\mathbf{x}^*$, 
+\item formulate the surrogate model $\mathcal{M}_{\text{gp}}$ for the QoI at each curvilinear abscissa $a$, which can be evaluated for any $\mathbf{x}^*$.
 \end{enumerate}
 Note that we follow the choices made by~\cite{braconnier2011}. 
-
-\subsubsection{Snapshot method}\label{sec:POD}
-
-The key idea of the snapshot method~\citep{sirovich1987} is to achieve a POD of the centred snapshot matrix $\mathbf{Y} \in \mathbb{M}_{M,N}(\mathbb{R})$, which gathers the water level computed at each curvilinear abscissa for the $N$ snapshots, from which the sample mean is subtracted. For simplicity purpose, the water level anomaly at curvilinear abscissa $a$ is denoted $h$ in the following. Thus, $\mathbf{Y} = \left(h_{a_i}^{(j)}\right)_{1\leq i \leq M \atop 1\leq j \leq N}$. The snapshots correspond to the column vectors; the $k$th snapshot of size $M = 14$ is denoted by $\mathbf{h}^{(k)}$.
-
-Based on many observations of a random vector, the POD gives the orthogonal directions of largest variances (or modes) in the probabilistic vector space in order to reduce the vector space dimension~\citep{chatterjee2000}. Note that for simplicity purpose, the adjective {\it centred} is dropped in the following when referring to the centred snapshot matrix $\mathbf{Y}$.
-
-The POD of the snapshot covariance matrix $\mathbf{C} = N^{-1}\,\mathbf{Y}^{\mathrm{T}}\,\mathbf{Y}\in \mathbb{M}_N(\mathbb{R})$ is equivalent to the Singular Value Decomposition (SVD) of the snapshot matrix $\mathbf{Y}$:
-\begin{equation}
-\mathbf{Y} = \mathbf{U}\,\mathbf{\Lambda}\,\mathbf{V}^{\mathrm{T}} = \displaystyle\sum_{k = 1}^{r_{p}}\,\lambda_k\,\mathbf{u}_k\,\mathbf{v}_k^{\mathrm{T}},
-\end{equation} 
-where $\mathbf{U} \in \mathbb{M}_M(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathbf{Y}\mathbf{Y}^{\mathrm{T}}$ ($\mathbf{u}_k$, the $k$th column of $\mathbf{U}$, is a left singular vector of $\mathbf{Y}$), where $\mathbf{V} \in \mathbb{M}_N(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathbf{Y}^{\mathrm{T}}\mathbf{Y}$ ($\mathbf{v}_k$, the $k$th column of $\mathbf{V}$, is a right singular vector of $\mathbf{Y}$), and where $\mathbf{\Lambda} \in \mathbb{M}_{M,N}(\mathbb{R})$ is a rectangular diagonal matrix including $r_{p}=\min(M,N)$ singular values on its diagonal. The singular values $\lbrace \lambda_k \rbrace_{1 \leq k \leq r_{p}}$ are the square roots of the eigenvalues of $\mathbf{C}$. 
-Note that in this study, we do not reduce further the rank of the snapshot matrix $\mathbf{Y}$. Since the number of stations ($M = 14$) is lower than the size of the training set $N$, the rank of $\mathbf{Y}$ is here $r_{p} = M$.
-
-For a given curvilinear abscissa $a$, any snapshot $h_a(\mathbf{x}^{(k)})$ can then be retrieved as a linear combination of $r_{p}$ modes $\{\Psi_i\}_{1\leq i \leq r_p}$:
-\begin{equation}\label{eq:gppod}
-h_a(\mathbf{x}^{(k)}) 
-= (\mathbf{U}\,\mathbf{\Lambda}\,\mathbf{V}^{\mathrm{T}})_{ak} 
-= U_{a:}(\mathbf{\Lambda}\,\mathbf{V}^T)_{:k}=\sum_{i=1}^{r_{p}}\,\gamma_{a,i}\,\Psi_i(\mathbf{x}^{(k)}),
-\end{equation}
-where for any $i\in\{1,\ldots,M\}$, $\gamma_{a,i}:=U_{a,i}$ and $\Psi_i(\mathbf{x}^{(k)}):=(\boldsymbol{\Lambda}\mathbf{V}^T)_{i,k}$. 
-
-In the present study, the size of the state vector $M$ is smaller than the size of the training set $N$, implying that there are $r_p = M$ non-zero singular values. This is usually not the case, but this does not change the methodology. As the objective is to compare PC and pGP and as there is a limited number of stations $M$, all modes are kept to avoid the loss of information, there is no need to reduce the rank of the singular matrix. Note that when moving to 2-D or 3-D cases (beyond the scope of the present work), the size of the state vector could be of the order of thousands components, making dimension reduction necessary. 
 
 \subsubsection{Regression Procedure}\label{sec:regression}
 
