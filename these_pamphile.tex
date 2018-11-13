@@ -1,0 +1,360 @@
+\documentclass[a4paper,twoside,11pt,openright]{book}
+\usepackage[ED=MEGEP-DyF, Ets=INP]{tlsflyleaf} 
+
+\usepackage[main=english, frenchb]{babel}	 %\usepackage{polyglossia} %\setmainlanguage{french}
+\usepackage{amsmath}  				  % add align
+%\usepackage{unicode-math}     % add unicode math in text
+\usepackage{luatextra, luacolor}
+\setmainfont{SFText-Light}[
+		  Ligatures={TeX, Common},
+          BoldFont={SFText-Semibold},
+          BoldItalicFont={SFText-SemiboldItalic},
+		  ItalicFont={SFText-LightItalic},
+		  SmallCapsFont={Tex Gyre Heros},%SF UI Display Light}
+		  %SmallCapsFont={Linux Libertine O},
+		  BoldFeatures={SmallCapsFont=Tex Gyre Heros},
+    	  SmallCapsFeatures={Letters=SmallCaps, Renderer=Basic},
+]
+\setmathrm{SFText-Regular}
+\setboldmathrm{SFText-Semibold}
+%\usepackage[babel=true,tracking=true]{microtype}
+%\usepackage[babel,french=guillemets*]{csquotes} 
+%\MakeOuterQuote{"}	   
+\usepackage{layout}          		 %change page layout
+\usepackage{graphicx}      			 % includegraphic
+\usepackage{float}  			     %add H option
+\usepackage{subfig} 
+%\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{wrapfig}
+\usepackage[bottom]{footmisc}
+\usepackage{color}
+\usepackage{colortbl}
+%\usepackage{tcolorbox}               % beamer like box 
+\usepackage{amssymb}				  % add symbole 
+\usepackage{fourier-orns}			  % add {\color[rgb]{0.9,0.2,0.16}\danger}
+%\usepackage{multirow}
+%\usepackage{multicol}                 % multiple column (not in beamer)
+\usepackage{booktabs}                 % \toprule \cmidrule{1-3} \midrule  \\ \bottomrule
+%\usepackage{media9}                   % \film 
+\usepackage[squaren,Gray]{SIunits}  	  % unités SI E pour exposants
+\usepackage{numprint}				  % \unit{\numprint{}}{\}
+
+%\usepackage[colorinlistoftodos]{todonotes}				  % \listoftodos  \todo[inline]{}   \missingfigure{} disable
+
+%\usepackage{makeidx}
+%\makeindex
+
+%\usepackage{diagbox}        % barre oblique table: \diagbox{en bas}{en haut}
+\definecolor{bleu}{rgb}{0.86,0.9,0.94}
+
+\usepackage{algorithm,algorithmicx,algpseudocode}
+%\usepackage{listings}                % \begin{lstlisting}      
+%\definecolor{colKeys}{rgb}{0,0,1}              
+%\definecolor{colIdentifier}{rgb}{0,0,0} 
+%\definecolor{colComments}{rgb}{0,0.6,0.4} 
+%\definecolor{colString}{rgb}{0.6,0.1,0.1}
+%\definecolor{fonc}{rgb}{0.5,0.8,0.8} 
+%\definecolor{var}{rgb}{0.8,0.3,0.4}
+%\lstset{%configuration de listings 
+%basicstyle=\ttfamily\small, 
+%identifierstyle=\color{colIdentifier},  
+%keywordstyle=\color{colKeys},  
+%stringstyle=\color{colString}, 
+%commentstyle=\color{colComments},  
+%tabsize=2, 
+%extendedchars=true,  
+%showspaces=false, 
+%showstringspaces=false,  
+%numbers=left, 
+%numberstyle=\tiny,  
+%breaklines=true,  
+%breakautoindent=true,  
+%} 
+%\lstset{language=python} 
+
+
+%\newenvironment{warningbox}{\begin{tcolorbox}[colback={yellow!20},colframe={yellow!20}]
+%\makebox[0pt]{
+%\smash{
+%\fontsize{32pt}{32pt}\selectfont
+%\hspace*{-19pt}
+%\raisebox{2pt}{
+%{\color[rgb]{0.9,0.2,0.16} \bfseries !} }
+%}
+%}}{\end{tcolorbox}}
+
+
+\usepackage{tikz}
+\usetikzlibrary{tikzmark,decorations.pathreplacing,calc}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+
+
+% -------------------- Chapters/Parts ---------------------------
+
+\usepackage{titletoc,titlesec, blindtext}     % add table, changer look chapter etc.
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titlespacing*{\chapter}{0pt}{0pt}{30pt}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+ 	
+\titleclass{\part}{top}
+%\titleformat{\part}[display]
+%  {\huge\bfseries\centering}{\partname~\thepart}{1pt}{}
+\titleformat{\part}{\centering\normalfont\Huge\bfseries}{\thepart -}{0pt}{}
+%\titlespacing*{\part}{0pt}{40pt}{40pt}
+
+\setcounter{secnumdepth}{5}	
+
+%\setcounter{tocdepth}{2}
+%\setcounter{secnumdepth}{3} %  3 <-> subsubsection
+
+\newenvironment{parttoc}{
+    \startcontents[parts]
+    \printcontents[parts]{}{-1}{\setcounter{tocdepth}{5}}
+}{\stopcontents[parts]}
+
+% -------------------- Bib ---------------------------
+
+%\usepackage[maxnames=1, autolang=other, bibstyle=authoryear, style=authoryear, backend=biber, doi=true, isbn=false, url=false]{biblatex} %bibliographie
+\usepackage[numbers,sectionbib]{natbib} % (Jones 1998) <= \citep{jones1998} ; Jones (1998) <= \citet{jones1998} ; Jones <= \citeauthor{jones1998}
+%\setcitestyle{aysep={}}
+\usepackage{multibib}
+\newcites{Jbib,Cbib,Global}{{Articles},{Conferences},{}}
+
+%\usepackage{nomencl}
+%\makenomenclature
+
+\usepackage{hyperref}  
+\hypersetup{hypertexnames=false,colorlinks=true,allcolors=,urlcolor=bleu}
+\usepackage[capitalise]{cleveref} 						% \Cref (Eq.) \cref (eq. fig.) \label
+%\usepackage[top=1.5cm, bottom=1.75cm, inner=2.75cm, marginparwidth=2cm, textwidth=16cm, includeheadfoot]{geometry} % showframe or package layout (\layout) 
+%\usepackage[acronym, smallcaps, nopostdot]{glossaries}
+%\makeglossaries
+%\DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
+%  \newglossaryentry{gls-#3}{name={#5},text={#5\glsadd{#3}},
+%    description={#6},#1
+%  }
+%  \newacronym[see={[Glossary:]{gls-#3}},#2]{#3}{#4}{#5\glsadd{gls-#3}}
+%}
+
+
+% -------------------- Cover ---------------------------
+
+\title{Uncertainty Quantification in Large Eddy Simulations.} 
+\author{Pamphile Tupui ROY}
+\defencedate{1 June 2019}
+\lab{CERFACS} 
+
+%% Directors
+\nboss{2}                                    % Nombre de directeur(s) de thèse
+\makesomeone{boss}{1}{Bénédicte CUENOT}{}{} % Sera affiché en premier
+\makesomeone{boss}{2}{Jean-Christophe JOUHAUD}{}{}  % Sera affiché en second
+%% Referee
+\nreferee{2}
+\makesomeone{referee}{1}{Premier RAPPORTEUR}{Totoland}{Toto1}
+\makesomeone{referee}{2}{Second RAPPORTEUR}{Totoland}{Toto2}
+%% Jury
+\njudge{7}
+\makesomeone{judge}{1}{Premier MEMBRE}{Professeur d'Université, Toulouse}{Rapporteur}
+\makesomeone{judge}{2}{Second MEMBRE}{Astronome Adjoint, Marseille}{Rapporteur}
+\makesomeone{judge}{3}{Troisième MEMBRE}{Chargé de Recherche, Bordeaux}{Examinateur}
+\makesomeone{judge}{4}{Quatrième MEMBRE}{Chargé de Recherche}{Examinateur}
+\makesomeone{judge}{5}{Cinquième MEMBRE}{Chargé de Recherche}{Examinateur} 
+\makesomeone{judge}{6}{Bénédicte CUENOT}{Chargé de Recherche}{Directeur de thèse} 
+\makesomeone{judge}{7}{Jean-Christophe Jouhaud}{Chargé de Recherche}{Co-directeur de thèse} 
+
+
+% -------------------- Begin ---------------------------
+
+\begin{document}
+
+\frontmatter   						% si book
+
+\makeflyleaf 
+
+\newgeometry{top=1.5cm, bottom=1.75cm, inner=2.75cm, marginparwidth=2cm, textwidth=16cm, includeheadfoot}
+
+\renewcommand{\contentsname}{Content}
+
+\tableofcontents%\thispagestyle{empty}
+%\addtocontents{toc}{\protect\thispagestyle{empty}}\newpage %enlever si on veut numeroter les pages de TOC
+\newpage%\thispagestyle{empty}
+
+
+%% -------------------- Nomenclature ---------------------------
+%
+%\newcommand{\nomunit}[1]{
+%\renewcommand{\nomentryend}{\hspace*{\fill}
+%$\unit{}{#1}}$}
+%
+%% ordered names as they appear to make it easier
+%% greek/vector/mathcal notations
+%%\nomenclature{$\boldsymbol{\zeta}$}{Standardized random variable}
+%%\nomenclature{$\delta$}{Kronecker delta function}
+%%\nomenclature{$\ell$}{Correlation length scale}
+%%\nomenclature{$\gamma$}{Basis coefficient}
+%%\nomenclature{$\pi$}{Correlation function}
+%%\nomenclature{$\lambda$}{Singular value}
+%%\nomenclature{$\mathbb{E}$}{Expectation operator}
+%%\nomenclature{$\mathbb{V}$}{Variance}
+%%\nomenclature{$\mathbf{\Lambda}$}{Rectangular singular value matrix}
+%%\nomenclature{$\mathbf{C}$}{Snapshot covariance matrix}
+%%\nomenclature{$\mathbf{h}$}{Output random vector of size $M$}
+%%\nomenclature{$\mathbf{U}$}{Orthogonal square left singular matrix}
+%%\nomenclature{$\mathbf{V}$}{Orthogonal square right singular matrix}
+%%\nomenclature{$\mathbf{x}$}{Input random vector of size $d$}
+%%\nomenclature{$\mathbf{x}^*$}{Input random vector not included in the training set $\mathcal{X}$}
+%%\nomenclature{$\mathbf{Y}$}{Centred snapshot matrix}
+%%\nomenclature{$\mathcal{D}_N$}{MASCARET simulation database of size $N$}
+%%\nomenclature{$\mathcal{M}$}{MASCARET forward model operator}
+%%\nomenclature{$\mathcal{N}$}{Normal distribution characterized by mean and STD}
+%%\nomenclature{$\mathcal{U}$}{Uniform distribution characterized by minimum and maximum}
+%%\nomenclature{$\mathbf{\Pi}$}{Correlation matrix evaluated for the database $\mathcal{D}_N$}
+%%\nomenclature{$\mathcal{X}$}{Input training set of size $N \times d$}
+%%\nomenclature{$\mathcal{Y}$}{Output training set of size $N \times M$}
+%%\nomenclature{$\mu$}{Mean value}
+%%\nomenclature{$\omega$}{Gaussian quadrature weight}
+%%\nomenclature{$\Psi$}{Basis function}
+%%\nomenclature{$\rho$}{Joint probability density function}
+%%\nomenclature{$\sigma$}{STD}
+%%\nomenclature{$\tau$}{Nugget effect}
+%%\nomenclature{$\widehat{h}$}{Estimated water level}
+%
+%%% standard notations
+%%\nomenclature{$a \in [a_{\text{in}}; a_{\text{out}}]$}{Curvilinear abscissa \nomunit{km}}
+%%\nomenclature{$A$}{Hydraulic section \nomunit{m^2}}
+%%\nomenclature{$c(\alpha)$}{$\alpha$-level tabulated value associated with $D$}
+%%\nomenclature{$D$}{Kolmogorov-Smirnov statistic}
+%%\nomenclature{$d$}{Uncertain space size}
+%%\nomenclature{$h$}{Water level part of the hydraulic state $(h,Q)$ \nomunit{m}}
+%%\nomenclature{$i$}{Surrogate decomposition index}
+%%\nomenclature{$k$}{Snapshot index}
+%%\nomenclature{$K_s$}{Strickler friction coefficient \nomunit{m^{1/3}\,s^{-1}}}
+%%\nomenclature{$M = \numprint{14}$}{Number of observation stations}
+%%\nomenclature{$N$}{Training set size}
+%%\nomenclature{$N_{\text{ref}} = \numprint{100,000}$}{Validation set size}
+%%\nomenclature{$P$}{Wet perimeter \nomunit{m}}
+%%\nomenclature{$Q$}{Discharge part of the hydraulic state $(h,Q)$ \nomunit{m^{3}\,s^{-1}}}
+%%\nomenclature{$Q_2$}{Predictive squared correlation coefficient}
+%%\nomenclature{$r$}{Number of terms in surrogate model}
+%%\nomenclature{$R$}{Hydraulic radius \nomunit{m}}
+%%\nomenclature{$RC$}{Upstream water level-discharge local rating curve}
+%%\nomenclature{$S_0$}{Channel slope \nomunit{m\,km^{-1}}}
+%%\nomenclature{$S_f$}{Friction slope}
+%%\nomenclature{$S_i$}{First order Sobol' index}
+%%\nomenclature{$S_T$}{Total order Sobol' index}
+%%\nomenclature{$W$}{River width \nomunit{m}}
+%\nomenclature{$\mathbf{x}$}{Sample in the parameter space}
+%\nomenclature{$N_s$}{Number of samples in the parameter space}
+%\nomenclature{$\mathcal{M}_{\text{gp}}$}{POD-based Gaussian Process surrogate model}
+%\nomenclature{$m$}{Spatial discretization}
+%\nomenclature{$N_i$}{Snapshot \emph{i}}
+%\nomenclature{$z(m, N_i)$}{Quantity of interest or snapshot of size $m$}
+%\nomenclature{$\mathbb{A}$}{Snapshot matrix of size $m \times N_s$}
+%\nomenclature{$\mathbf{U}$}{Orthogonal square left singular matrix}
+%\nomenclature{$\mathbf{V}$}{Orthogonal square right singular matrix}
+%\nomenclature{$\mathbf{\Sigma}$}{Singular value matrix}
+%\nomenclature{$\lambda$}{Singular value}
+%\nomenclature{$\mathbb{V}$}{Variance}
+%\nomenclature{$\sigma$}{Variance at sample of maximum variance}
+%\nomenclature{$\mu$}{Mean value}
+%\nomenclature{$K$}{Kernel}
+%\nomenclature{$k$}{Rank of the snapshot matrix $A$}
+%\nomenclature{$\mathbb{E}$}{Expectation operator}
+%\nomenclature{$Q_2$}{Predictivity coefficient}
+%\nomenclature{$n_{dim}$}{Dimension of the parameter space}
+%\nomenclature{$S_i$}{First order \emph{Sobol'} index}
+%\nomenclature{$S_{ij}$}{Second order \emph{Sobol'} index}
+%\nomenclature{$S_T$}{Total order \emph{Sobol'} index}
+%\nomenclature{$N_b$}{Sample budget}
+%\nomenclature{$N_{rs}$}{Number of sample to use for resampling}
+%% acronyms, text indices
+%\nomenclature{CFD}{Computational Fluid Dynamics}
+%\nomenclature{QoI}{Quantity of Interest}
+%\nomenclature{DoE}{Design of Experiments}
+%\nomenclature{MC}{Monte Carlo}
+%\nomenclature{CDF}{Cumulative Distribution Function}
+%\nomenclature{PDF}{Probability Density Function}
+%\nomenclature{STD}{STandard Deviation}
+%\nomenclature{UQ}{Uncertainty Quantification}
+%\nomenclature{SA}{Sensitivity Analysis}
+%\nomenclature{GP}{Gaussian Process}
+%\nomenclature{PC}{Polynomial Chaos}
+%\nomenclature{pGP}{POD-based Gaussian Process}
+%\nomenclature{POD}{Proper Orthogonal Decomposition}
+%\nomenclature{SVD}{Singular Value Decomposition}
+%\nomenclature{RMSE}{Root Mean Square Error}
+%\nomenclature{LOO}{Leave-one-out}
+%
+%%\nomenclature{PF}{Particle Filter}
+%%\nomenclature{DA}{Data Assimilation}
+%%\nomenclature{EnKF}{Ensemble Kalman Filter}
+%%\nomenclature{SWE}{Shallow Water Equation}
+%
+%
+%\printnomenclature
+%
+%\newpage
+
+% -------------------- STARTING ---------------------------
+
+\mainmatter
+
+%\includeonly{fichier1}
+%\include{fichier1}
+%\setacronymstyle{long-short} % \newacronym{}{}{description}
+
+\part{Introduction}
+\begin{parttoc}
+    \include{introduction}
+\end{parttoc}
+
+\part{Scientific Contributions}
+\begin{parttoc}
+    \include{contributions}
+\end{parttoc}
+
+\part{Realistic Applications}
+\begin{parttoc}
+    \include{applications}	
+\end{parttoc}
+
+
+\part{Conclusion}
+\include{conclusion}
+
+
+% -------------------- ENDING ---------------------------
+
+%\listoffigures
+%\listoftables
+
+%\part*{Annexes}
+%\addcontentsline{toc}{part}{\protect\numberline{}Annexes}
+%\appendix
+%\startcontents[parts]
+%\printcontents[parts]{}{-1}{\setcounter{tocdepth}{5}}
+%\chapter{Annexe A}
+
+%\stopcontents[parts]
+\backmatter                                          %si book
+
+%\nocite{*}											  %biblio sans avoir de ref dans le txt
+%\printbibliography                                   %bibliographie
+%\printbibliography[type=article, title={Articles}]
+%\printbibliography[type=book, title={Livres}]
+%\bibliography{these}
+
+\chapter*{Bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\bibliographystyle{plainnat}
+\bibliography{global_these}
+
+
+%\printindex
+%\renewcommand*{\glossaryname}{Glossaire}
+%\printglossary
+\end{document}

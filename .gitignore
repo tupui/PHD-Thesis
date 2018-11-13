@@ -240,3 +240,5 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+/these_pamphile.pdf
+/these_pamphile.ptc

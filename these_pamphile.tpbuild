@@ -1,0 +1,7 @@
+lualatex these_pamphile.tex
+makeindex these_pamphile.nlo -s nomencl.ist -o these_pamphile.nls
+bibtex these_pamphile.aux
+bibtex Jbib.aux
+bibtex Cbib.aux
+lualatex these_pamphile.tex
+lualatex these_pamphile.tex
