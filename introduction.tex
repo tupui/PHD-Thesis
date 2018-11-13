@@ -172,10 +172,10 @@ PC and GP surrogate models have recently been compared for UQ and SA studies~\ci
 Before going further, let us clarify the nature of the forward model. The ensemble $\mathcal{Y}$ constitute a set of observed QoI. Each element can either be a scalar or a vectorial---or functional---QoI. When considering scalar QoI, a global physical parameter such as the mean temperature for instance, a single surrogate model mapping $Y^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$ can be constructed. In case of a multidimensional output the mapping comes to $\mathbf{Y}^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$. One can consider independent surrogate for each element but the computational cost can rapidly become intractable. Moreover, the elements of the vectorial QoI can be correlated. A classical solution is found through the use of a Proper Orthogonal Decomposition (POD)~\cite{anindyachatterjee2000}. By performing a POD on the QoI, each mode being orthogonal, they can be treated as independent and then a surrogate can be built on a reduced space. In~\cite{braconnier2011,margheri2016}, this method was used to reduce the computational cost and conserve the spatial/temporal correlation of the QoI.
 
 Two types of surrogate models are presented in this work to approximate the behaviour of forward models. PC expansion on the one hand, GP regression on the other hand. Considering the general case of a functional QoI, the common idea of PC and GP approaches is to design for each element (with or without considering a POD) $a \in \{a_1, \cdots, a_M\}$ a surrogate with a weighted finite sum of basis functions:
-\begin{equation}
+\begin{align}
 \widehat{Y}_a\left(\mathbf{x}\right) = \displaystyle\sum_{i = 0}^{r}\,\gamma_{a,i}\,\Psi_{i}\left(\mathbf{x}\right),
 \label{eq:SurrogateForm}
-\end{equation}
+\end{align}
 where the coefficients $\gamma_{a,i}$ and the basis functions $\Psi_i$ are calibrated by the training set $\mathbf{X}^{N_s}$. The main difference between PC (Sect.~\ref{sec:PC}) and GP (Sect.~\ref{sec:GP}) approaches stands in the nature of these models: GP interpolates the training points and captures local variations, while PC is a regression method focusing on the global behaviour of the model. Basis functions and calibration methods also differ between these two approaches.
 
 \Cref{sec:POD} present the POD while \cref{sec:PC} and \cref{sec:GP} respectively define the PC and the GP surrogate methods.
@@ -191,18 +191,18 @@ The key idea of the snapshot method~\citep{sirovich1987} is to achieve a POD of 
 Based on many observations of a random vector, the POD gives the orthogonal directions of largest variances (or modes) in the probabilistic vector space in order to reduce the vector space dimension~\citep{chatterjee2000}. Note that for simplicity purpose, the adjective {\it centred} is dropped in the following when referring to the centred snapshot matrix $\mathcal{Y}$.
 
 The POD of the snapshot covariance matrix $\mathbf{C} = N_{s}^{-1}\,\mathcal{Y}^{\mathrm{T}}\,\mathcal{Y}\in \mathbb{M}_{N_{s}}(\mathbb{R})$ is equivalent to the Singular Value Decomposition (SVD) of the snapshot matrix $\mathcal{Y}$:
-\begin{equation}
+\begin{align}
 \mathcal{Y} = \mathbf{U}\,\mathbf{\Lambda}\,\mathbf{V}^{\mathrm{T}} = \displaystyle\sum_{k = 1}^{r_{p}}\,\lambda_k\,\mathbf{u}_k\,\mathbf{v}_k^{\mathrm{T}},
-\end{equation} 
+\end{align} 
 where $\mathbf{U} \in \mathbb{M}_M(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathcal{Y}\mathcal{Y}^{\mathrm{T}}$ ($\mathbf{u}_k$, the $k$th column of $\mathbf{U}$, is a left singular vector of $\mathcal{Y}$), where $\mathcal{V} \in \mathbb{M}_N(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathcal{Y}^{\mathrm{T}}\mathbf{Y}$ ($\mathbf{v}_k$, the $k$th column of $\mathbf{V}$, is a right singular vector of $\mathcal{Y}$), and where $\mathbf{\Lambda} \in \mathbb{M}_{M,N_{s}}(\mathbb{R})$ is a rectangular diagonal matrix including $r_{p}=\min(M,N_{s})$ singular values on its diagonal. The singular values $\lbrace \lambda_k \rbrace_{1 \leq k \leq r_{p}}$ are the square roots of the eigenvalues of $\mathbf{C}$. 
 Note that in this study, we do not reduce further the rank of the snapshot matrix $\mathcal{Y}$. %Since the number of stations ($M = 14$) is lower than the size of the training set $N$, the rank of $\mathbf{Y}$ is here $r_{p} = M$.
 
 For a given element $a$, any snapshot $h_a(\mathbf{x}^{(k)})$ can then be retrieved as a linear combination of $r_{p}$ modes $\{\Psi_i\}_{1\leq i \leq r_p}$:
-\begin{equation}\label{eq:gppod}
+\begin{align}\label{eq:gppod}
 y_a(\mathbf{x}^{(k)}) 
 = (\mathbf{U}\,\mathbf{\Lambda}\,\mathbf{V}^{\mathrm{T}})_{ak} 
 = U_{a:}(\mathbf{\Lambda}\,\mathbf{V}^T)_{:k}=\sum_{i=1}^{r_{p}}\,\gamma_{a,i}\,\Psi_i(\mathbf{x}^{(k)}),
-\end{equation}
+\end{align}
 where for any $i\in\{1,\ldots,M\}$, $\gamma_{a,i}:=U_{a,i}$ and $\Psi_i(\mathbf{x}^{(k)}):=(\boldsymbol{\Lambda}\mathbf{V}^T)_{i,k}$. 
 %
 %In the present study, the size of the state vector $M$ is smaller than the size of the training set $N$, implying that there are $r_p = M$ non-zero singular values. This is usually not the case, but this does not change the methodology. As the objective is to compare PC and pGP and as there is a limited number of stations $M$, all modes are kept to avoid the loss of information, there is no need to reduce the rank of the singular matrix. Note that when moving to 2-D or 3-D cases (beyond the scope of the present work), the size of the state vector could be of the order of thousands components, making dimension reduction necessary. 
@@ -228,33 +228,33 @@ Each component of the random vector $\mathbf{x}$ defined in the input physical s
 %Assuming that the SWE solution is of finite variance, each component $h_a$ of the water level vector $\mathbf{h}$ can be considered as a random variable for which there exists a polynomial expansion of the form~\eqref{eq:SurrogateForm} that represents how the water level $h_a$ varies according to changes in $Q$ and $K_{s_3}$. 
 
 $y_a$ is projected onto a stochastic space spanned by the orthonormal polynomial functions $\lbrace\Psi_{i}\rbrace_{i\geq 0}$. These functions are orthonormal with respect to the joint density $\rho(\boldsymbol{\zeta})$, i.e.
-\begin{equation}
+\begin{align}
 \int_{Z}\,\Psi_i(\boldsymbol{\zeta})\,\Psi_j(\boldsymbol{\zeta})\,\rho(\boldsymbol{\zeta})\,\mathrm{d}\boldsymbol{\zeta} = \delta_{ij},
 \label{eq:pc_innerproduct}
-\end{equation}
+\end{align}
 with $\delta_{ij}$ the Kronecker delta function and $Z \subseteq \mathbb{R}^d$ the space in which $\boldsymbol{\zeta}$ evolves. In practice, the orthonormal basis is built using the tensor product of 1-D polynomial functions: $\Psi_i=\Psi_{i,1}\ldots\Psi_{i,d}$ where $i$ is the multi-index $(i_1,\ldots,i_d)\in\{0,1,\cdots,P\}^d$. The choice for the basis functions depends on the probability measure of the random variables. According to Askey's scheme, the Hermite polynomials form the optimal basis for random variables following the standard Gaussian distribution, and the Legendre polynomials are the counterpart for the standard uniform distribution~\citep{xiu2002}. 
 
 \subsubsection{Truncation Strategy}
 
 In practice, the sum in Eq.~\eqref{eq:SurrogateForm} is truncated to a finite number of terms $r_{\text{pc}}$. Using a standard truncation strategy $r_{\text{pc}}$ is constrained by the number of random variables $d$ and by the total polynomial degree $P$ as:
-\begin{equation}
+\begin{align}
 r_{\text{pc}} = \frac{(d + P)!}{d!\,P!},
 \label{eq:pc_order}
-\end{equation}
+\end{align}
 meaning that all polynomials involving the $d$ random variables of total degree less or equal to $P$ are retained in the PC expansion. The PC approximated the QoI at each element $y_{\text{pc}}(a)$ is formulated as:
-\begin{equation}
+\begin{align}
 \widehat{y}_{\text{pc},a}(\mathbf{x}) := \mathcal{M}_{\text{pc},a}(\boldsymbol{\zeta}) = \displaystyle\sum_{i\in\mathbb{N}^d\atop|i|\leq P}\,\gamma_{a,i}\,\Psi_i\left(\boldsymbol{\zeta}\right).
 \label{eq:SurrogatePC}
-\end{equation}
+\end{align}
 Note that for small $d$, advanced truncation strategies that consist in eliminating high-order interaction terms or using sparse structure~\citep{blatman2009phd,migliorati2013} are not necessary.
 
 \subsubsection{Spectral projection strategy}
 
 We focus here on non-intrusive approaches to numerically compute the coefficients $\lbrace\gamma_{a,i}\rbrace_{i\in\mathbb{N}^d\atop |i|<P}$  in Eq.~\eqref{eq:SurrogatePC} using $N_{s}$ snapshots from $\mathbf{X}^{N_s}$. The spectral projection relies on the orthonormality property of the polynomial basis. The $i$th coefficient $\gamma_{a,i}$ is computed using Gaussian quadrature as:
-\begin{equation}
+\begin{align}
 \gamma_{a,i} = <y_a,\Psi_i> \,\cong\,\displaystyle\sum_{k = 1}^{N_{s}}\,y_a^{(k)}\,\Psi_i(\boldsymbol{\zeta}^{(k)})\,w^{(k)},
 \label{eq:pc_quadrature}
-\end{equation}
+\end{align}
 where $\mathbf{y}^{(k)} = \mathcal{M}(\mathbf{x}^{(k)})$ is the snapshot corresponding to the $k$th quadrature root $\mathbf{x}^{(k)}$ of $\Psi_i$ (in the physical space), and where $w^{k}$ is the weight associated with $\mathbf{x}^{(k)}$. $(P+1)$ is the number of quadrature roots required in each uncertain direction to ensure an accurate calculation of the integral $<y_a,\Psi_i>$. Hence, $N_{s} = (P+1)^2$.
 
 
@@ -263,38 +263,60 @@ where $\mathbf{y}^{(k)} = \mathcal{M}(\mathbf{x}^{(k)})$ is the snapshot corresp
 
 The algorithm to build a Gaussian Process surrogate relies on a POD and proceeds as follows:
 \begin{enumerate}
-\item choose the size of the training set $N$,
-\item draw $N$ samples (or snapshots) in the input random space $\mathbf{x}$,
-\item formulate the centred snapshot matrix $\mathbf{Y}$ from the $N$ water level snapshots,
-\item achieve a POD on $\mathbf{Y}$ using the snapshot method to derive the basis vectors $\lbrace\Psi_{i}\rbrace$ and the corresponding coefficients $\lbrace\gamma_{a,i}\rbrace$ (any snapshot can be expressed as a linear combination of the basis vectors and coefficients),
-\item replace each basis vector $\lbrace\Psi_i\rbrace$ associated to the $N_{s}$ snapshots by a basis function via Gaussian Process regression for any $\mathbf{x}^*$, 
-\item formulate the surrogate model $\mathcal{M}_{\text{gp}}$ for the QoI at each curvilinear abscissa $a$, which can be evaluated for any $\mathbf{x}^*$.
+\item choose the size of the training set $N_{s}$,
+\item draw $N_{s}$ samples (or snapshots) in the input random space $\mathbf{x}$,
+%\item formulate the centred snapshot matrix $\mathcal{Y}$ from the $N_{s}$ snapshots,
+%\item achieve a POD on $\mathbf{Y}$ using the snapshot method to derive the basis vectors $\lbrace\Psi_{i}\rbrace$ and the corresponding coefficients $\lbrace\gamma_{a,i}\rbrace$ (any snapshot can be expressed as a linear combination of the basis vectors and coefficients),
+%\item replace each basis vector $\lbrace\Psi_i\rbrace$ associated to the $N_{s}$ snapshots by a basis function via Gaussian Process regression for any $\mathbf{x}^*$, 
+\item formulate the surrogate model $\mathcal{M}_{\text{gp}}$ for the QoI at each element $a$ (can use a POD or not), which can be evaluated for any $\mathbf{x}^*$.
 \end{enumerate}
-Note that we follow the choices made by~\cite{braconnier2011}. 
 
 \subsubsection{Regression Procedure}\label{sec:regression}
 
-Our objective is now to generalize the data set $\lbrace\Psi_i(\mathbf{x}^{(k)})\rbrace_{1\leq k \leq N}$ associated with the design of experiments $\mathcal{X}$ to any new input vector $\mathbf{x}^*$, in order to approximate the model output $h_a$ at any curvilinear abscissa $a$. We thus propose the following surrogate model based on GP regression and Eq.~\eqref{eq:gppod}:
-\begin{equation}\label{pgpak}
-\widehat{h}_{\text{pgp},a}(\mathbf{x}^*) = \sum_{i=1}^{r_{p}}\gamma_{a,i}\,\Psi_{\text{gp},i}(\mathbf{x}^*),
-\end{equation}
-where $\Psi_{\text{gp},i}$ is a GP model calibrated from the training set $\left\{\mathbf{x}^{(k)},\Psi_i(\mathbf{x}^{(k)})\right\}_{1\leq k \leq N}$ as detailed in the following. 
+%In this case, the random variable being the POD coefficients computed for each random input vector $\mathbf{x}$ of $N_s$: $f(\mathbf{x}) = (\mathbf{\Sigma}_{k} \mathbf{V}^T_{k})_{\mathbf{x}}$. A new prediction consists in a new column of $\mathbf{\Sigma}_{k} \mathbf{V}^T_{k}$.
 
-As stated by~\citet{rasmussen2006}, a GP is a random process (here the mode $\Psi_i$) indexed over a domain (here $\mathbb{R}^d$), for which any finite collection of process values (here $\left\{\Psi_i(\mathbf{x}^{(k)})\right\}_{1\leq k \leq N}$) has a joint Gaussian distribution. Concretely, let $\widetilde{\Psi}_i$ be a Gaussian random process fully described by its zero mean and its correlation $\pi_i$:
-\begin{equation}
-\widetilde{\Psi}_i(\mathbf{x})\sim \text{GP}\left(0, \sigma_i^2\,\pi_i(\mathbf{x},\mathbf{x}')\right),
-\end{equation}
-with $\pi_i(\mathbf{x},\mathbf{x}') = \mathbb{E}\left[\widetilde{\Psi}_i(\mathbf{x})\widetilde{\Psi}_i(\mathbf{x}')\right]$. In our case, the correlation function $\pi$ (or kernel) is chosen as a squared exponential:
-\begin{equation}
-\pi_i(\mathbf{x}, \mathbf{x}') = \exp\left(-\frac{\|\mathbf{x} - \mathbf{x}'\|^2}{2\,\ell_i^2}\right),
-\end{equation}
-where $\ell_i$ is a length scale describing dependencies of model output between two input vectors $\mathbf{x}$ and $\mathbf{x}'$, and where $\sigma_i^2$ is the variance of the output signal. Squared exponential kernel leads to satisfying results but other kernel functions could have been considered, such as a decreasing exponential one or a Matérn one -- with their associated hyper-parameters. The choice of the kernel is still an open problem and can be mitigated using the available information on the problem. The square exponential kernel leads to very smooth, thus stable results. Furthermore, it implies that the model is exact at sample points; it does not introduce any other strong assumptions, hence its wide usage among practitioners.
+A Gaussian Process (GP) is a collection of random variables which have a joint Gaussian distribution~\cite{rasmussen2006}. GP is equivalent to \textit{Kriging}~\cite{krige1989}. A \textit{Gaussian Process} is described by its mean $\mu(\mathbf{x})$ and covariance $k(\mathbf{x},\mathbf{x}')$---where $\mathbf{x}, \mathbf{x}'$ are different sets of inputs
 
-Then the surrogate model of interest is the mean of the GP resulting of conditioning $\widetilde{\Psi}_i$ by the training set $\left\{\Psi_i\left(\mathbf{x}^{(k)}\right)\right\}_{1\leq k \leq N}$. For any $\mathbf{x}^*\in\mathbb{R}^d$,
-\begin{equation}
-\Psi_{\text{gp},i}(\mathbf{x}^*)=\sum_{k = 1}^N\,\beta_{k,i}\,\pi_i\left(\mathbf{x}^*,\mathbf{x}^{(k)}\right),
-\end{equation}
-where $\beta_{k,i} = \left(\mathbf{\Pi}_i +\tau^2\,\mathbf{I}_N\right)^{-1}\left(\Psi_i\left(\mathbf{x}^{(1)}\right)\ldots \Psi_i\left(\mathbf{x}^{(N)}\right)\right)^T$ with $\mathbf{\Pi}_i=\left(\pi_i\left(\mathbf{x}^{(j)},\mathbf{x}^{(k)}\right)\right)_{1\leq j,k \leq N}$, and where $\tau$ (referred to as the nugget effect) avoids ill-conditioning issues for the matrix $\mathbf{\Pi}$. The hyperparameters $\left\{\ell_i, \sigma_i, \tau\right\}$ are optimized by maximum likelihood applied to the data set $\mathcal{D}_N$ using a basin hopping technique~\citep{wales1997}.
+\begin{align}
+Y_a(\mathbf{x})&\sim \mathcal{GP}(\mu(\mathbf{x}), k(\mathbf{x},\mathbf{x}')), \;\text{with} \\
+m(\mathbf{x}) &= \mathbb{E}\left[ Y_a(\mathbf{x})  \right], \nonumber \\
+k(\mathbf{x},\mathbf{x}') &= \mathbb{E}\left[ (Y_a(\mathbf{x}) -\mu(\mathbf{x}))(Y_a(\mathbf{x}')-\mu(\mathbf{x}')) \right] \nonumber.
+\end{align}
+
+Here the covariance function $k$ (or kernel) is chosen as a squared exponential
+\begin{align} 
+K = k(\mathbf{x}, \mathbf{x}') = \sqrt{\pi} \; \sigma_\mathbf{x}^2 \exp\left(-\frac{\|\mathbf{x} - \mathbf{x}'\|^2}{2\,\ell_i^2}\right), 
+\end{align}
+where $l$ is a length scale that describes the trend in the data and $\sigma_\mathbf{x}$ is the variance of the output signal. Squared exponential kernel leads to satisfying results but other kernel functions could have been considered, such as a decreasing exponential one or a Matérn one -- with their associated hyper-parameters. The choice of the kernel is still an open problem and can be mitigated using the available information on the problem. The square exponential kernel leads to very smooth, thus stable results. Furthermore, it implies that the model is exact at sample points; it does not introduce any other strong assumptions, hence its wide usage among practitioners.
+
+Then the GP model consists of a regression providing an interpolation $\mathcal{M}_{\text{gp}}$ for a new set of input parameters $\mathbf{x^{*}}$:
+\begin{align}
+\mathcal{M}_{\text{gp}}(\mathbf{x}^*)&=\bar{Y_{a}}(\mathbf{x}^*) =  \sum_{i = 1}^{N_s}\alpha_i k (\mathbf{x}^i, \mathbf{x}^*), \;\text{with} \\
+\mathbf{\alpha} &= (K + \sigma_n^2 I)^{-1}\mathcal{Y}_a, \nonumber
+\end{align}
+where $\bar{Y_a}$ is the mean realization, $\mathbf{x}^i$ the \textit{i-th} set of parameters, $\mathcal{Y}_{a}$ the snapshot matrix considering element $a$ and $\sigma_n$ is the nugget effect that prevent ill-conditioning issues for the matrix $K$. Indeed, it is the mean realization of the conditioned process considering an artificial noisy observation which gives the prediction. The learning phase of the GP consists in selecting $l$, $\sigma_n$ and $\sigma_\mathbf{x}$ so that $Y_a$ passes through or close to the dataset points. These hyperparameters are optimized by maximum likelihood applied to the data set $\mathcal{Y}_a$ using a basin hopping technique~\citep{wales1997}. A key advantage of this predictor is that it provides an inference about its prediction variance
+\begin{align}
+\mathbb{V}[Y_{a}(\mathbf{x}^*)] = k(\mathbf{x}^*, \mathbf{x}^*)-\mathbf{k}(\mathbf{x}^*)^T(K + \sigma_n^2 I)^{-1}\mathbf{k}(\mathbf{x}^*).
+\end{align}
+
+
+
+
+%Our objective is now to generalize the data set $\lbrace\Psi_i(\mathbf{x}^{(k)})\rbrace_{1\leq k \leq N}$ associated with the design of experiments $\mathcal{X}$ to any new input vector $\mathbf{x}^*$, in order to approximate the model output $y_a$ at any element $a$. As stated by~\citet{rasmussen2006}, a GP is a random process (here the mode $\Psi_i$) indexed over a domain (here $\mathbb{R}^d$), for which any finite collection of process values (here $\left\{\Psi_i(\mathbf{x}^{(k)})\right\}_{1\leq k \leq N}$) has a joint Gaussian distribution. Concretely, let $\widetilde{\Psi}_i$ be a Gaussian random process fully described by its zero mean and its correlation $\pi_i$:
+%\begin{align}
+%\widetilde{\Psi}_i(\mathbf{x})\sim \text{GP}\left(0, \sigma_i^2\,\pi_i(\mathbf{x},\mathbf{x}')\right),
+%\end{align}
+%with $\pi_i(\mathbf{x},\mathbf{x}') = \mathbb{E}\left[\widetilde{\Psi}_i(\mathbf{x})\widetilde{\Psi}_i(\mathbf{x}')\right]$. In our case, the correlation function $\pi$ (or kernel) is chosen as a squared exponential:
+%\begin{align}
+%\pi_i(\mathbf{x}, \mathbf{x}') = \exp\left(-\frac{\|\mathbf{x} - \mathbf{x}'\|^2}{2\,\ell_i^2}\right),
+%\end{align}
+%where $\ell_i$ is a length scale describing dependencies of model output between two input vectors $\mathbf{x}$ and $\mathbf{x}'$, and where $\sigma_i^2$ is the variance of the output signal. Squared exponential kernel leads to satisfying results but other kernel functions could have been considered, such as a decreasing exponential one or a Matérn one -- with their associated hyper-parameters. The choice of the kernel is still an open problem and can be mitigated using the available information on the problem. The square exponential kernel leads to very smooth, thus stable results. Furthermore, it implies that the model is exact at sample points; it does not introduce any other strong assumptions, hence its wide usage among practitioners.
+%
+%Then the surrogate model of interest is the mean of the GP resulting of conditioning $\widetilde{\Psi}_i$ by the training set $\left\{\Psi_i\left(\mathbf{x}^{(k)}\right)\right\}_{1\leq k \leq N}$. For any $\mathbf{x}^*\in\mathbb{R}^d$,
+%\begin{align}
+%\Psi_{\text{gp},i}(\mathbf{x}^*)=\sum_{k = 1}^N\,\beta_{k,i}\,\pi_i\left(\mathbf{x}^*,\mathbf{x}^{(k)}\right),
+%\end{align}
+%where $\beta_{k,i} = \left(\mathbf{\Pi}_i +\tau^2\,\mathbf{I}_N\right)^{-1}\left(\Psi_i\left(\mathbf{x}^{(1)}\right)\ldots \Psi_i\left(\mathbf{x}^{(N)}\right)\right)^T$ with $\mathbf{\Pi}_i=\left(\pi_i\left(\mathbf{x}^{(j)},\mathbf{x}^{(k)}\right)\right)_{1\leq j,k \leq N}$, and where $\tau$ (referred to as the nugget effect) avoids ill-conditioning issues for the matrix $\mathbf{\Pi}$. The hyperparameters $\left\{\ell_i, \sigma_i, \tau\right\}$ are optimized by maximum likelihood applied to the data set $\mathcal{D}_N$ using a basin hopping technique~\citep{wales1997}.
 
 
 
