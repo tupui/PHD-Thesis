@@ -1,7 +1,7 @@
-\chapter{Introduction}
+\chapter{Context}
 
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/schema_UQ.pdf}
 \caption{Schematisation of the Uncertainty Quantification procedure.}
@@ -20,7 +20,7 @@ One of the main objectives when performing numerical, or real experiments, is to
 \end{align}
 \noindent where $\mathcal{Y}$ is the QoI and $\mathbf{Y}^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$ corresponds to the deterministic integration of the forward model $\mathcal{M}$ as a black box for the $i$th set of input parameters $\mathbf{x}^{(i)}$---see~\cref{fig:doe}.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.5\linewidth,keepaspectratio]{fig/literature/doe.pdf}
 \caption{Sketch of a 2-dimensional Design of Experiments.}
@@ -29,7 +29,7 @@ One of the main objectives when performing numerical, or real experiments, is to
 
 In its basis form, a DoE is described by a $d$-dimensional cube: a hypercube---see~\cref{fig:hypercube}. A hypercube is parametrised by the minimal and maximal values of each parameters. In case parameters depends on each others, or if there are constrains on the parameters, non-rectangular domains~\citep{Lekivetz2015} have to be considered.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.5\linewidth,keepaspectratio]{fig/literature/hypercube.pdf}
 \caption{Sketch of a 3-dimensional hypercube.}
@@ -51,7 +51,7 @@ Uncertainty Propagation (UP) seeks to communicate uncertainties throughout the s
 
 Uncertainties can be described using a probabilistic approach through the use of Probability Density Functions (PDF). Thus, propagating uncertainties comes to determining the PDF of the QoI.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.7\linewidth,keepaspectratio]{fig/literature/propagation.pdf}
 \caption{Sketch of the Uncertainty Propagation procedure.}
@@ -72,7 +72,7 @@ K\left(Y^*,Y^{(i)}\right) = \exp\left( - \frac{D\left(Y^*,Y^{(i)}\right)^2}{2h^2
 
 Depending on the number of sample available and on the parameters of the method, this process can lead to a PDF which is far from the real one. The principle is fairly easy to understand---see~\cref{fig:kde}. Each sample value $Y$ is represented on the $x$-axis. Around each value, a rectangle of fixed width and fixed height is draw. When there is an overlap, the rectangle values are summed-up. The value of the width represents the bandwidth, and the general shape of the \emph{rectangle} is called the kernel. As previously stated, Gaussian kernel is classically used and corresponds to a bell-cuve shape.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.6\linewidth,keepaspectratio]{fig/literature/kde.pdf}
 \caption{Sketch of a Kernel Density Estimation procedure with a rectangular kernel.}
@@ -81,7 +81,7 @@ Depending on the number of sample available and on the parameters of the method,
 
 \Cref{fig:ex_pdf}(a) presents a KDE of a 1-dimensional QoI along with a histogram representation of the data. It can be seen that the KDE act as a smoothing procedure of the histogram. Another possibility---\cref{fig:ex_pdf}(b)---is to use quantile dotplot \cite{kay2016} which allows to directly count the quantiles. In this example, there are 20 circles, and below $F=22.5$ there are 11 circles. Thus, >50\% of the samples are located below $F=22.5$.
 
-\begin{figure}[H]               
+\begin{figure}[!h]               
 \centering
 \subfloat[Kernel Density Estimation and histogram]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/literature/pdf_hist.pdf}}
@@ -106,7 +106,7 @@ An intuitive way to characterize the importance of each parameters toward a QoI 
 \hat{\mu_k} = \frac{1}{N_s} \sum_{i=1}^{N_s} \frac{ \mid Y(\mathbf{x}_{k}^*) -  Y(\mathbf{x}_{k}^i)}{\mid \mathbf{x}_{k}^* - \mathbf{x}_{k}^i  \mid}.
 \end{align}
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/morris.png}
 \caption{Sketch of \emph{Morris}' screening method. Source~\cite{Becker2018}.}
@@ -144,7 +144,7 @@ Y(\mathbf{x}) = \sin x_1 + 7 \sin^2 x_2 + 0.1 x_3^4 \sin x_1,
 
 Looking at \cref{fig:sobol}(a), it can be noted that the convergence of these indices require a large sampling size. The required sampling size is case dependant as it depends on the number of input parameters and on the complexity of the function of interest.
 
-\begin{figure}[H]               
+\begin{figure}[!h]               
 \centering
 \subfloat[Convergence of the \emph{Sobol'} indices]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/literature/l2_sample.png}}
@@ -165,7 +165,7 @@ For a functional output, as for the \textit{LS89} blade case---see~\cref{chap:ls
 S_i = \frac{\displaystyle\sum_{l = 1}^{m} \mathbb{V} [\mathbf{Y}^l] S_i^{l}}{\displaystyle\sum_{l = 1}^{m} \mathbb{V} [\mathbf{Y}^l]}.
 \end{align}
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/sobol_map.pdf}
 \caption{Map of \emph{Sobol'} indices along the \textit{LS89} blade.}
@@ -186,7 +186,7 @@ Computation of high order terms and total effect require a lot of samples to con
 
 Moment-based method are based on the whole PDF to mitigate these issues~\cite{borgonovo2007}. Based on the unconditional PDF, a conditional PDF per parameter is computed. The more the conditional PDF deviates from the unconditional PDF, the more the parameter has an impact on the quantity of interest. The same procedure can be done using the Empirical Cumulative Density Function (ECDF), respectively with the unconditional ECDF. \Cref{fig:moment_sa} shows the computation of both conditional and unconditional PDF (resp. ECDF). Based on these moment estimations, distance criteria can be computed such as: $L_1$, \emph{Kolmogorov-Smirnov} or the \emph{Kuiper} distances. The method does not require any particular sampling nor do not require the parameters to be independent. The limitations comes from the ability to correctly estimate the densities.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/moment_independent-ishigami.pdf}
 \caption{Moment independent SA on the \emph{Ishigami} function.}
@@ -195,7 +195,7 @@ Moment-based method are based on the whole PDF to mitigate these issues~\cite{bo
 
 Another visual approach is found with the Cumulative Sums Of NOrmalized Reordered Output method (CUSUNORO)~\cite{Plischke2012}. The output is normalized and ordered in function of a given parameter. Then, its cumulative sum vector is computed. In other words, this corresponds to the conditional ECDF after normalization. Here as well, the more the curve is far from the unconditional ECDF (a flat line after normalization), the more the output is sensitive to the parameter---see~\cref{fig:cusunoro}.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/cusunoro-ishigami.pdf}
 \caption{CUSUNORO on the \emph{Ishigami} function.}
@@ -342,16 +342,13 @@ where $\bar{Y_a}$ is the mean realization, $\mathbf{x}^i$ the \textit{i-th} set 
 \begin{align}
 \mathbb{V}[Y_{a}(\mathbf{x}^*)] = k(\mathbf{x}^*, \mathbf{x}^*)-\mathbf{k}(\mathbf{x}^*)^T(K + \sigma_n^2 I)^{-1}\mathbf{k}(\mathbf{x}^*).
 \end{align}
-
 The regression methodology is shown in~\cref{fig:gp_prior-post}. On \cref{fig:gp_prior-post}(a), the GP is sampled on the input parameter space. In this case, a GP with zero mean and unit variance is used. It means that for each $x^i$, the QoI is estimated as a Gaussian process of zero mean and unit variance. Thus along the parameter $x_{k}$, the GP is defined as an infinite collection of GPs. The link between each GP is assured through the correlation matrix defined by the kernel. Once some observations are added---see~\cref{fig:gp_prior-post}(b)---, the GP is conditioned so that each realization of the GP passes through the observations. This intrinsic property of the GP can be relaxed by changing the diagonal of the correlation matrix. This can be used to take into account some noise in the data for instance. Moreover, the matrix can be adapted per observation if the variance of the noise is known to be different---heteroscedastic noise. As said beforehand, the hyperparameters are choosen as to maximize the marginal log likelihood. It is the integral of the likelihood times the prior marginalized over the function values:
-
 \begin{align}
 p(y|x) = \int p(y|\mathbf{f}, x)p(\mathbf{f}|x)d\mathbf{f}.
 \end{align}
-
 \noindent In other word, maximizing this quantity will tend to reduce the confidence interval between each points. It is to be noted that along each direction of the parameters space, having different set of hyperparameters  is possible so that anisotropy can be taken into account.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.9\linewidth,keepaspectratio]{fig/literature/rasmussenGP.png}
 \caption{Visualization of 4 Gaussian processes: \textbf{a} represents a sampling of the GP while in \textbf{b} these functions have been conditioned on two points. Shaded regions represent twice the standard deviation of the GPs. Source: \cite{rasmussen2006}.}
@@ -364,7 +361,7 @@ p(y|x) = \int p(y|\mathbf{f}, x)p(\mathbf{f}|x)d\mathbf{f}.
 
 An important step after having constructed a surrogate model is to access its validity. There are lots of ways to do this and the common step is to compare the prediction of the model at a given point with its actual value. Depending on the number of simulation that can be afforded, extra validation simulation not used for constructing the model can be performed. On the other hand, the same dataset can be used.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.6\linewidth,keepaspectratio]{fig/literature/validation_set.png}
 \caption{3-dimensional parameter space canonical visualization of training (triangles) and validation (circles) sets.}
@@ -401,7 +398,7 @@ with $c(\alpha)$ a tabulated value found in the literature~\citep{smirnov1939}. 
 \subsubsection{Graphical Quality Assessment}
 An easy way to visualize the quality of the model is to plot a joint plot. Its construction is simple. For a given sample, there is an observed value of QoI, let's say 5 (\cref{fig:qq_plot}). Then for the same sample, we take the predicted value of QoI, here also 5. These two values are used to construct a scatter plot. Thus, if the model is perfect, predicted values are equal to observed values leading to a line on this graph. On the right figure, the model is not as good as on the left, so an observed value of 5 is linked to a predicted value of 0.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.6\linewidth,keepaspectratio]{fig/literature/qq_plot.png}
 \caption{Joint plot. QoI function of the predicted QoI given a parameter set. The triangle represent an observed value of 5.}
@@ -413,7 +410,7 @@ To use these different metrics, we have to come up in some ways with a validatio
 
 Another method is to keep the same sample set for both training and validation. It is called cross-validation or \emph{K-fold}~\cite{kohavi1995}. In this case, $K$ different models are constructed on subsets of the dataset and the metrics are computed on the points that are not used during the fitting of these different models. For \emph{K-fold} to work optimally, it assumes that the model is fairly stable to these points removal. In~\cref{fig:k_fold}, $K=3$ which leads to 3 subsets of 6 points being created. These 6 points are used for training a model while the other 3 points are used for computing a metric. These operations are repeated 3 times and all metric's results are aggregated. A particular case is found with $K$ being equal to the number of sample. This is called \emph{leave-one-out}.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.6\linewidth,keepaspectratio]{fig/literature/k_fold.png}
 \caption{Sketch of the \emph{K-fold} methodology. $K=3$ with $N=9$ which leads to 3 subsets of 6 points.}
@@ -492,9 +489,19 @@ Except if the response variable of the system of interest is chaotic under the p
 
 \chapter{Scientific Questions}
 
+From this literature review, we propose through this thesis to contribute to three axis:
 
-\section{How to Construct a DoE in a High Dimensional Parameter Space?}
+\begin{itemize}
+\item How to Construct a DoE in a High Dimensional Parameter Space?
+\item How to Resample a DoE by Considering the Output?
+\item How to Visualize Uncertainties in High Dimensional Cases?
+\end{itemize}
 
-\section{How to Resample a DoE by Considering the Output?}
+This thesis is tailored as follows:
 
-\section{How to Visualize Uncertainties in High Dimensional Cases?}
+
+
+
+
+
+

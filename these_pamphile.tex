@@ -341,13 +341,7 @@
 %\stopcontents[parts]
 \backmatter                                          %si book
 
-%\nocite{*}											  %biblio sans avoir de ref dans le txt
-%\printbibliography                                   %bibliographie
-%\printbibliography[type=article, title={Articles}]
-%\printbibliography[type=book, title={Livres}]
-%\bibliography{these}
-
-\chapter*{Bibliography}
+\renewcommand{\bibsection}{\chapter*{Bibliography}}  % Biblio as a chapter instead of section
 \addcontentsline{toc}{chapter}{Bibliography}
 
 \bibliographystyle{plainnat}
