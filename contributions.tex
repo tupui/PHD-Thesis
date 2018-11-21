@@ -607,36 +607,7 @@ Thus, setting aside the possible non-fitting of the data, improving the quality 
 
 \chapter{Uncertainty Visualization}
 
-\subsection{Highest Density Region}
-\label{sec:HDR}
 
-The dataset output is considered as a matrix where each line corresponds to a realization. This matrix is decomposed by principal component analysis (PCA)~\citep{AnindyaChatterjee2000}. The modes are ordered by decreasing importance in terms of contribution to the variance and only a finite number of modes are kept. In this reduced space, the functional dataset of large dimension is conveniently represented by a limited number of scalars mapped onto most significant directions that maximizes the variance of the response variable. Within this reduced space, the classification of different patterns or the computation of metrics is eased~\citep{Ren2017}. Hence, within this reduced space, the median realization corresponds to the HDR location. The distance to this point is computed in the modal space; the farther a point is from the HDR, the less probable is the realization.
-
-A multivariate Kernel Density Estimation (KDE)~\citep{Wand1995} technique is used to estimate the Probability Density Function (PDF) $\hat{f}(\mathbf{x_r})$ of this multivariate space. The density estimator is given by
-\begin{align}
-\hat{f}(\mathbf{x_r})&= \frac{1}{N_{s}}\sum_{i=1}^{N_{s}} K_{h_i}(\mathbf{x_r}-\mathbf{x_r}_i),
-\end{align}
-\noindent with $h_{i}$ the bandwidth for the \emph{i}th component and $K_{h_i}(.) = K(./h_i)/h_i$ the kernel chosen as a modal probability density centred and symmetric function. $K$ is the Gaussian kernel and $h_{i}$ are optimized given the data. From this KDE, the HDR reads
-\begin{align}
-R_\alpha = {x_r: \hat{f}(\mathbf{x_r}) \geq f_{\alpha}},
-\end{align}
-\noindent with $f_{\alpha}$ such that $\int_{R_\alpha} \hat{f}(\mathbf{x_r}) d x_r = 1 - \alpha$. The region has a probability of containing $1-\alpha$ points that verify the highest density estimate. Thus the median curve is defined as the inverse transform---from the reduced space into the original space---of $\arg \sup \hat{f}(\mathbf{x_r})$. Also 50\% and 90\% highest density regions are computed---with respectively $\alpha=0.5$ and $\alpha=0.1$.
-
-Except if the response variable of the system of interest is chaotic under the perturbation of its input parameters, the PCA is expected to drastically reduce the dimensionality of the problem. Furthermore, as the system's response variable is also expected to oscillate around some modes, the points in the reduced space are likely to be relatively clustered around the modes. This mitigates the difficulty of the density estimation procedure.
-
-\begin{figure*}[!h]               
-\centering
-\subfloat[]{
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/hdr_scatter.pdf}}
-\subfloat[]{
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/hdr_curves.pdf}} 
-\caption{HDR boxplot on the El Ni\~no dataset. \textbf{a} scatter plot of the 2-dimensional reduced space with each dot as a realization. \textbf{b} dataset visualization with each curve as a realization from the database. Shaded areas are confidence intervals, \emph{thick solid black} line is the mean realization and \emph{highlighted-dashed} curves are outliers.}
-\label{fig:elnino}
-\end{figure*}
-
-\cref{fig:elnino} illustrates the HDR boxplot for the El Ni\~no dataset in the reduced space (left panel) when only two modes are retained ensuring that at least 80\% of the response variable variance is conserved and in the output space (right) panel. Each realization is characterized with respect to the HDR metric. In the modal space, each dot represents a realization within the dataset and the contouring represents the 50\% and 90\% quantiles. In the response variable physical space, cyan curves represent the realizations from the dataset, the outliers are coloured-dashed curves, the thick black curve is the median and the grey shaded areas represent 50\% and 90\% quantiles envelopes. It should be noted that additional realizations with chosen characteristics on the outputs could be drawn by sampling the input for specific HDR criteria.
-%Specific realizations can be discriminated in the sense of the HDR. For instance, the outliers, in the statistical sense computed using the HDR, are represented in dashed lines. Shaded area and the thick-black line give statistical information on the ensemble, interpreted with HDR. In the present case, respectively, the 50 and 90\% envelope as well as the median curve are shown. This median curve does not correspond to a real realization but it is a statistically representative description of a median realization.
-%This is done through an inverse transformation from a new member randomly sampled in the reduced space. Thus as any other member, this new member can be compared to the median realization. This generation ability is handy in an ensembliste framework for instance.
 
 \section{Uncertainty Visualization of Functional Output Data}
 \label{sec:uqvisu}
