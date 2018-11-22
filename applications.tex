@@ -129,6 +129,10 @@ Using these PDFs, uncertainties are propagated by $\numprint{5000}$ predictions 
 Finally, the \textit{Sobol'} indices have been estimated using $\numprint{200000}$ predictions. As the response surface suggested, the heat transfer coefficient is mainly affected by the variation of the turbulence intensity. The spatial evolution of the indices in~\cref{fig:ls89-map} shows a spatial dependency. On the pressure side, the inflow angle has a higher influence as its contribution rises to become the most important parameter at the trailing edge. On the suction side, the turbulence intensity contribution is stable until the shock region. Reaching the trailing edge, the angle contribution increases. Finally, aggregated indices are reported in~\cref{fig:ls89-aggregated}. These indices confirm that the turbulence intensity is the most important parameter compared to the inflow angle when studying the heat transfer coefficient and for the range of angle variations retained. The turbulence intensity contributes to 70\% of the total variance of the QoI whereas the inflow angle contributes to 30\%. This behaviour was expected as downstream the shock, the incoming level of turbulence has little impact. The computation of the second order indices are not presented here because their values are negligible in comparison to the first order indices. This is in agreement with the small differences observed between the first and total order indices. There are no joint effects between the two parameters.
 
 
+\section{Conclusion}
+
+A first Uncertainty Quantification LES study of the \textit{LS89} is presented. The parameter space was comprised of the turbulence intensity and the inflow angle. In order to increase the quality of the surrogate model, the LOO-\textit{Sobol'} method was used to refine the parameter space. We showed that it performed better than continuing the sampling sequence. Apart from an analysis of the variance, the model was used to propagate uncertainties. This study reveals that although the turbulence intensity is the main factor impacting the heat transfer coefficient, there is spatial evolution of its contribution along the blade.
+
 
 \chapter{Swirler}
 
@@ -928,3 +932,39 @@ It can be noted that, if the optimal discontinuous rib shape given by the optimi
 \label{Nusselt_compare}
 \end{minipage}
 \end{figure}
+
+\chapter{Volumetric Particle-based Solar Receivers}
+
+At present, most common concentrated solar power (CSP) plants convert the incident radiation into thermal energy by means of surface-based collectors~\citep{Ho2014-A}.
+In this class of devices, the energy absorbed is transferred to the working fluid downstream of the collection point via heat exchangers, generally resulting in significant conversion losses at high temperatures.
+Conversely, volumetric, particle-based solar receivers~\citep{Ho2017-A} transfer the energy directly to the operating fluid as radiation absorbing particles are advected through a transparent cavity illuminated by concentrated solar rays.
+This technology, hence, is expected to enhance the efficiency of CSP systems by removing the heat-exchanging stages from the energy conversion process.
+
+As illustrated in Fig.~\ref{fig:irradiated_particle_laden_turbulent_flow}, four main physical processes govern irradiated, particle-laden turbulence in wall-bounded flows: (\emph{i}) preferential concentration, (\emph{ii}) turbulence modulation, (\emph{iii}) turbophoresis and (\emph{iv}) radiative heat transfer.
+Preferential concentration, or turbulence clustering, is the process by which heavy particles are expelled from intense vortical structures and concentrate in regions of the flow dominated by strain~\citep{Balachandar2010-A}.
+Turbulence modulation corresponds to the modification of fluid flow characteristics in the near-field region of particle clusters as a result of two-way coupling effects.
+The presence of no-slip boundaries results in particle inhomogeneity due to turbophoresis~\citep{Caporaloni1975-A}, i.e., tendency of particles to migrate towards regions of decreasing turbulence intensity.
+In addition to particle-flow coupling, the particle-gas mixture is also subject to thermal processes as energy is transferred from the particles to the fluid by means of radiation absorption.
+The physical mechanisms governing this type of flow, and their complex interactions, are not fully characterized, and therefore are still subject to intense research, e.g.,~\citep{Zamansky2014-A,Frankel2016-A,Pouransari2017-A}.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.9\textwidth]{fig/applications/psaap/irradiated_particle_laden_turbulence_duct}  
+  \caption{Irradiated particle-laden turbulent flow in a square duct (instantaneous, streamwise $x$-$y$ plane snapshot)~\citep{Jofre2017-A}. The quantity represented is the normalized temperature increment ($T_{0}=300$ K) of particles. It is interesting to note (\emph{i}) the presence of elongated particle clusters resulting from preferential concentration, (\emph{ii}) the accumulation of particles at the walls by turbophoretic effects, (\emph{iii}) the absorption of radiation by particles (illuminated from below), and (\emph{iv}) the transfer of energy from the particles to the fluid and the subsequent thermal mixing enhanced by turbulence.}      \label{fig:irradiated_particle_laden_turbulent_flow}
+\end{figure}
+
+Physics-based modelling of irradiated, particle-laden turbulent flow, and its numerical investigation, are difficult tasks that intrinsically require several model assumptions, selection of coefficient and parameter values, and characterization of initial and boundary conditions~\citep{Jofre2017-A}.
+These steps, even if performed carefully, result in potential sources of uncertainty that can impact the QoI.
+Some examples encompass the incomplete description of particle diameters~\citep{Rahmani2018-A} and thermal radiative properties~\citep{Frankel2017-A}, variability of the incident radiation and its complex interaction with boundaries, and model-form incertitude~\citep{Jofre2018-A}.
+As a result, the number of uncertainties involved in the study of irradiated, particle-laden turbulent flow is typically large, ${\cal O}$(10), due to (\emph{i}) the modelling assumptions required to mathematically describe the different physics and their couplings, i.e., epistemic uncertainty, and (\emph{ii}) the aleatoric incertitude resulting, for instance, from the lack of detailed evidence regarding the initial and boundary conditions.
+Therefore, numerical analyses based on a single deterministic realization for a particular set of input parameters cannot be deemed predictive~\citep{Roache1997-A}.
+A solution to this problem is to consider the system's output random and analyse the relation between input and output probability distributions by means of efficient statistical methods.
+In this regard, the field of UQ applied to computational sciences and engineering has remarkably grown over the last decades~\citep{Najm2009-A,Chernatynskiy2013-A,Beran2017-A}, and it is now extensively accepted that the potential of estimating and minimizing uncertainties, in combination with numerical verification and physics validation (V\&V), is crucial for augmenting the confidence in the numerical predictions.
+
+In addition, accurate representation of the underlying physical phenomena mandates the utilization of expensive high-fidelity (HF) numerical simulations based on point particle direct numerical simulations (PP-DNS)~\citep{Subramaniam2013-A}.
+As a representative example~\citep{Jofre2017-A}, the total cost (transient + collection of statistics) of a medium-scale HF calculation of this problem ---\thinspace approximately $100$M flow control volumes, $30$M Lagrangian particles and $7$M discrete ordinates method gridpoints with 350 discrete angles/element \thinspace--- requires in the order of $500$k core-hours per realization on the Argonne Leadership Computing Facility~\citep{Mira-O} utilizing scalable solvers~\citep{Esmaily2018-A}.
+Hence, characterization of the stochastic output by means of naively running hundreds, or thousands, of HF realizations with different input values easily exceeds the resources of the largest computing facilities available.
+
+In this regard, efficient DoE strategies that reduce the number of samples required, are paramount for accelerating the calculation of these type of studies within a feasible computing budget. The method presented in~\cref{chap:doe} is currently being used for this project.
+
+

@@ -18,14 +18,15 @@ During this thesis, I have produced~{\color[rgb]{0.9,0.2,0.16}\footnote{For an u
 \bibliographystyleCbib{unsrt}
 \bibliographyCbib{my_biblio_communication}
 
-\section{Reviews}
+\addcontentsline{toc}{section}{Reviews}
+\section*{Reviews}
 
 I have been reviewing manuscripts in the following journals~{\color[rgb]{0.9,0.2,0.16}\footnote{Reviews have been verified on \emph{publons}: \href{https://publons.com/a/1567681}{publons.com/a/1567681}}}:
 
 \begin{itemize}
 \item Computational Geosciences,
 \item Stochastic Environmental Research and Risk Assessment,
-\item Computer Methods in Applied Mechanics and Engineering,
+\item Computer Methods in Applied Mechanics and Engineering.
 \end{itemize}
 
 \chapter{Batman}
@@ -48,7 +49,10 @@ Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) is 
 \section{Dissemination}
 
 
-\chapter{Constructing a Design of Experiments}
+\chapter{Constructing a Design of Experiments}\label{chap:doe}
+
+This work proposes a new stochastic, iterative DoE ---\thinspace named KDOE\thinspace--- based on a modified Kernel Density Estimation (KDE). It is a two-step process: \emph{(i)} candidate samples are generated using MCMC based on KDE, and \emph{(ii)} one of them is selected based on some metric. The performance of the method is assessed by means of the $C^2$-discrepancy space-filling criterion. KDOE appears to be as performant as classical one-shot methods in low dimensions, while it presents increased performance for high-dimensional parameter spaces. This work proposes a new  methodology to stochastically sample the input parameter space iteratively allowing, at the same time, to take into account any constrains, such as non-rectangular DoE~\citep{Lekivetz2015}, sensitivity indices or even constrains on the quality on particular subprojections as in~\citep{Joseph2015}. It is a versatile method which offers an alternative to classical methods and, at the same time, is easy to implement and offers customization based on the objective of the DoE.
+
 \section{Presentation of the method}\label{sec:method}
 
 In its basis form, our adaptive sampling strategy consists in adding a point far from the existing points in the parameter space. The notion of distance corresponds to a measure of discrepancy. However, instead of considering the whole hypercube, the technique proposed only focuses on empty regions defined using an Exclusion Field (EF). This exclusion field describes the probability of selecting a new point depending on its position.
@@ -81,11 +85,9 @@ It is assumed that there are $N_s$ samples that have already been selected. The 
 \begin{align}
 f(\mathbf{x}) &= 1 - \sum_{i=1}^{N_{s}} K\left(\mathbf{x},\mathbf{x}^{(i)}\right) \, .
 \end{align}
-The $N_s$ samples that have already been chosen are noted $\mathbf{x}^{(i)}$, with $i$ between 1 and $N_s$. The dimension is noted $d$ and $K$ is a kernel expressed by:
-\begin{align}
-K\left(\mathbf{x},\mathbf{x}^{(i)}\right) = \exp\left( - \frac{D\left(\mathbf{x},\mathbf{x}^{(i)}\right)^2}{2h^2} \right),
-\end{align}
-$D$ is a distance function expressed latter. The general idea is to reduce the probability of selecting a new point close to the samples already drawn. Hence a zone of exclusion is created around each of the already selected points, with a width parametrized by $h$. The parameter $h$ has been set to $h = \frac{\sigma}{N_s^{1/d}}$ with $\sigma=0.3$. This allows us to have a width of exclusion that decreases as the number of samples increases.
+It is reminded that the $N_s$ samples that have already been chosen are noted $\mathbf{x}^{(i)}$, with $i$ between 1 and $N_s$. The dimension is noted $d$ and $K$ is a Gaussian kernel---expressed as in~\cref{eq:kde}.
+
+The general idea is to reduce the probability of selecting a new point close to the samples already drawn. Hence a zone of exclusion is created around each of the already selected points, with a width parametrized by $h$. The parameter $h$ has been set to $h = \frac{\sigma}{N_s^{1/d}}$ with $\sigma=0.3$. This allows us to have a width of exclusion that decreases as the number of samples increases.
 
 Moreover, the probability is set to 0 outside of the unit hypercube in order to prevent sampling outside of the region of interest. Note that this probability is not normalized. This is not a problem because the sampling procedure does not requires this property, as it will be shown in the next section.
 
@@ -124,8 +126,6 @@ where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star sh
 \end{figure}
 
 
-
-
 \subsection{Sampling and selection procedures}\label{sec:sample}
 
 %Using the modified version of the KDE, it is possible to generate samples following the posterior distribution.
@@ -144,29 +144,16 @@ The classical way to sample from a PDF is to use the inverse transform sampling 
 \label{fig:sample_kde}
 \end{figure}
 
-The next step consists in choosing a new sample from these candidates. Any metric can be chosen here depending on the final objective. In the following, we focused on the uniformity of the DoE. Hence, the centred discrepancy $C^2$ is used~\citep{Fang2006}. It writes
-\begin{align}
-C^2(\mathbf{X}^{N_s}_d) =& \left( \frac{13}{12} \right)^d - \frac{2}{N_s}\displaystyle\sum_{i=1}^{N_s}\prod_{k=1}^{d} \left( 1 + \frac{1}{2} \mid  x_k^{(i)} - 0.5\mid - \frac{1}{2} \mid  x_k^{(i)} - 0.5\mid^2\right)\\ \nonumber
-& + \frac{1}{N_s^2}\sum_{i,j=1}^{N_s}\prod_{k=1}^d \left( 1 + \frac{1}{2} \mid  x_k^{(i)} - 0.5\mid + \frac{1}{2} \mid  x_k^{(j)} - 0.5\mid - \frac{1}{2} \mid  x_k^{(i)} - x_k^{(j)}\mid \right).
-\end{align}
+The next step consists in choosing a new sample from these candidates. Any metric can be chosen here depending on the final objective. In the following, we focused on the uniformity of the DoE. Hence, the centred discrepancy $C^2$ is used~\citep{Fang2006}---see~\cref{eq:c2}. Since the lowest values of $C^2$-discrepancy result in more uniform samples, the sample minimizing it is chosen (\emph{circled-diamond}). Thus, this iterative procedure acts like and optimizer on the $C^2$-discrepancy where the candidates are not drawn totally randomly but with the knowledge of the current samples. \Cref{fig:star} shows an example with 10 points. The initial sample consisted of one point. The result is a low discrepancy sample constructed iteratively.
 
-
-
-
-\noindent Since the lowest values of $C^2$-discrepancy result in more uniform samples, the sample minimizing it is chosen (\emph{circled-diamond}). Thus, this iterative procedure acts like and optimizer on the $C^2$-discrepancy where the candidates are not drawn totally randomly but with the knowledge of the current samples. 
-
-%TODO : COMPRENDS PAS : LE COUT EST A CHAQUE NOUVEAU TIRAGE The cost of the method is concentrated at the KDE step. Once the KDE is computed, sampling candidates and choosing the next sample is computationally inexpensive.
-
-%\Cref{fig:star} shows an example with 10 points. The initial sample consisted of one point. The result is a low discrepancy sample constructed iteratively.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.9\linewidth,keepaspectratio]{fig/contributions/doe/10_star.pdf}
+\caption{Probability density in a 2-dimensional parameter space. The 10 \emph{dots} represent the samples used to fit the KDE.}
+\label{fig:star}
+\end{figure}
 
 The method is not deterministic which is useful if one wants to generate a new independent set of experiments. To compute sensitivity indices of \emph{Sobol'}, two independent samples are required~\citep{Saltelli2010}. As stated in~\citep{Saltelli2010}, quasi-random sequences such as \emph{Sobol'} are classically used but, as they are deterministic, it is not possible to generate an independent sample directly. One possibility is to get these two samples as one sample of shape $X_{2d}^{N_s}$. Splitting the matrix column wise-like ensures independence of the samples. However, as the dimensionality increases, the quality of the sequence deteriorates ($d > 10$). Hence, this technique is limited to a small number of dimensions. Our method does not share this limitation.
-
-%\begin{figure}[!h]
-%\centering
-%\includegraphics[width=0.9\linewidth,keepaspectratio]{fig/contributions/doe/10_star.pdf}
-%\caption{Probability density in a 2-dimensional parameter space. The 10 \emph{dots} represent the samples used to fit the KDE.}
-%\label{fig:star}
-%\end{figure}
 
 As stated, $n_{gen}$ candidate samples are generated through MCMC. \Cref{fig:conv-ngen} presents a convergence analysis of the quality of the final design $X_2^{40}$ depending on the size of the MCMC sample at each iteration. Confidence intervals are calculated using 100 realizations of the same parametrization. The discrepancy converges to its final value after $n_{gen}>100$. This allows to control the computational cost required to generate the DoE. Various configurations of $X_d^{N_s}$ have been tested and results are similar. In the following, $n_{gen}$ was fixed to 100.
 
@@ -333,8 +320,6 @@ Depending on the property sought, the combination of a Kernel and a metric allow
 
 Using the Minkowsky distance as a metric, the LHS constrain is not strict which can be useful when dealing with discrete parameters. Indeed, strict LHS would prevent having more than one sample per discreet parameter. In~\cref{fig:lhs_const}(a), an additional constrain is added to strongly limit the probability to 0 when the $L_{-\infty}$-norm is inferior to a threshold. This limitation can be restricted to a domain of influence using an additional $L_2$-norm constrain (\cref{fig:lhs_const}(b)). Hence, this method acts as an iterative LHS strategy.
 
-
-
 \begin{figure}[!h]               
 \centering
 \subfloat[Inverse Mindkowsky distance with LHS properties]{
@@ -377,11 +362,25 @@ Last but not least, this method can be used to generate designs by mixing contin
 
 The ability to play both with the kernel and the selection criteria is really powerful as it allows to manage most of the challenges in constrained optimization problems, use sensitivity information, and sample by means of following individual PDFs for each parameter.
 
+\section{Conclusion}
+% 1. Novelty of the results
+This work proposes a new method to stochastically and iteratively sample a parameter space, referred to as KDOE method. This is a two-step process: \emph{(i)} through a Kernel Density Estimation (KDE) some candidates are generated, then \emph{(ii)} the best candidate is selected based on a criterion. This method does not take into account the physics of the problem of interest as adaptative strategies, but is purely iterative and case independent.
+
+% 2. Local, specific, scientific benefits
+Compared to LHS and low discrepancy sequences, KDOE is totally iterative and stochastic. The space-filling properties of the new designs based on the $C^2$-discrepancy are assessed and show good behaviour in high dimensions with small sample sizes. Moreover, it showed similar capabilities for numerical integration compared to classical methods.The KDOE method is versatile in the sense that it can be easily adapted to take into account constrains in the parameter space, both discrete and continuous parameters can be used and sensitivity indices of the parameters can be incorporated. This ability comes from the two-step process which can be independently tuned.
+
+% 3. Global, societal, general benefits
+The quality of the design is of prime importance as it determines the quality of the analysis of the experiments. The proposed method provides an alternative to classical one-shot methods to generate initial designs and to continue existing ones. Its versatility and performance allow the analysis of expensive and high-dimensional cases to be within affordable budgets.
+
 
 \chapter{Resampling the Design of Experiments}
 \section{Introduction}
 
-Aside from sequence designs that are intrinsically iterative, all designs can be increased step-by-step through several techniques. A natural way is to optimize the discrepancy or some other criteria such as the entropy or the distance between points~\cite{fang2006}. These kinds of methods only take advantage of the position of the points in the parameter space. The expected quality of such method is, as expected (and from our testing, not presented in this work), at best close to a low discrepancy sequence. A complementary strategy consists in exploring the space using as few points as possible and then refine the exploration around interesting zones. In the work of~\cite{scheidt2006,braconnier2011}, they used detection of optima, nul gradients and also information about the Gaussian processes variance. This method is denoted hereafter $\sigma$ method. One caveat with crude $\sigma$ method is that points are preferentially added at boundaries of the parameter space. This is further described in~\cref{sec:delta-space}. This behaviour motivates the research of new refinement methods that would use this information without being constrained to boundaries.
+The accuracy of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space. The presented techniques show an improvement of the predictive quality of the model with high dimensional analytical input functions. An industrial application is targeted, the aerothermal flow around the \textit{LS89}~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented (see~\cref{chap:ls89}). LES are high-fidelity full 3D unsteady simulations. This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
+
+\section{Presentation of the methods}
+
+Aside from sequence designs that are intrinsically iterative, all designs can be increased step-by-step through several techniques. A natural way is to optimize the discrepancy or some other criteria such as the entropy or the distance between points~\cite{Fang2006}. These kinds of methods only take advantage of the position of the points in the parameter space. The expected quality of such method is, as expected (and from our testing, not presented in this work), at best close to a low discrepancy sequence. A complementary strategy consists in exploring the space using as few points as possible and then refine the exploration around interesting zones. In the work of~\cite{scheidt2006,braconnier2011}, they used detection of optima, nul gradients and also information about the Gaussian processes variance. This method is denoted hereafter $\sigma$ method. One caveat with crude $\sigma$ method is that points are preferentially added at boundaries of the parameter space. This is further described in~\cref{sec:delta-space}. This behaviour motivates the research of new refinement methods that would use this information without being constrained to boundaries.
 
 Aside from this baseline, two novel strategies---LOO-$\sigma$ and LOO-\textit{Sobol'}---have been developed and are presented in this work. The common strategy is detailed in~\cref{alg:refine}.
 
@@ -428,7 +427,7 @@ The evaluation of the latter composite method is not presented in this work. Alt
 \section{Construction of the Hypercube}
 \label{sec:hypercube}
 
-To resample locally the parameter space, a hypercube is constructed around point $p$ which is the most sensitive in the construction of the surrogate model---LOO point, see \cref{sec:error}. An optimization problem is defined to construct the largest hypercube bounded by the surrounding points $\mathcal{P}$ as shown in \cref{fig:hypercube}. This allows to only consider the vicinity of the point.
+To resample locally the parameter space, a hypercube is constructed around point $p$ which is the most sensitive in the construction of the surrogate model---LOO point, see \cref{sec:validation}. An optimization problem is defined to construct the largest hypercube bounded by the surrounding points $\mathcal{P}$ as shown in \cref{fig:hypercube}. This allows to only consider the vicinity of the point.
 
 \begin{figure}[h]
 \centering
@@ -451,15 +450,17 @@ with $\epsilon = 1.5$, set arbitrarily to prevent too elongated hypercubes. The 
 \section{Results}
 \label{sec:results}
 
-The benefits and mechanisms of the methods are first evaluated on complex analytical functions. The chosen functions are defined in~\cref{sec:functions}. Then, the treatment of the parameter space's boundary is presented in~\cref{sec:delta-space}. Taking into account this issue, the analytical functions are tested in~\cref{sec:res-functions}. Finally, the methods are evaluated on a realistic application in~\cref{sec:ls89} with the LES of the LS89 test case~\cite{arts1990}.
+The benefits and mechanisms of the methods are first evaluated on complex analytical functions. The chosen functions are defined in~\cref{sec:functions}. Then, the treatment of the parameter space's boundary is presented in~\cref{sec:delta-space}. Taking into account this issue, the analytical functions are tested in~\cref{sec:res-functions}.
 
 \subsection{Analytical functions}
 \label{sec:functions}
 
-In order to test the new resampling methods, three analytical functions---see~\cref{tab:functions}---with increasing numbers of input dimensions are presented, namely: \textit{(i)} \textit{Rosenbrock} ; \textit{(ii)} \textit{Ishigami} ; and \textit{(iii)} \textit{g-function}~\cite{molga2005,ishigami1990,saltelli2007,legratiet2016}. They are all widely used because they are nonlinear and nonmonotonic. Note that similar results were obtained on other functions. Moreover, two versions of the \emph{g-function} 11-D are assessed. \textit{g-function (i)} 11-D demonstrates the behaviour of the methods whith a small number of input parameters contributing to the QoI, whereas \textit{g-function (ii)} 11-D exhibits more influent input parameters---see~\cref{tab:cv-budget-q2} for \emph{Sobol'} indices.
+In order to test the new resampling methods, three analytical functions---see~\cref{tab:functions}---with increasing numbers of input dimensions are presented, namely: \textit{(i)} \textit{Rosenbrock} ; \textit{(ii)} \textit{Ishigami} ; and \textit{(iii)} \textit{g-function}~\cite{molga2005,ishigami1990,Saltelli2007,Legratiet2016}. They are all widely used because they are nonlinear and nonmonotonic. Note that similar results were obtained on other functions. Moreover, two versions of the \emph{g-function} 11-D are assessed. \textit{g-function (i)} 11-D demonstrates the behaviour of the methods whith a small number of input parameters contributing to the QoI, whereas \textit{g-function (ii)} 11-D exhibits more influent input parameters---see~\cref{tab:cv-budget-q2} for \emph{Sobol'} indices.
 
-\begin{table*}[h]
+\begin{table}[h]
 \centering
+\setcellgapes{5pt}
+\makegapedcells
 \begin{tabular}{lll}
 \toprule
 Function&Hypercube & Definition \\
@@ -469,15 +470,21 @@ f(X_1, X_2) = \sum_{i = 1}^{d-1}[100(x_{i+1} - x_i^2)^2  +(x_i -1)^2].$\\
 \textit{Ishigami} 3-D& $[-\pi, \pi]^3$ & $ f(X_1, X_2, X_3) = \sin X_1 + 7 \sin^2 X_2 + 0.1 X_3^4 \sin X_1. $\\
 \textit{g-function} 4-D& $[0, 1]^4$ & $
 f(X_1, X_2, X_3, X_4) = \prod_{i=1}^4 \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i}, \quad a_{i} = i.$\\
-\textit{g-function (i)} 11-D & $[0, 1]^{11}$ & $
-f(X_1, ..., X_{11}) = \prod_{i=1}^{11} \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i}, \quad \mathbf{a} = [1, 2, 5, 10, 20, 50, 100, 500, 1000, 1000, 1000]$\\
-\textit{g-function (ii)} 11-D & $[0, 1]^{11}$ & $
-f(X_1, ..., X_{11}) = \prod_{i=1}^{11} \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i}, \quad \mathbf{a} = [1, 2, 2, 3, 3, 10, 50, 50, 50, 100, 100]$\\
+\textit{g-function (i)} 11-D & $[0, 1]^{11}$ & 
+$\begin{multlined}[t][0.6\linewidth]
+f(X_1, ..., X_{11}) = \prod_{i=1}^{11} \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i},\\[-1ex]
+\hspace{50pt} \mathbf{a} = [1, 2, 5, 10, 20, 50, 100, 500, 1000, 1000, 1000]\hfill
+\end{multlined}$\\
+\textit{g-function (ii)} 11-D & $[0, 1]^{11}$ &
+$\begin{multlined}[t][0.6\linewidth]
+f(X_1, ..., X_{11}) = \prod_{i=1}^{11} \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i},\\[-1ex]
+\hspace{51pt} \mathbf{a} = [1, 2, 2, 3, 3, 10, 50, 50, 50, 100, 100]\hfill
+\end{multlined}$\\
 \bottomrule
 \end{tabular}
 \caption{Analytical functions considered sorted by increasing number of input parameters.}
 \label{tab:functions}
-\end{table*}
+\end{table}
 
 \subsection{Restriction of the DoE}
 \label{sec:delta-space}
@@ -634,6 +641,12 @@ For each function, as the initial sample gets close to the budget, the expected 
 
 Thus, setting aside the possible non-fitting of the data, improving the quality of the surrogate model by resampling the parameter space appears to be guaranteed in high dimensional cases and using no more than half of the budget.
 
+
+\section{Conclusion}
+
+Two new methods have been introduced in this work for resampling the parameter space in order to improve the predictivity coefficient of a surrogate model: namely LOO-$\sigma$ and LOO-\textit{Sobol'} methods. These methods do not only take advantage of the capability of Gaussian Process models to infer a prediction variance, but they use information about the observed quality of the model. It was shown that an improvement of the quality of the model is guaranteed in high dimensional cases. Compared to a resampling method based on the predicted variance only, the proposed methods behaviour appears to be more stable and reliable. We also found that the ratio of the initial learning sample space over the total budget of function evaluation should remain greater than $\numprint{0.5}$. Which is to say that no more than half of the budget should be allocated to resampling the parameter space. In any case, the initial quality of the model should be reasonable when considering these techniques.
+
+By taking into account the physics in this process, the proposed methods will help build better models at lower costs. This will also allow Uncertainty Quantification of high-dimensional or expensive cases to be within reach.
 
 \chapter{Uncertainty Visualization}
 
