@@ -1,14 +1,269 @@
 \chapter{Mascaret}
 
+\section{Introduction}
+
+The predictive skills of hydraulic models have greatly increased with advances in free surface flow numerical modelling and computational resources. Real-time flood forecasting relies on the use of sparse in situ observations as well as imperfect hydrology or hydraulic models usually solving the 1-D Shallow Water Equations (SWE). Assessing the predictive capabilities of these hyperbolic partial differential equations remains an important challenge as public safety and water resource management are at stake~\citep{weerts2011}. SWE solve for spatially varying water level and river discharge (referred to as the river state) using physical parameters (e.g.~friction coefficients, bathymetry), initial conditions and boundary conditions described as a hydrograph or water level time series. These input data are subject to epistemic uncertainties due to an imperfect knowledge of the river properties as well as to aleatory uncertainties related to environmental and meteorological intrinsic hazards. Both types of errors translate into uncertainties in the simulated river state, thus preventing the hydraulic model from being effective in forecast mode. In practice, these uncertainties can be reduced when complementary data become available.
+
+%---Intro to data assimilation 
+Data assimilation (DA) offers a convenient framework to reduce model uncertainties by combining observations with the model simulation taking into account errors in both sources of information. Prior to DA, the main sources of uncertainties should be identified and included in the control vector; this is achieved with a sensitivity analysis (SA) study that allows to classify uncertainties in the inputs with respect to their impact on the model outputs, for instance in terms of variance using Sobol' indices~\citep{iooss2016,DeLozzo2017}. Several studies in the framework of hydraulics demonstrated the merits of DA~\citep{barthelemy2015,cloke2009,dechant2011,habert2016,moradkhani2005} to provide a more accurate river state.
+This is achieved by inferring an optimal set of parameters (e.g.~river and floodplain friction coefficients, upstream and lateral river discharge, bathymetry) and/or by directly correcting the river state.
+
+%---Ensemble-based data assimilation 
+Ensemble-based methods such as the Ensemble Kalman Filter (EnKF)~\citep{durand2008,moradkhani2005,ELSheikh2013} and the Particle Filter (PF)~\citep{matgen2010,parrish2012} are popular algorithms; they articulate as a two-step procedure derived from Bayesian inference: (1)~a forecast step to sample the uncertain inputs and propagate the uncertainty through the model, thus providing an ensemble of river states; and (2)~an analysis step to weight each member or particle of the ensemble based on its discrepancies to the available observations and to derive in the case of parameter estimation, a correction on the inputs that is then propagated to the river states by model integration. In the EnKF algorithm, the weights are provided by the stochastic estimation of covariance matrices between errors in model inputs and outputs. In contrast, in the PF algorithm, the weights correspond to likelihoods associated with the probability density function (PDF) of the control vector conditioned upon the observations; PF provides an alternative to EnKF when the model is subject to strong non-linearity and non-Gaussian errors. 
+
+%---Monte Carlo sampling, issue
+Both PF and EnKF algorithms usually rely on Monte Carlo (MC) random sampling techniques to carry out the forecast step, i.e.~sample the uncertain input space and obtain the sample of output variables through the integration of the forward model. Provided these input and output samples, they rely on the stochastic estimation of error statistics such as PDF for PF, covariances between spatially distributed model outputs or covariances between model inputs and outputs for EnKF. MC techniques are generic, robust and easily portable on massively parallel supercomputers; yet they remain computationally expensive due to their slow convergence rate scaling as the inverse of the square root of the number of particles~\citep{lixiu2008}. As shown in~\citet{barthelemy2015} and \citet{bozzi2015}, a large number of forward model evaluations should be carried out to converge the stochastic evaluation of error statistics such as PDFs, Sobol' indices and covariance matrices. This is often not compatible with operational constraints or high-dimensional problems. 
+
+%---How to go beyond Monte Carlo random sampling
+To overcome the issue of crude MC techniques, there is a need to develop efficient and robust uncertainty quantification (UQ) methods in the context of DA for hydraulics to limit (1)~the number of significant sources of uncertainties and (2)~the computational cost of quantifying uncertainties on the river state, e.g.~moments (mean, covariance) and PDF, while preserving the accuracy of the mapping $\mathcal{M}$ between the uncertain inputs $\mathbf{x}$ and the vector of $M$ river water heights $\mathbf{h}$:
+\begin{equation}
+\mathbf{x} \in \mathbb{R}^d \quad \rightarrow \quad \mathbf{h} = \mathcal{M}(\mathbf{x})\in\mathbb{R}^M.
+\end{equation}
+The key idea of non-intrusive UQ methods is to build a cost-effective surrogate to perform UQ and SA steps~\citep{iooss2010,iooss2016,lamboni2011,lemaitreknio2010,saltelli2007,storlie2009} (see~\cref{sec:surrogate}).
+
+The objective is to evaluate the performance of PC and GP surrogates mimicking the behaviour of 1-D open-channel flows for UQ and SA steps that are important in the design of EnKF and PF algorithms. The quantity of interest is the 1-D water level discretized along 50~km of the Garonne River (South-West France). As a preliminary step, the focus is made on steady flows and the flow remains fluvial. The treatment of strong non-linearity and discontinuity induce by fluvial/super-critical transitions is beyond the scope of this study. The main sources of uncertainties are the upstream discharge that is constant in steady state conditions and the friction coefficient that is a piecewise constant function. Under these hypotheses, the present work features scalar inputs and spatially varying outputs due to the heterogeneous bathymetry of the Garonne River. A convergence study is first carried out to determine the size of the training set $N$ that is required to build a valid surrogate using either PC expansion or GP model. GP and PC surrogates are then compared when a computational budget is set, i.e.~for the same number of snapshots (also called simulations in the paper) $N$ used to construct each surrogate. The comparison is carried out with respect to the following metrics on $\mathbf{h}$: PDF that is of interest for Bayesian inference and PF algorithms; spatially varying Sobol' indices (associated with the correlation between each uncertain input and the spatially distributed output) and correlation matrix (associated with the spatial correlation of the output) that are of interest for variational and EnKF algorithms.
+
+The structure of the chapter is as follows. \Cref{sec:hydrau} introduces the 1-D SWE solved using MASCARET and the Garonne River case study. \Cref{sec:UQresults} presents the results of the comparative study between PC and GP with respect to a MC reference. Conclusions and perspectives are given in~\cref{sec:ccl}.
+
+\section{Hydraulic Modelling}\label{sec:hydrau}
+
+The SWE represent the dynamics of open-channel flows, typically in rivers with small bathymetry variations~\citep{horritt2002}. They form a hyperbolic system of partial differential equations that characterize subcritical and supercritical flows subject to hydraulic jumps. Here, we only deal with subcritical flows, in the plain.
+
+%------> Equations
+\subsection{1-D shallow water equations (SWE)}
+
+We consider a 1-D hydraulic model commonly used in hydraulic engineering and flood forecasting. The stream channel is described by a hydraulic axis corresponding to the main flow direction, implying that the river channel is represented by a series of cross-sections (or profiles) identified by a curvilinear abscissa $a$ ranging from $a_{\text{in}}$ upstream of the river to $a_{\text{out}}$ downstream. 1-D SWE are derived from mass conservation and momentum conservation. The equations are written in terms of discharge (or flow rate) $Q$~(m$^3$\,s$^{-1}$) and hydraulic section $A$~(m$^2$) that relates to water level (or water height) $h$~(m) such that $A \equiv A(h)$. The non-conservative form of the 1-D SWE for non-stationary flow reads~\citep{thual2010} 
+\begin{eqnarray}
+\left\{
+\begin{array}{l}
+\displaystyle{\partial_t A(h) + \partial_a Q=0} \\
+\displaystyle{\partial_t Q +  \partial_a\left(\frac{Q(h)^2}{A(h)}\right) + g\,A(h)\,\partial_a h - g\,A(h)\,(S_0-S_f) = 0} \\
+\end{array}
+\right.
+\label{eq:SWE}
+\end{eqnarray}
+with $g$ the gravity, $S_0$ the channel slope and $S_f$ the friction slope. In the present study, the SWE are combined with the Manning-Strickler formula to parameterize the friction slope $S_f$ such as:
+\begin{equation}
+S_f = \frac{Q^2}{K_s^2\,A(h)^{2}\,R(h)^{4/3}},   
+\label{eq:friction}
+\end{equation}
+where $R(h) =A(h)/P(h)$~(m) is the hydraulic radius written as a function of the wet perimeter $P(h)$, and where $K_s$~(m$^{1/3}$\,s$^{-1})$ is the Strickler friction coefficient. The pair $(h,Q)$ forms the hydraulic state varying in time and space. For steady flows in case of smooth solutions, \cref{eq:SWE} simplifies to: 
+\begin{eqnarray}
+\left\{
+\begin{array}{l}
+\displaystyle{\partial_a Q=0} \\ \\
+\displaystyle{\partial_a h =\frac{(S_0-S_f)}{1-Fr^ 2}}\\
+\end{array}
+\right.
+\label{eq:backwater}
+\end{eqnarray}
+where $Fr$ is the dimensionless Froude number 
+\begin{equation}
+Fr^2 = \frac{Q^2}{gA^3} \frac{\partial{A}}{\partial{h}}.
+\label{eq:froude}
+\end{equation}
+
+The solutions for~\cref{eq:backwater} are called {\it backwater curves} when the downstream boundary condition is prescribed in a deterministic way for subcritical flow. To solve~\cref{eq:backwater}, the following input data are required: bathymetry, upstream or downstream boundary conditions, lateral inflows and roughness coefficients. It should be noted that the evolution in time of the bathymetry or the roughness coefficient is not taken into account in this study. The imperfect description of this data translates into errors in the simulated hydraulic state $h$. To understand the structure of these errors, it is of prime importance to determine which input variables contribute, and to what extent, to the variability in the hydraulic state at different curvilinear abscissas $a$ along the river channel, for instance via a SA study (\cref{sec:SA}).
+
+We use the MASCARET software to simulate the 1-D SWE in~\cref{eq:SWE} and predict $(h, Q)$ along the discretized curvilinear abscissa of the hydraulic network $a \in [a_{\text{in}}, a_{\text{out}}]$. The SWE are solved here with the steady kernel of MASCARET based on a finite difference scheme~\citep{goutal2002,goutal2012}, meaning that $(h,Q)$ only varies in space. MASCARET is part of the TELEMAC-MASCARET open-source modelling package developed at EDF (\textit{Électricité de France} R\&D) in collaboration with CEREMA (\textit{Centre d'Étude et d'expertise sur les Risques, l'Environnement, la Mobilité et l'Aménagement}); it is commonly used for dam-break wave simulation, reservoirs flushing and flooding. 
+
+%------> Hydraulic model
+\subsection{Garonne River Case Study}
+
+The present study is carried out on a real hydraulic network over the Garonne River in South-West France. The Garonne river flows along 647~km from the Pyrenees to the Atlantic Ocean draining an area of $55,000$~km$^2$ (corresponding to the fourth-largest river in France). The present study focuses on a 50 km reach from Tonneins ($a_{\text{in}} = 13$~km) to La Réole ($a_{\text{out}} = 62$~km) with one observing station at Marmande ($a = 36$~km) as presented in~\cref{fig:garonne}a. The mean slope over the reach is $S_0 = 3.3$~m\,km$^{-1}$; the mean width of the river is $W = 250$~m; the bank-full discharge is approximately $\overline{Q} = 2550$~m$^3$\,s$^{-1}$. Despite the existence of active floodplains, this reach can be accurately modelled by a 1-D hydraulic model using~\cref{eq:SWE}~\citep{besnard2011}.
+
+\Cref{fig:garonne}b presents the non-uniform bathymetry profile along the 50-km reach, interpolated from $83$ on-site bathymetry cross-sections. Friction for the river channel and its floodplain is prescribed over three zones separated by dashed lines. The Strickler coefficients $K_{s_1}$, $K_{s_2}$ and $K_{s_3}$ are used to characterize friction through~\cref{eq:friction} and are uniform per zone. The observing station at Marmande is located at the beginning of the third zone associated with $K_{s_3}$. 
+
+\begin{figure}[!h]
+\centering
+\subfloat[]{
+\includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig1a.pdf}}
+     
+\subfloat[]{
+\includegraphics[width=0.9\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig1b.pdf}}
+\caption{Garonne River case study (South-West France). (a)~Reach between Tonneins (upstream, $a_{\text{in}} = 13$~km) and La Réole (downstream, $a_{\text{out}} = 62$~km) with Marmande located at $a = 36$~km. (b)~Bathymetry profile along the curvilinear abscissa $a$~(km) between Tonneins and La Réole. The Strickler friction coefficient $K_s$ spatially varies as a constant piecewise function; the changes in the value of $K_s$ are indicated by vertical dashed lines.}
+\label{fig:garonne}
+\end{figure}
+
+The upstream steady boundary condition is prescribed by $Q(a_{\text{in}}) = Q_{\text{in}}$; the discharge $Q$ is constant along the reach ($Q = Q_{\text{in}}$). The downstream boundary condition is prescribed with a local rating curve $RC$ established at La R\'eole that sets $h(a_{\text{out}}) = RC(Q_{\text{out}}) = h_{\text{out}}$. The hydraulic model has been calibrated using channel and floodplain roughness coefficients as free parameters~\citep{besnard2011}. 
+
+\subsection{Sources of uncertainties and Quantity of Interest}\label{sec:database}
+
+UQ and DA for flood forecasting are essential to ensure the predictive capability of the surrogate model at the observing stations such as Marmande. Previous work~\citep{elmocaydEMA} has shown that in steady state conditions and given some assumptions on the statistics of the input uncertain variables, the sensitivity of the hydraulic state at Marmande to $K_{s_3}$ is predominant; the sensitivity at Marmande to $K_{s_1}$ and $K_{s_2}$ is null because of the steady state assumption and given the present hydraulic model. Hence, the main sources of uncertainties taken into account here are the upstream mass flow rate $Q$ and the Strickler coefficient $K_{s_3}$. We denote by $\mathbf{x} = (Q, K_{s_3})$ the random vector of size $d = 2$. From expert knowledge, $Q$ and $K_{s_3}$ are considered as independent random variables. $Q$~(m$^3$\,s$^{-1}$) follows the normal distribution $\mathcal{N}(4031,400)$: the mean is set to the average flow in the Garonne River; the standard deviation (STD) is chosen in order to remain in subcritical flow. $K_{s_3}$~(m$^{1/3}$\,s$^{-1}$) follows the uniform distribution $\mathcal{U}(15,60)$: the range of the uniform distribution is chosen following calibration results. This range for the variables $Q$ and $K_{s_3}$ allows to test how the surrogates are affected by non-linearities. 
+
+MASCARET provides as output the water height over 463 cross-sections for the Garonne case. In this work, we focus on the water height at $M = 14$ stations evenly distributed along the 50-km reach, among which Marmande at $a = 36$~km. Even though the surrogate models are formulated with respect to the predominant uncertain variables for water level at Marmande and downstream, the surrogates are computed over the entire network. On this hydraulic network, in-situ observations are only available at Marmande and the improvement of the water level at Marmande and downstream of Marmande
+relies on the improvement of $Q$ and $K_{s_3}$ only. Yet, the correlation function between the water level error at Marmande and the other locations is needed in the DA algorithm. We denote by $\mathbf{h}$ the vector of $M$ observed water levels for one realization of MASCARET.
+
+A database noted $\mathcal{D}_{N_{\text{ref}}}$ and containing $N_{\text{ref}} = \numprint{100,000}$ MASCARET simulations was compiled as a reference for the study. Each simulation corresponds to a different pair of inputs ($Q, K_{s_3}$) resulting from a MC random sampling following $Q\sim\mathcal{N}(4031,400)$ and $K_{s_3} \sim \mathcal{U}(15,60)$. In the present study, $D_{N_{\text{ref}}}$ is partly used to build the PC and GP surrogates via the training set 
+$\mathcal{D}_N = (\mathcal{X}$, $\mathcal{Y})\subset \mathcal{D}_{N_{\text{ref}}}$ of size $N$; it is fully used to validate them a posteriori over a large ensemble (\cref{sec:validation}).
+
+
+\section{Comparison of Polynomial Chaos (PC) and Gaussian Process (pGP) surrogates}\label{sec:UQresults}
+
+\subsection{Reference Monte Carlo (MC) results}
+\label{sec:UQresults_ref}
+
+We first present the results obtained using the MC reference sampling ($N_{\text{ref}} = 100,000$ in $\mathcal{D}_{N_{\text{ref}}}$) in terms of water level mean, STD, PDF, correlation matrix as well as Sobol' indices associated with $Q$ and $K_{s_3}$. These results are used as reference to evaluate the accuracy of the PC and pGP surrogate models.
+
+\Cref{fig:monte-carlo_pdf}a displays the water level PDF computed from $\mathcal{D}_{N_{\text{ref}}}$ data set integrated with a MC approach for the $M = 14$ stations along the curvilinear abscissa $a \in [a_{\text{in}}, a_{\text{out}}]$. The mean water level (\cref{ref:mean_mc}) is represented with a thick black line; the interval between two STD (Eq.~\ref{ref:std_mc}) is represented with dotted lines; and the minimum and maximum water level values are represented with dashed lines. In steady state, water level of the upstream part is mostly sensitive to $Q$. The dispersion of the ensemble is thus mostly driven by the dispersion of $Q$. At the very downstream part of the river ($a=60$~km), the dynamics is driven by the downstream boundary condition where the water level and discharge are related by the local rating curve $RC$. The water level is a function only of discharge and the roughness coefficient has no influence; thus the spread of the ensemble tends to decrease near the downstream boundary condition. After Marmande, the flow is driven both by $K_{s_3}$ and $Q$, the dispersion of the ensemble is larger than upstream of Marmande. At Marmande ($a = 36$~km), the flow is complex due to strong variation of the local bathymetry (\cref{fig:garonne}b), the ensemble spread is larger and the PDF plotted in~\cref{fig:monte-carlo_pdf}b features two main modes due to the change in backwater curves solutions for subcritical flow.
+ 
+\begin{figure*}[!h]               
+\centering
+\subfloat[Along the 50 km reach.]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig2a.pdf}} 
+\subfloat[At Marmande ($a = 36$~km).]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig2b.pdf}}
+\caption{Reference PDF of the water elevation obtained with the $N_{\text{ref}} = 100,000$ snapshots in $\mathcal{D}_{N_{\text{ref}}}$ derived from MC random sampling: (a)~at the $M = 14$ stations along the 50 km river reach; (b)~at Marmande. The solid line indicates the mean water level with respect to the curvilinear abscissa; the dotted lines indicate the spread corresponding to 2~STD; the dashed lines indicate the maximum and minimum water level values; and the vertical dotted line indicates Marmande's location.}
+\label{fig:monte-carlo_pdf}
+\end{figure*}
+
+The Sobol' indices for the water level $S_Q$ and $S_{K_{s_3}}$ computed from $\mathcal{D}_{N_{\text{ref}}}$ with respect to $Q$ and $K_{s_3}$ are presented in~\cref{fig:monte-carlo_sobol_corr}a along the curvilinear abscissa $a$. These indices confirm the previously mentioned spatial sensitivity. The water level variance is mostly explained by the upstream discharge variability for $a = [0; 30~\text{km}]$---the variability of $K_{s_3}$ has a small impact in the upstream part of the river in steady state conditions. It is then mostly explained by the Strickler coefficient variance for $a = [30; 60~\text{km}]$. Near the downstream boundary condition, the water level is related to the discharge by the local rating curve $RC$, the very last part of the network is thus under the influence of the discharge. First and total order indices are almost equal, meaning that the correlation between the variability in the input parameters is weak. One should keep in mind that these observations are the results of the PDFs and hydraulic regime assumptions that were made.
+
+\Cref{fig:monte-carlo_sobol_corr}b displays the water level correlation matrix along the 50 km reach (derived using~\cref{eq:cov_mc}) that is estimated from $\mathcal{D}_{N_{\text{ref}}}$. The $n$th column of the matrix describes the water level error correlations between one given location on the channel $a_n$ and the rest of the channel $a_m$ with $a_m \in [a_{\text{in}}, a_{\text{out}}]$. By definition, the correlation is equal to 1 on the diagonal, it decreases when the distance between $a_n$ and $a_m$ increases. We first analyse the correlation function for a point located upstream of the river ($a_i = 15~\text{km}$) where $S_Q = 0.9$ and $S_{K_{s_3}}= 0.1$. Water level errors are strongly correlated in the upstream part of the river, which is under the influence of the upstream discharge boundary condition, where $S_Q$ is large. Errors between $a = 15$~km and the rest of the river tends to decorrelate when the influence of $K_{s_3}$ increases (i.e.~where $S_{K_{s_3}}$ is larger). We then analyse the correlation function for Marmande ($a = 36~\text{km}$) where $S_Q= 0.15$ and $S_{K_{s_3}}= 0.85$. The correlation between water level errors at Marmande and the rest of the river is large in the vicinity of Marmande, where the influence of $K_{s_3}$ prevails. It then decreases for upstream and downstream locations that are under the influence of the upstream discharge and the downstream rating curve $RC$ (where $S_Q$ is large), respectively.
+\begin{figure*}[!h]               
+\centering
+\subfloat[]{
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig3a.pdf}} 
+\subfloat[]{
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig3b.pdf}}
+\caption{Measures of importance using MC random sampling. (a)~Reference Sobol' first order indices along the 50 km reach. Dashed-dotted line corresponds to the Sobol' index associated with the Strickler coefficient $K_{s_3}$. Dotted line corresponds to that associated with the upstream discharge $Q$. (b)~Reference spatial correlation matrix $\mathbf{C}_{\text{mc}}$ associated with the spatially distributed water level $\mathbf{h}$.}
+\label{fig:monte-carlo_sobol_corr}
+\end{figure*}
+
+\subsection{Convergence Analysis for Surrogates}
+
+We now use the same metrics as for the MC random sampling approach in~\cref{sec:UQresults_ref} to evaluate the accuracy of both PC and pGP surrogates. The surrogate models are built using a training set $(\mathcal{X}, \mathcal{Y})$ of size $N$ that is much smaller than that of the reference sample $N_{\text{ref}}$; they are then validated with respect to the reference MC results. The PC surrogate is built using a Gaussian quadrature rule with $N = (P+1)^2$ particles in the training set ($P$ is the total polynomial degree to be determined). The pGP approach is built using an approximate low-discrepancy Halton's sequence of the same budget as for the PC approach. This is approximate in the sense that we consider the closest values to the standard Halton's sequence that are part of the data set $\mathcal{D}_{N_{\text{ref}}}$. The sensitivity to the value of $P$ and thus to the size of the training set $N$ is investigated.
+
+Both surrogates are computed with a fixed budget $N$ of 49, 121 and 256 MASCARET evaluations. For PC, this value of $N$ corresponds respectively to $P = 6$, $P = 10$ and $P = 15$. The pGP and PC response surfaces at Marmande are presented in~\cref{fig:response-surface-pgp-pc} for $N = 49$ and $N = 121$. The design of experiment is represented by black dots. The colour map is evaluated by sampling each surrogate over the full data set $\mathcal{D}_{N_{\text{ref}}}$ made of $N_{\text{ref}} = 100,000$ particles. It is found that the water level increases with increasing discharge $Q$ and decreasing Strickler coefficient $K_{s_3}$, consistently with MASCARET behaviour. Due to the quadrature rule, increasing the number of snapshots (from $P = 6$ in~\cref{fig:response-surface-pgp-pc}c to $P = 10$ in~\cref{fig:response-surface-pgp-pc}d) allows to build a higher order PC surrogate valid on a wider input range for $Q$ that is described by a Gaussian PDF. For $P = 10$, some of the quadrature roots are outside of the MC sample and require additional MASCARET evaluations to build the PC surrogate $\mathcal{M}_{\text{pc}}$. Looking at the pGP design of experiments, the input space interval for $Q$ has been arbitrarily fixed to optimally represent the PDF. Since we consider a Gaussian distribution, its range has been bounded to $[3000;5000~\unit{m^3\,s^{-1}}]$. Following Chebyshev's theorem, this leads to a~90~\% confidence interval.
+
+The distribution of the particles in the design of experiments used by PC and pGP differs. This is done on purpose based on previous performance tests carried out with respect to the training set size $N$ and evaluating the surrogate accuracy, see~\cite{elmocaydEMA} and~\cite{roy2016}, respectively. On the one hand, the design of experiments for the PC surrogate is constrained by the PDF of the uncertain inputs. We use here a quadrature-based PC since it was found to be more cost-effective than regression-based PC for a small dimensional problem ($d = 2$) on the Garonne case~\citep{elmocaydEMA}. On the other hand, using the approximate Halton's sequence is known to be accurate for pGP surrogate~\citep{Damblin2013}. This is indeed useful to cover the uncertain space without any bias and to have low discrepancy, meaning that most of the quantity of interest variance is captured and that a good $Q_2$ criterion is achieved. The choice of the design of experiment will be driven in future work according to the study objectives. For instance, DA usually relies on the assumption of Gaussian PDF for the input parameters, so the design of experiments can use this prior information. For risk analysis, threshold values are paramount and a design of experiment accounting for parameter space extrema is required.
+
+\begin{figure}[!h]               
+\centering
+\subfloat[pGP - 49 snapshots.]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig4a.pdf}}          
+\subfloat[pGP - 121 snapshots.]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig4b.pdf}}
+
+\subfloat[PC - 49 snapshots.]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig4c.pdf}}           
+\subfloat[PC - 121 snapshots.]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig4d.pdf}}
+\caption{Water level response surface at Marmande computed at $\mathcal{D}_{N_{\text{ref}}}$. Top: pGP using (a)~$N = 49$ snapshots and (b)~$N = 121$ snapshots. Bottom~: PC using (c)~$N=49$ snapshots and (d)~$N=121$ snapshots. Black dots represent the design of experiments used to construct the surrogate models. The colour map corresponds to the evaluation of the surrogate over the full data set $\mathcal{D}_{N_{\text{ref}}}$.{\color[rgb]{0.9,0.2,0.16}\protect\footnotemark}}
+\label{fig:response-surface-pgp-pc}
+\end{figure}
+
+\footnotetext{Scaling of (d) was set in order to show the entire design of experiments. This allows to grasp the fact that the parameter space is evaluated in regions that are not evaluated by the MC sampling.}
+
+The $Q_2$ error between the surrogate water level and the forward model water level for $D_{N_{\text{ref}}}$ averaged over the river is given in~\cref{tab:valid_model} for different  sizes of training set $N$ varying between 49 and 256. The error remains below $\numprint{e-3}$, even for $N = 49$ snapshots; it is only slightly improved when the number of snapshots $N$ increases to 256 and beyond. 
+\begin{table}[H]
+\centering
+\caption{$Q_2$ error for pGP and PC surrogates computed with respect to the MC reference. The error corresponds to the average over the $M$ stations with increasing number of snapshots $N$ from 49 to 256.}
+\begin{tabular}{lcc}
+\toprule
+$N$ & pGP & PC \\
+\cmidrule{2-3}
+49  & 0.99965 & 0.99983\\
+121 & 0.99514 & 0.99993\\
+256 & 0.99143 & 0.99962\\
+\bottomrule
+\end{tabular}
+\label{tab:valid_model}
+\end{table}
+
+The water level PDF estimated with the PC and the pGP surrogate models based on $49, 121, 256$ snapshots are compared in~\cref{fig:pdf-station-0_9} at the curvilinear abscissa $a = 15~\text{km}$ (near upstream boundary condition) and $a = 36~\text{km}$ (Marmande). In the upstream part of the river, the PDF is uni-modal and is well represented with a small number of snapshots for both surrogates. On the contrary, at Marmande, the dynamics of the flow is more complex and the PDF is bimodal. Both PC and pGP surrogates are able to retrieve the overall shape of the PDF at $a = 15~\text{km}$ and $a = 36~\text{km}$. The shape is more accurate when the number of snapshots $N$ increases. This is quantified using a Kolmogorov-Smirnov statistical test, which measures the fit between the water level CDF computed from each surrogate model and that computed from the reference MC.~\cref{tab:ks} indicates that the null hypothesis (\cref{eq:nullhypothesis}) is rejected for both surrogates computed with 49 snapshots (when $D > \numprint{6.082e-3}$) and accepted when at least 121 snapshots are used. For $N = 49$, \cref{fig:pdf-station-0_9}b--d show that the location of the first mode is shifted compared to MC reference. Increasing $N$ to 121 enables the PC approach to correctly locate this mode, while it enables the pGP approach to represent the second mode with an accurate amplitude, leading to an accepted null hypothesis. Each approach presents a particular limitation: the first mode is not well positioned by the pGP approach; the second mode is not captured by the PC approach. As for the tail of the PDF, it is correctly represented by the PC surrogate, while the pGP surrogate slightly oscillates around the shape of the reference MC PDF.
+
+\begin{figure*}[!h]               
+\centering
+\subfloat[pGP -- $a = 15~\text{km}$]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig5a.pdf}}
+\subfloat[pGP -- $a = 36~\text{km}$]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig5b.pdf}}
+
+\subfloat[PC -- $a = 15~\text{km}$]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig5c.pdf}}
+\subfloat[PC -- $a = 36~\text{km}$]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig5d.pdf}}
+\caption{Comparison of water level PDF obtained with pGP (top panel) and PC (bottom panel) (a)--(c)~At $a = 15~\text{km}$ (near upstream boundary condition). (b)--(d)~At $a=36~\text{km}$ (Marmande). The comparison is carried out for different sizes of training set $N$ (49, 121, 256); the MC result is provided as reference in solid black line.}
+\label{fig:pdf-station-0_9}
+\end{figure*}
+
+\begin{table}[H]
+\centering
+\caption{Two-sample Kolmogorov-Smirnov statistical test for pGP and PC surrogates with respect to the MC reference at Marmande with increasing number of snapshots $N$ (49, 121, 256). The null hypothesis is rejected if $D > \numprint{6.082e-3}$.}
+\begin{tabular}{llcc}
+\toprule
+Surrogate & Snapshots & Statistics \emph{D} & \emph{p}-value \\
+\cmidrule{3-4}
+&49  & $\numprint{7.95e-3}$ & 0.004 \\
+pGP&121 & $\numprint{3.97e-3}$ & 0.409 \\
+&256 & $\numprint{3.02e-3}$& 0.751\\
+\cmidrule{3-4}
+&49  & $\numprint{7.15e-3}$ & 0.012 \\
+PC&121 & $\numprint{4.95e-3}$ & 0.172  \\
+&256 & $\numprint{4.93e-3}$ & 0.175\\
+\bottomrule
+\end{tabular}
+\label{tab:ks}
+\end{table}
+
+The RMSE for the Sobol' indices for both pGP and PC with a fixed computational budget of $N = 121$ simulations is of the order of $10^{-2}$ when computed over the 50 km reach. \Cref{fig:sobol-map} displays the squared error for the Sobol' indices along the curvilinear abscissa (\cref{eq:rmse}); the spatial pattern is similar for both surrogates and the squared error for each index is larger where the Sobol' indices are larger. The RMSE for the correlation matrix for both pGP and PC with $N = 121$ simulations are equal to $\text{RMSE}_{\text{pc}} = \numprint{3.67e-4}$ and $\text{RMSE}_{\text{gp}} = \numprint{4.59e-3}$. The spatial distribution of the squared error is plotted in~\cref{fig:corr-mse}. These results confirm the good behaviour of both PC and pGP surrogates with respect to MASCARET. For both Sobol' indices and correlation matrices, the PC surrogate slightly outperforms pGP. 
+
+\begin{figure*}[!h]               
+\centering
+\subfloat[pGP -- 121 snapshots]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig6a.pdf}}
+\subfloat[PC -- 121 snapshots]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig6b.pdf}}
+\caption{Squared error of the spatial Sobol' indices along the 50 km reach for (a)~pGP and (b)~PC surrogate models built using $N = 121$ snapshots in the training set. Dashed lines correspond to the Sobol' index associated with $K_{s_3}$; solid lines correspond to that associated with the upstream discharge $Q$.}
+\label{fig:sobol-map}
+\end{figure*}
+
+\begin{figure*}[!h]               
+\centering
+\subfloat[pGP -- 121 snapshots]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig7a.png}}
+ ~ 
+\subfloat[PC -- 121 snapshots]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig7b.png}}
+\caption{Squared error of the correlation matrix for (a)~pGP and (b)~PC surrogate models built using $N = 121$ snapshots.}
+\label{fig:corr-mse}
+\end{figure*}
+
+\section{Conclusion}\label{sec:ccl}
+
+The purpose of this work was to compare two popular strategies for building surrogate models, Polynomial Chaos (PC) and POD-based Gaussian Process (pGP). Both methods were applied to a hydraulic case corresponding to a spatially distributed open-channel steady flow along the Garonne River depending on the upstream discharge $Q$ and on the Strickler friction coefficient $K_{s_3}$, with the long-term objective to determine which surrogate strategy could be useful in the framework of ensemble-based data assimilation. It is important to show how surrogate models could be used to estimate some statistical quantities in a cost-effective way. This is useful for sensitivity analysis studies to evaluate the impact of physical parameters and external forcing on the river state. This is also useful for data assimilation to estimate correlation matrix and PDF related to the spatially distributed river state for the Ensemble Kalman Filter (EnKF) and the Particle Filter (PF), respectively.
+
+We carried out a convergence study based on the following metrics: water level statistical moments, correlation matrix, PDF as well as Sobol' indices representing the contribution of the upstream discharge and the Strickler friction coefficient on the water level variance. The accuracy of the PC and pGP surrogates were measured by their ability to retrieve the reference metrics obtained with a converged Monte Carlo (MC) random sample (including $\numprint{100,000}$ MASCARET simulations). An in-depth comparison of these metrics was done using the same computational budget: 121 MASCARET snapshots. The sensitivity to the number of snapshots was carried out to ensure that 121 simulations were enough to make this comparison valuable.
+
+Results showed that both surrogate models can be used in place of the MASCARET forward model for uncertainty propagation without loss of accuracy. None of the two surrogate models clearly outperforms the other. In both cases, the PC and pGP surrogate models are able to correctly retrieve all physical information. The PC strategy seems to be more precise to compute the spatially distributed correlations as well as the Sobol' indices, with the advantage that these indices do not need any further MASCARET evaluation as they are analytically computed from the PC expansion. Still, the multimodal water level PDF at Marmande (which is an important observation station along the Garonne River in operational context) was better captured by the pGP strategy that requires an additional sampling of the surrogate. Indeed, even increasing the number of snapshots to 256 and beyond was not enough to retrieve the second mode of the PDF using the PC surrogate model, while this was already captured with 121 snapshots by the pGP surrogate model. Still, it should be mentioned that the PC model better positions the first mode than the pGP model when using the MC approach as reference. Last but not least, the PC strategy requires some insight about the uncertain inputs of the system. We may not have access to this information in practice, leading potentially to a poor robustness of the PC surrogate. The quantity of interest may also feature non-linearity and exhibit extrema, which could be difficult to account for using quadrature points that could miss some physics. Alternative (for instance sparse) projection strategies could be investigated in the future to overcome these limitations. 
+
+Conclusions for the present test case highlight the validity of both quadrature-based PC and POD-based GP surrogate strategies for SWE in permanent flow for a small dimensional problem (the size of the uncertain space is $d = 2$). The ranking between PC and pGP approaches will need to be further investigated when moving to open-channel unsteady flow modelling used for instance in the context of operational flood forecasting. The first challenge lies in the extension of the PC and pGP surrogates to larger uncertain dimension $d$, especially to address parameters that vary in space or over time or both, such as the bathymetry spatial field and the time series of the upstream discharge. This may require the evaluation of more advanced strategies to reduce the size of the basis, the uncertain dimension (for instance through the Karhunen-Loève transformation) and the number of snapshots $N$ in the training set. For instance, the quadrature method used to build the PC surrogate is known to suffer from the \emph{curse-of-dimensionality}. This will have to be revisited for a larger size $d$ of the uncertain space. The second challenge lies in the validity of the surrogate model over successive data assimilation cycles, implying that the flow is now unsteady. First, it is expected that the SA shows that the roughness coefficients from upstream and downstream locations have an influence on the flow at a given location in subcritical flow. Secondly, it may be necessary to adjust the coefficients of the surrogates to track the changes in the river state behaviour over time. The cycled data assimilation analysis will then allow to correct physical parameters over time, such as the roughness coefficient that may vary seasonally or between flood events. The uncertainty quantification and data assimilation strategies could also be extended to the bathymetry and thus allow for a time-varying correction of the river geometry that is usually fixed in a hydraulic model. Such solution would mimic the evolution of the river bed and flood plain at a much lower computational cost than when using a hydro-sediment coupled model.
+
+Those are crucial steps for the complementary use of surrogate models within data assimilation algorithms.
+
 
 \chapter{LS89}\label{chap:ls89}
 
-\section{Case description} 
-The \textit{LS89} case is a blade cascade designed and tested experimentally at the Von Karman Institute for Fluid Dynamics (VKI)~\cite{arts1990}. The linear cascade consists of five high-pressure turbine vanes although only the centre vane is studied. The vane is a 2D extruded profile unlike most industrial vanes that are much more complex geometrically. It, however, remains of great interest because the operating points are representative of values found in real engines today. This test case represents one of the largest turbomachinery databases available for the validation of CFD models in complex geometries.
+\section{Introduction}
+
+The number of CFD simulations that is required for the formulation of the surrogate model is defined by the complexity of the physics and the number of input parameters to take into account. This factor is paramount when considering costly numerical simulations. As the accuracy of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present study aims at improving its construction by using the two new strategies for resampling the parameter space (see~\cref{chap:resample}). An industrial application is targeted: the aerothermal analysis around the \textit{LS89} vane~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented. LES are high-fidelity full 3D unsteady simulations. This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
+
+The chapter is tailored as follows; \cref{sec:ls89_case} presents the experimental setup while \cref{sec:ls89_num} presents its numerical simulation configuration. Finally, \cref{sec:ls89_results}  presents the results of the UQ.
+
+\section{Case description}\label{sec:ls89_case}
+The \textit{LS89} case is a blade cascade designed and tested experimentally at the Von Karman Institute for Fluid Dynamics (VKI)~\cite{arts1990}. The linear cascade consists of five high-pressure turbine vanes although only the centre vane is studied---see~\cref{fig:vki-setup}. The vane is a 2D extruded profile unlike most industrial vanes that are much more complex geometrically. It, however, remains of great interest because the operating points are representative of values found in real engines today. This test case represents one of the largest turbomachinery databases available for the validation of CFD models in complex geometries.
+
+\begin{figure}[!h]               \centering\subfloat[VKI installation]{\includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/VKI.png}} ~       \subfloat[Blade profile]{\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/blade.png}}\qquad       \subfloat[Geometrical Characteristics]{%\begin{table}[H]%\centering\begin{tabular}[b]{lc}\toprule $c$ (mm) &  67,647 \\ $g/c$& 0,850\\ $\gamma$ (degr.)& 55,0\\ $o/c$& 0,2207 \\ $r_{LE}/c$& 0,061\\ $r_{TE}/c$& 0,0105\\\bottomrule\end{tabular}%% \label{}%\end{table}}\caption{LS89 blade cascade experimental setup from the VKI. Source~\cite{arts1990}}\label{fig:vki-setup}\end{figure}
 
 A large variety of operating points have been successfully simulated until now. Low levels of turbulence injection ($<1$\%) do not represent an issue for most solvers \cite{Gourdain2010,emory2016} using either Reynolds-Averaged Navier Stokes (RANS) or Large Eddy Simulation (LES). Higher levels of turbulence have also been studied successfully~\cite{Wheeler2015} but difficulties arise for higher Reynolds numbers and larger outlet Mach numbers. Simulations are not able to correctly predict experimentally obtained profiles, notably the heat transfer field which is of great importance for the blade life-cycle.
 
-The operating point addressed in this document, selected from Arts~\cite{arts1990}, is the MUR235, a very rich case in terms of physics that presents the above mentioned challenges (high Reynolds and outlet Mach numbers). Figure~\ref{fig:ls89-gradRhoRho} highlights the main physical interactions in such a flow. One of the most notable features is the presence of a shock wave on the suction side of the blade. This shock wave interacts with a transitional boundary layer due to the highly curved flow, a potential source of instabilities in the boundary layer which in turn determines the wake downstream. This wake issues acoustic waves that impact the neighbour blade affecting the stability of the boundary layer. Also, there is a high level of free-stream turbulence that undergoes stretching around the leading edge of the blade which modifies the position of the boundary layer transition on the suction side~\cite{Segui2017a}.
+The operating point addressed in this document, selected from Arts~\cite{arts1990}, is the MUR235, a very rich case in terms of physics that presents the above mentioned challenges (high Reynolds and outlet Mach numbers)---see~\cref{tab:ls89-param} and \cref{tab:ls89-limite}. Figure~\ref{fig:ls89-gradRhoRho} highlights the main physical interactions in such a flow. One of the most notable features is the presence of a shock wave on the suction side of the blade. This shock wave interacts with a transitional boundary layer due to the highly curved flow, a potential source of instabilities in the boundary layer which in turn determines the wake downstream. This wake issues acoustic waves that impact the neighbour blade affecting the stability of the boundary layer. Also, there is a high level of free-stream turbulence that undergoes stretching around the leading edge of the blade which modifies the position of the boundary layer transition on the suction side~\cite{Segui2017a}.
+
+
+\begin{table}[!h]\centering\begin{tabular}{lc}\topruleTotal temperature (K)&413,30 \\Total inlet pressure (bar)&1,828 \\Static inlet pressure (bar)&1,800 \\Static outlet pressure (bar)&1,049 \\Wall temperature (K)&301,15 \\Free stream turbulence (\%)&6,0 \\Incidence angle (degr.)&0,0 \\\bottomrule\end{tabular}\caption{Measured parameters for the MUR235 case.}\label{tab:ls89-param}\end{table}\begin{table}[!h]\centering\begin{tabular}{lcc}\toprule & Inlet & Outlet \\\midrule % \cmidrule{2-3}Total temperature (K)&413,3& \\Total pressure (bar)&1,828& \\Mach number&0,150&0,927 \\Reynolds number&\numprint{2,6471e5}& \numprint{1.1521e6} \\Temperature (K)&411,45& 352,69\\Pressure (bar)&1,800& 1,049\\Density (\unit{}{\kilogram\per\cubic\meter})&1,524& 1,036 \\Velocity(\unit{}{\meter\per\second})&61,00& 349,02 \\Dynamic viscosity (\unit{}{\kilogram\per\meter\second})& \numprint{2,33750e-5}& \numprint{2,1240e-5}\\Kinematic viscosity(\unit{}{\meter^2\per\second})&\numprint{1,5589e-5}& \numprint{2,0494e-5}\\\bottomrule\end{tabular}\caption{Free stream conditions for the MUR235 case.}\label{tab:ls89-limite}\end{table}
+
+
 
 %Until now, simulations have shown disparate results and capacities to predict the heat transfer coefficient, $H = \frac{\dot{q}_{wall}}{T_0 - T_{wall}}$, where ${\dot{q}_{wall}}$ is the heat flux, $T_0$ is the total inlet temperature and $T_{wall}$ is the temperature on the blade surface.
 
@@ -37,7 +292,7 @@ Tu \in [0, 30\%] \quad \alpha \in [-5,5\degree].
 \label{fig:space-tu-alpha}
 \end{figure*}
 
-\section{Numerical setup}
+\section{Numerical setup}\label{sec:ls89_num}
 
 The simulations have been performed using \textit{AVBP}~\cite{Gicquel2011}, a validated CFD LES solver co-developed by CERFACS and IFP-EN. This parallel code solves the three-dimensional compressible Navier-Stokes equations for both steady and unsteady reacting flows. The code is capable of handling hybrid unstructured meshes and allows to address complex geometries. High-order numerical schemes based on the \textit{Taylor-Galerkin} (TTG) family are used~\cite{Quartapelle1993}. 
 
@@ -61,7 +316,7 @@ The resolution of the mesh and the LES quality must be guaranteed to be sufficie
 
 The heat transfer coefficient is seen to be different on the pressure side for the finest mesh (M2). However, on the suction side the coarsest mesh (M0) leads to approximately the same results as the finest mesh (M2). This suggests that the value of $y^+$ does not have a first order effect on the heat transfer coefficient for the meshes considered. The sensitivity to other effects such as turbulence intensity and angle of attack may thus be sought. Additionally, it can be noted that the shock wave on the suction side is located at approximately the same position for all meshes. This implies that the upstream boundary layer is similar in all cases although the heat transfer coefficient across the shock wave is affected by the mesh refinement.
 
-\section{Uncertainty Quantification results}
+\section{Uncertainty Quantification results}\label{sec:ls89_results}
 
 This section presents the comparison between the different resampling methods on this complex case. In the following, an existing sample comprised of 16 simulations is used to generate a \textit{Sobol'} low-discrepancy sequence. As seen in~\cref{sec:doe}, the quality of \textit{Sobol'} sequence is similar to \textit{Halton}'s in low dimensional cases. Using this initial set of simulations, the sequence has been continued adding 4 points to give a total of 20 simulations. Then using the same initial sample, the previous set is compared to the use of the $\sigma$ method and the LOO-\textit{Sobol'} method. The LOO-$\sigma$ method gives similar results compared to LOO-\textit{Sobol'} method. It is not tested on this case. Quality results evaluated by LOO as described in~\cref{sec:error} are shown in~\cref{tab:ls89-q2}. 
 
@@ -129,7 +384,7 @@ Using these PDFs, uncertainties are propagated by $\numprint{5000}$ predictions 
 Finally, the \textit{Sobol'} indices have been estimated using $\numprint{200000}$ predictions. As the response surface suggested, the heat transfer coefficient is mainly affected by the variation of the turbulence intensity. The spatial evolution of the indices in~\cref{fig:ls89-map} shows a spatial dependency. On the pressure side, the inflow angle has a higher influence as its contribution rises to become the most important parameter at the trailing edge. On the suction side, the turbulence intensity contribution is stable until the shock region. Reaching the trailing edge, the angle contribution increases. Finally, aggregated indices are reported in~\cref{fig:ls89-aggregated}. These indices confirm that the turbulence intensity is the most important parameter compared to the inflow angle when studying the heat transfer coefficient and for the range of angle variations retained. The turbulence intensity contributes to 70\% of the total variance of the QoI whereas the inflow angle contributes to 30\%. This behaviour was expected as downstream the shock, the incoming level of turbulence has little impact. The computation of the second order indices are not presented here because their values are negligible in comparison to the first order indices. This is in agreement with the small differences observed between the first and total order indices. There are no joint effects between the two parameters.
 
 
-\section{Conclusion}
+\section{Conclusion}\label{sec:ls89_ccl}
 
 A first Uncertainty Quantification LES study of the \textit{LS89} is presented. The parameter space was comprised of the turbulence intensity and the inflow angle. In order to increase the quality of the surrogate model, the LOO-\textit{Sobol'} method was used to refine the parameter space. We showed that it performed better than continuing the sampling sequence. Apart from an analysis of the variance, the model was used to propagate uncertainties. This study reveals that although the turbulence intensity is the main factor impacting the heat transfer coefficient, there is spatial evolution of its contribution along the blade.
 
@@ -393,6 +648,12 @@ Swirl number & 0.7609 & 0.7582 & 0.7639\\
 
 Although the construction of a surrogate model is not feasible in this case, the present uncertainty analysis highlights the intrinsic and chaotic variability of a self-compensation mechanism in the generated statistical data. This can be explained by: (\emph{i}) the nature of the geometrical modifications, where some channels are widened while others are tightened, limiting the overall impact on the pressure loss; and (\emph{ii}) the amplitude of these modifications which is very small compared to the width of the channels. Indeed, manufacturing defects were limited to a maximum 2\% of the cross section area of a channel, consistently with real observation of AM. Note that in such situation, the ability of the solver to respond with the correctly adapted physics is paramount. To check this, the relative numerical error on the pressure drop was estimated and found less than $1\%$ which is sufficient to capture with accuracy the pressure drop induced variation by geometrical modification of the order of $\simeq 5\%$. Thus, the solver accuracy is sufficient and the results are considered reliable.
 
+\section{Conclusion}
+The purpose of this work was to perform an Uncertainty Quantification (UQ) study of a swirler geometry. More precisely, this study focused on geometry deviations due to Additive Manufacturing (AM) and their effects on the pressure loss. As the number of parameters required to characterize the configuration was high, a Principal Component Analysis (PCA) was used, allowing to cut down the number of parameters from 16 to 6 independent variables. Statistic analysis based on Highest Density Region (HDR) highlighted the non-independence of the geometrical parameters and thus the impact of AM. Thanks to a mesh adaptation strategy, a set of 30 different statistically representative cases was accurately simulated with Large Eddy Simulations (LES). The uncertainty analysis then led to an overall view of the variation of the pressure drop induced by geometry changes. Results show that slight discrepancies in the swirler channel dimensions lead to slight differences in the pressure loss, without amplification or damping. This conclusion also holds for the flow, as shown by the comparison of the swirl numbers and velocity profiles. This is a critical information for engine manufacturers, as it means that AM will not affect the flow exiting the swirler and the stability of the flame developing downstream.
+
+The analysis of the intrinsic variability of the system did not exhibit any noticeable pattern. As a consequence, no surrogate model could be built. This is explained by the nature of the modifications and most importantly by their amplitude. Augmenting the range of variability in the system, exploring for example other designs, would increase the impact on the pressure loss. %For the same reason, increasing the mass flow rate may have a stronger effect. Here the mass flow rate was taken as in the experiment~\cite{Daviller2017}, where it was restricted to low values. 
+
+The UQ method used in this work, combining data reduction and high-fidelity LES, paves the way for systematic uncertainty studies in the design phase of industrial systems to take into account manufacturing defects. This may lead to the determination of optimized manufacturing tolerances, and finally to significant cost saving.
 
 \chapter{Optimization of Helically Roughened Heat Exchanger}
 
@@ -568,32 +829,6 @@ Using the surrogate, the prediction is expressed as a random process with $Y\sim
 \noindent with $\phi(.), \Phi(.)$, respectively, the Probability Density Function (PDF) and Cumulative Distribution Function (CDF) of the normal distribution. Selecting the point with the highest expected improvement is achieved either: \emph{(i)} by maximizing the difference between the minimal value and the predicted response; or \emph{(ii)} by increasing the standard deviation. Hence, the first component is said to \emph{exploit} the model while the other seeks to \emph{explore} it. These two phases are here automatically selected. In~\cite{schonlau1998}, they proposed with the \emph{Generalized Expected Improvement} a way to define a constant $g$ to adjust the degree of \emph{exploration vs exploitation}: $\mathbb{E}[I^g]$. The highest $g$ is, the more exploratory the strategy is. Indeed, the initial EI strategy tends to add too much effort at improving the current solution and only then consider other regions of the parameters space. But this raises another concern about the value of this constant.
 
 Thus, in this work we used the classical expected improvement formulation in order to avoid the definition of an additional constant. Due to the computational cost of the simulations, this parameter was not characterized.
-
-
-\section{Uncertainty Quantification}
-\label{sec:uq}
-
-Sensitivity analysis (SA) aims at finding which random variable of the input parameter space are important toward a QoI~\cite{iooss2016}. Standard way is to use variance based method which allows not only to know which variables are important but also to rank them~\cite{ferretti2016}. \textit{Sobol'}~\cite{Sobol1993} method is used here with the sole required hypothesis of the independence of the input variables. It uses a functional decomposition of the variance of the function:
-
-\begin{align}
-\mathbb{V}(\mathcal{M}) &= \sum_{i}^{n_{dim}} \mathbb{V}_i (\mathcal{M}) + \sum_{i<j}^{n_{dim}}\mathbb{V}_{ij} + ... + \mathbb{V}_{1,2,...,n_{dim}},\\
-\mathbb{V}_i(\mathcal{M}) &= \mathbb{\mathbb{V}}[\mathbb{E}(\mathcal{M}|x_i)],\nonumber\\
-\mathbb{V}_{ij}(\mathcal{M}) &= \mathbb{\mathbb{V}}[\mathbb{E}(\mathcal{M}|x_i x_j)] - \mathbb{V}_i - \mathbb{V}_j,\nonumber
-\end{align}
-
-\noindent with $p$ the number of input parameters constituting $\mathbf{x}$. This way \textit{Sobol'} indices are expressed as
-\begin{align}
-S_i = \frac{\mathbb{V}[\mathbb{E}(\mathcal{M}|x_i)]}{\mathbb{V}[\mathcal{M}]}\qquad S_{ij} = \frac{\mathbb{V}[\mathbb{E}(\mathcal{M}|x_i x_j)] - \mathbb{V}_i - \mathbb{V}_j}{\mathbb{V}[\mathcal{M}]}.
-\end{align}
-
-\noindent $S_{i}$ corresponds to the first order term which apprises the contribution of the \textit{i-th} parameter, while $S_{ij}$ corresponds to the second order term which informs about the correlations between the \textit{i-th} and the \textit{j-th} parameters. These equations generalize to compute higher orders. However, the computational effort to converge them is high and most importantly, their analysis and interpretations are not simple.
-
-Total indices represents the global contribution of the parameters on the QoI's variance and write as
-\begin{align}
-S_{T_i} = S_i + \sum_j S_{ij} + \sum_{j,k} S_{ijk} + ... = 1 - \frac{\mathbb{V}[\mathbb{E}(\mathcal{M}|x_{\sim i})]}{\mathbb{V}[\mathcal{M}]}.
-\end{align}
-
-In this work, the \emph{Sobol'} indices are estimated using \textit{Martinez}' formulation which provides asymptotic confidence intervals~\cite{baudin2016}.
 
 \section{Results}
 \label{sec:results}
@@ -947,7 +1182,7 @@ The presence of no-slip boundaries results in particle inhomogeneity due to turb
 In addition to particle-flow coupling, the particle-gas mixture is also subject to thermal processes as energy is transferred from the particles to the fluid by means of radiation absorption.
 The physical mechanisms governing this type of flow, and their complex interactions, are not fully characterized, and therefore are still subject to intense research, e.g.,~\citep{Zamansky2014-A,Frankel2016-A,Pouransari2017-A}.
 
-\begin{figure}[t]
+\begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{fig/applications/psaap/irradiated_particle_laden_turbulence_duct}  
   \caption{Irradiated particle-laden turbulent flow in a square duct (instantaneous, streamwise $x$-$y$ plane snapshot)~\citep{Jofre2017-A}. The quantity represented is the normalized temperature increment ($T_{0}=300$ K) of particles. It is interesting to note (\emph{i}) the presence of elongated particle clusters resulting from preferential concentration, (\emph{ii}) the accumulation of particles at the walls by turbophoretic effects, (\emph{iii}) the absorption of radiation by particles (illuminated from below), and (\emph{iv}) the transfer of energy from the particles to the fluid and the subsequent thermal mixing enhanced by turbulence.}      \label{fig:irradiated_particle_laden_turbulent_flow}
