@@ -144,7 +144,14 @@ S_{T_i} = S_i + \sum_j S_{ij} + \sum_{j,k} S_{ijk} + ... = 1 - \frac{\mathbb{V}[
 \begin{align}
 Y(\mathbf{x}) = \sin x_1 + 7 \sin^2 x_2 + 0.1 x_3^4 \sin x_1,
 \end{align}
-\noindent with $\mathbf{x} \in [-\pi, \pi]^3$. This function exhibits strong nonlinearity and nonmonotonicity. It is particularly interesting because the first order indice of $S_{x_3} = 0$ whereas it's total order is $S_{T_{x_3}} = 0.244$. Note that on second order indices, $S_{x_1,x_3} = 0.244$. It means that almost 25\% of the observed variance on the QoI is due to the correlations between $x_3$ and $x_1$, although $x_3$ by itself has no impact on the QoI.
+\noindent with $\mathbf{x} \in [-\pi, \pi]^3$. This function exhibits strong nonlinearity and nonmonotonicity. It is particularly interesting because the first order indice of $S_{x_3} = 0$ whereas it's total order is $S_{T_{x_3}} = 0.244$. Note that on second order indices, $S_{x_1,x_3} = 0.244$. It means that almost 25\% of the observed variance on the QoI is due to the correlations between $x_3$ and $x_1$, although $x_3$ by itself has no impact on the QoI. \Cref{fig:scatter_sobol} gives a visual explanation of \emph{Sobol'} indices. It shows scatter plots of the output with respect to each parameter. By conditioning the output value by given values of the parameter (\emph{black lines}), the conditional output mean is computed. It corresponds to the term $\mathbb{E}(Y|x_i)]$. Taking the variance of this term gives the numerator of the \emph{Sobol'} indices. Looking at $x_3$, the variance of the mean is close to zero leading to $S_{x_3} = 0$. But we can further observe that the variance of the output is not constant along the parameter values of $x_3$. This heteroscedasticity is explained by higher order interactions. Moreover, an heteroscedasticity is also noticeable on $x_1$ leading to an interaction between $x_3$ and $x_1$. On $x_2$, the variance seems to be constant and thus null interaction with this parameter can be supposed. This case is fairly simple to analyse visually---although it is only a qualitative analysis. Nevertheless, when the number of input parameters increases such analysis becomes unrealistic as it would be difficult to conclude on high order terms.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{fig/literature/scatter_sobol.pdf}
+\caption{Scatter plot per component of the \textit{Ishigami} function. \emph{Blue crosses} represent the outputs, \emph{black lines} the conditioning over a given parameter, \emph{red dots} the mean given a conditioning.}
+\label{fig:scatter_sobol}
+\end{figure}
 
 Looking at \cref{fig:sobol}(a), it can be noted that the convergence of these indices require a large sampling size. The required sampling size is case dependant as it depends on the number of input parameters and on the complexity of the function of interest.
 
@@ -169,7 +176,7 @@ For a functional output, as for the \textit{LS89} blade case---see~\cref{chap:ls
 S_i = \frac{\displaystyle\sum_{l = 1}^{m} \mathbb{V} [\mathbf{Y}^l] S_i^{l}}{\displaystyle\sum_{l = 1}^{m} \mathbb{V} [\mathbf{Y}^l]}.
 \end{align}
 
-\begin{figure}[!h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/sobol_map.pdf}
 \caption{Map of \emph{Sobol'} indices along the \textit{LS89} blade.}
@@ -188,11 +195,20 @@ This assumption can be mitigated by using some correlation matrices but the proc
 Computation of high order terms and total effect require a lot of samples to converge. It may be impractical to compute these quantities.
 \end{itemize}
 
-Moment-based method are based on the whole PDF to mitigate these issues~\cite{borgonovo2007}. Based on the unconditional PDF, a conditional PDF per parameter is computed. The more the conditional PDF deviates from the unconditional PDF, the more the parameter has an impact on the quantity of interest. The same procedure can be done using the Empirical Cumulative Density Function (ECDF), respectively with the unconditional ECDF. \Cref{fig:moment_sa} shows the computation of both conditional and unconditional PDF (resp. ECDF). Based on these moment estimations, distance criteria can be computed such as: $L_1$, \emph{Kolmogorov-Smirnov} or the \emph{Kuiper} distances. The method does not require any particular sampling nor do not require the parameters to be independent. The limitations comes from the ability to correctly estimate the densities.
+Moment-based method are based on the whole PDF to mitigate these issues~\cite{borgonovo2007}. Based on the unconditional PDF, a conditional PDF per parameter is computed. The more the conditional PDF deviates from the unconditional PDF, the more the parameter has an impact on the quantity of interest. The same procedure can be done using the Empirical Cumulative Density Function (ECDF), respectively with the unconditional ECDF. \Cref{fig:scatter_moments} visually shows this procedure. Bins of samples (\emph{red circles}) are used to compute a conditional PDF of the output. This PDF is compared to the unconditional PDF.
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/moment_independent-ishigami.pdf}
+\includegraphics[width=\linewidth,keepaspectratio]{fig/literature/scatter_moments.pdf}
+\caption{Scatter plot per component of the \textit{Ishigami} function. \emph{Black line} represents the unconditional PDF and \emph{red dots} the samples used to computed the conditioned PDF (\emph{dashed line}).}
+\label{fig:scatter_moments}
+\end{figure}
+
+\Cref{fig:moment_sa} shows the computation of both conditional and unconditional PDF (resp. ECDF). Based on these moment estimations, distance criteria can be computed such as: $L_1$, \emph{Kolmogorov-Smirnov} or the \emph{Kuiper} distances. The method does not require any particular sampling nor do not require the parameters to be independent. The limitations comes from the ability to correctly estimate the densities.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{fig/literature/moment_independent-ishigami.pdf}
 \caption{Moment independent SA on the \emph{Ishigami} function.}
 \label{fig:moment_sa}
 \end{figure}
@@ -404,7 +420,7 @@ An easy way to visualize the quality of the model is to plot a joint plot. Its c
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=0.6\linewidth,keepaspectratio]{fig/literature/qq_plot.png}
+\includegraphics[width=0.9\linewidth,keepaspectratio]{fig/literature/qq_plot.png}
 \caption{Joint plot. QoI function of the predicted QoI given a parameter set. The triangle represent an observed value of 5.}
 \label{fig:qq_plot}
 \end{figure}
