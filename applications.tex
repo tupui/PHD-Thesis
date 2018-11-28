@@ -396,10 +396,18 @@ A first Uncertainty Quantification LES study of the \textit{LS89} is presented. 
 
 \section{Introduction}\label{sec:intro}
 
-%TODO voir ref vortex breakdown ?
-At the heart of a turbomachine is the combustion chamber, fed with fuel by injectors. In order to stabilize the flame,  swirled injectors are commonly used today~\cite{Lilley1977}---see~\cref{fig:sketch-swirler}. By impelling a movement of rotation to the flow, a recirculation zone is created directly at the outlet of the injector. This ensures sufficient residence time for the fuel to be consumed. The design of swirled injectors is of prime importance when seeking to reduce fuel consumption and pollutant emissions. Indeed, this is usually achieved via lean combustion which may lead to combustion instabilities and reduced extinction margins. When considering environmental aspects, operability, efficiency, maintenance or even durability, the problem becomes a complex multiobjective optimization problem which remains a great challenge.
+At the heart of a turbomachine is the combustion chamber, fed with fuel by injectors. Here, the combustion process releases the calorific capacity of the fuel mixture. This process is usually started using a spark which provides an energy deposit in the system. After the flame has been ignited, it needs a mechanism for it to stabilize within the chamber. Depending on the velocity of the laminar flame speed and on the power required, different devices are to be considered to stabilized a flame. Indeed, the output power being directly linked to the inlet velocity of the reactants, if a high power is required, the inlet velocity will be high. Thus, to stabilize the flame ones needs to equilibrate the consumption of the reactants accordingly to the flame speed. The flame stabilization is a major concern which can cause an extinction of the chamber or an oscillation of the flame.
 
-\begin{figure}[!ht]
+ When considering small velocities, a backward facing step is sufficient---see~\cref{fig:sketch-step}. This geometry creates a recirculation zone that traps the fuel mixture downward. However, as the inlet velocity increases, the flame speed does not. The chemistry not being infinitely fast, comes a point were the flame cannot sustain. Swirled injectors have been designed to overcome this issue~\cite{Lilley1977}---see~\cref{fig:sketch-swirler}. By impinging a movement of rotation on the flow, a recirculation zone is created directly at the outlet of the injector. This ensures sufficient residence time for the fuel to be consumed. The design of swirled injectors is of prime importance when seeking to reduce fuel consumption and pollutant emissions. Indeed, this is usually achieved via lean combustion which may lead to combustion instabilities and reduced extinction margins. When considering environmental aspects, operability, efficiency, maintenance or even durability, the problem becomes a complex multiobjective optimization problem which remains a great challenge.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/swirler/sketch_step.pdf}
+\caption{Sketch of a backward facing step.}
+\label{fig:sketch-step}
+\end{figure}
+
+\begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth,keepaspectratio]{fig/applications/swirler/sketch_swirler.pdf}
 \caption{Sketch of a swirler consisting of two contra-rotative sets of oxidizer channels.}
@@ -483,16 +491,16 @@ As shown in~\cite{Daviller2017}, this method converges and finally recovers the 
 
 In order to quantify the uncertainty on the flow physics, a sample of 30 LES was considered. The procedure used to generate this sample is detailed in~\cref{sec:dim}. For each simulation, a new geometry has been constructed with up to $2\%$ of variation in all channel dimensions---using the method presented in~\cref{sec:dim}. Then, the mesh was automatically adapted using the aforementioned methodology. This procedure ensures that the meshes are optimum for each configuration, with respect to the pressure loss. For the uncertainty analysis, results were averaged over $\unit{\numprint{40}}{\milli\second}$. The total computational cost for this UQ using LES is about $\unit{\numprint{1000000}}{CPU\;hours}$. Thanks to high performance computing resources, the return time was only 2 days, which is satisfactory in the context of an industrial design process.
 
-The \textit{BATMAN} (Bayesian Analysis Tool for Modelling and uncertAinty quaNtification) tool~\cite{Roy2018} was used to handle all simulations and perform the analysis. This open source python framework (\url{https://gitlab.com/cerfacs/batman}) is able to work with any code seamlessly as a \textit{black-box}. It provides an easy workflow that constructs the design of experiments, launches each simulation and performs the statistical analysis and corresponding visualizations. It is built on top of the open source python library OpenTURNS~\cite{Baudin2015a}. \textit{BATMAN} has been validated in multiple previous studies dealing with complex numerical solvers~\cite{Roy2017b,Roy2018a}.
+Batman~\cref{chap:batman} was used to handle all simulations and perform the analysis.
 
 \subsection{Geometrical Uncertainties of the Swirler}
 
 Discrepancies in the size of the channels generated by AM have been measured. \Cref{fig:swirler_mod_phi,fig:swirler_mod_u} illustrate how a change of $\sim2$\% in all channel dimensions---due to manufacturing dispersion---impacts the flow and the pressure loss $\Delta P$. The two cases correspond to the maximum (case a) and minimum (case b) impact on the pressure loss. These results were obtained from LES and the numerical setup described in~\cref{sec:num_setup}.
 \Cref{fig:swirler_mod_phi}~shows the difference in total dissipation field $\mathrm{\overline{\Phi}}$, which explains the difference in pressure drop.%, found here of $\sim5$\% between the two cases. 
 Compared to the pressure drop in the reference geometry, the two cases show a difference of $7.83\%$ and $9.95\%$ respectively for~\cref{fig:swirler_mod_phi}(a) and~\cref{fig:swirler_mod_phi}(b). 
-A closer look allows to identify the main region of difference at the tip of the plug, directly related to the flow difference in the first stage of the swirler, as seen in~\cref{fig:swirler_mod_u}. Indeed, a small recirculation zone (at the tip of the plug) appears in the left case (a), which almost disappears in the right case (b).
+A closer look allows to identify the main region of difference at the tip of the plug, directly related to the flow difference in the first stage of the swirler, as seen in~\cref{fig:swirler_mod_u,fig:swirler_mod_u_3d}. Indeed, a small recirculation zone (at the tip of the plug) appears in the left case (a), which almost disappears in the right case (b).
 
-\begin{figure}[!ht]
+\begin{figure}[!h]
 \centering
         \subfloat[$\Delta P \sim \unit{\numprint{4020}}{\pascal}$]{
                 \includegraphics[width = 0.49\textwidth]{fig/applications/swirler/LikeMin}
@@ -504,7 +512,7 @@ A closer look allows to identify the main region of difference at the tip of the
 \label{fig:swirler_mod_phi}
 \end{figure}
 
-\begin{figure}[!ht]
+\begin{figure}[!h]
 \centering
         \subfloat[$\Delta P \sim \unit{\numprint{4020}}{\pascal}$]{
                 \includegraphics[width = 0.49\textwidth]{fig/applications/swirler/Umin}
@@ -516,6 +524,12 @@ A closer look allows to identify the main region of difference at the tip of the
 \label{fig:swirler_mod_u}
 \end{figure}
 
+\begin{figure}[!h]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/swirler/recirculation_base-mod.png}
+\caption{\emph{Q}-criterion colored by mean axial velocity for two geometries with $\sim2$\% channel size difference with the reference case. \emph{Left} $\Delta P \sim \unit{\numprint{4020}}{\pascal}$, \emph{right} $\Delta P \sim \unit{\numprint{4260}}{\pascal}$.}
+\label{fig:swirler_mod_u_3d}
+\end{figure}
 
 \section{Dimensionality Reduction and Statistical Analysis of Uncertain Parameters}\label{sec:dim}
 Performing a UQ study requires a large number of numerical simulations in order to converge statistical moments. If the number of parameters is also large, an even larger number of samples is required. In the present case (\cref{sec:swirler}), the uncertain parameters are the dimensions of all 16 channels. For each channel, this parameter induces a modification of the cross section area. However the channel dimensions, resulting from AM, are not independent and the number of independent parameters can be reduced. Indeed, AM is a layer-by-layer process which precision relies on the ability of the machine to build up and polish these layers. All channels of one stage being built simultaneously, a systematic bias is introduced. 
@@ -606,8 +620,9 @@ Pressure drop (Pa) & 4128 & 4133 & 65 & 4020 & 4260\\
 
 As a consequence of this uniformity with no clear structure, it is difficult to build a reduced model. Several surrogate model strategies available in BATMAN---see~\cref{sec:swirler}---such as Gaussian process, polynomial chaos and Radial Basis Functions were tested, but none of these methods were able to fit the data and infer a satisfactory result. The reported quality---assessed by Leave-one-out cross validation~\cite{Kohavi1995}---was negative, which implies that the tested surrogate models are worse than a simple constant guess.
 
-To further analyse the results, \cref{fig:dp-surface} shows the variation of the pressure loss with the total channel section area for each simulation. Again no clear pattern is making out. The swirl numbers---definition from Merkle~\cite{Merkle2006}---for cases with maximum, minimum and middle value of pressure drop are summarized in~\cref{tab:swirl}. It is interesting to see that despite pressure drop variation, the swirl number which drives the characteristics of the flow stays within negligible variation close to the theoretical value of $S=0.76$ in all three cases. These observations are confirmed by the comparison of the mean axial velocity profiles downstream the nozzle exit compared with PIV measurement for the same three cases (\cref{fig:profile-u}). Details and discussion about PIV are given in Daviller \textit{et al.}~\cite{Daviller2017}. Very close curves are obtained for the three LES at the shown positions. This means that, in accordance with the unchanged swirl number, no significant change occurs in the flow field downstream the nozzle. % This is confirmed by the PSD of mean axial velocity at the plug tip in~\cref{fig:psd-u}. Each simulation exhibit a $k^{-5/3}$ slope over a range of frequency $5\time10^3 \leq f (Hz) \leq 5\time10^4$, characteristic of the inertial range of turbulent flows.
-%All in all, it ensures that the flame will be stable even though there is a change in pressure loss.
+To further analyse the results, \cref{fig:dp-surface} shows the variation of the pressure loss with the total channel section area for each simulation. Again no clear pattern is making out. The swirl numbers---definition from Merkle~\cite{Merkle2006}---for cases with maximum, minimum and middle value of pressure drop are summarized in~\cref{tab:swirl}. It is interesting to see that despite pressure drop variation, the swirl number which drives the characteristics of the flow stays within negligible variation close to the theoretical value of $S=0.76$ in all three cases. These observations are confirmed by the comparison of the mean axial velocity profiles downstream the nozzle exit compared with PIV measurement for the same three cases (\cref{fig:profile-u}). Details and discussion about PIV are given in Daviller \textit{et al.}~\cite{Daviller2017}. Very close curves are obtained for the three LES at the shown positions. This means that, in accordance with the unchanged swirl number, no significant change occurs in the flow field downstream the nozzle. This is confirmed by the PSD of mean axial velocity at the plug tip in~\cref{fig:psd-u}. Each simulation exhibit a $k^{-5/3}$ slope over a range of frequency $5\time10^3 \leq f (Hz) \leq 5\time10^4$, characteristic of the inertial range of turbulent flows.
+
+All in all, it ensures that the flame will be stable even though there is a change in pressure loss.
 
 
 \begin{table}[!ht]
@@ -638,12 +653,12 @@ Swirl number & 0.7609 & 0.7582 & 0.7639\\
 \end{figure*}
 
 % PSD
-%\begin{figure*}[!ht]
-%\centering
-%\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/swirler/psd_u.pdf}
-%\caption{Power spectral density of axial velocity fluctuations for three different geometries at the plug tip $x=??$ and $y=??$.}
-%\label{fig:psd-u}
-%\end{figure*}
+\begin{figure*}[!ht]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/swirler/psd_u.pdf}
+\caption{Power spectral density of axial velocity fluctuations for three different geometries at the plug tip.}
+\label{fig:psd-u}
+\end{figure*}
 
 
 Although the construction of a surrogate model is not feasible in this case, the present uncertainty analysis highlights the intrinsic and chaotic variability of a self-compensation mechanism in the generated statistical data. This can be explained by: (\emph{i}) the nature of the geometrical modifications, where some channels are widened while others are tightened, limiting the overall impact on the pressure loss; and (\emph{ii}) the amplitude of these modifications which is very small compared to the width of the channels. Indeed, manufacturing defects were limited to a maximum 2\% of the cross section area of a channel, consistently with real observation of AM. Note that in such situation, the ability of the solver to respond with the correctly adapted physics is paramount. To check this, the relative numerical error on the pressure drop was estimated and found less than $1\%$ which is sufficient to capture with accuracy the pressure drop induced variation by geometrical modification of the order of $\simeq 5\%$. Thus, the solver accuracy is sufficient and the results are considered reliable.
@@ -670,18 +685,18 @@ Numerical simulation of roughened heated tubes is a less expensive alternative f
 Because of the wide variety of possible roughness shapes, all geometries cannot be experimentally or numerically tested and optimal roughness shapes for heat exchangers remain unknown to this day. The objective of this paper is to find an optimal roughness shape for industrial heat exchangers applications. For the first time to the authors’ knowledge, series of LES are used in addition to Gaussian Process regression \cite{rasmussen2006} to construct a reliable surrogate model representative of the heat exchanger efficiency for various roughness shapes. This surrogate model lead to the prediction of an optimal design, which enables to understand the complex flow behaviour resulting in important heat transfer and limited pressure loss.\\
 
 % paper structure
-The paper is tailored as follows; \cref{sec:case} starts with a presentation of the numerical methodology used for the simulation of turbulent heated flow inside various internally ribbed heat exchanger. In particular, the tube inner surface geometry, the meshing method, the governing equations and the objective function to optimize are presented. \cref{sec:method} and \cref{sec:uq} then describe the techniques employed to construct the surrogate model as well as its error assessment. After this methodological presentation, \cref{sec:results} presents the results of the optimization procedure leading to a first optimal discontinuously ribbed tube geometry, and investigates more in detail the flow dynamics and the thermal behaviour inside it. \cref{sec:discussion} investigates the influence of the rib shape on pressure loss and heat transfer. Smoother shapes representative of dimpled tube geometries are simulated and compared to the first optimal geometry studied in \cref{sec:results}. Finally, \cref{sec:ccl} put a closure to this paper by summarizing its contribution along with potential directions for future works or applications.
+The chapter is tailored as follows; \cref{sec:optim_case} starts with a presentation of the numerical methodology used for the simulation of turbulent heated flow inside various internally ribbed heat exchanger. In particular, the tube inner surface geometry, the meshing method, the governing equations and the objective function to optimize are presented. \Cref{sec:optim_method} then describe the technique employed to optimize the geometry. After this methodological presentation, \cref{sec:optim_results} presents the results of the optimization procedure leading to a first optimal discontinuously ribbed tube geometry, and investigates more in detail the flow dynamics and the thermal behaviour inside it. \cref{sec:optim_discussion} investigates the influence of the rib shape on pressure loss and heat transfer. Smoother shapes representative of dimpled tube geometries are simulated and compared to the first optimal geometry studied in \cref{sec:optim_results}. Finally, \cref{sec:optim_ccl} put a closure to this paper by summarizing its contribution along with potential directions for future works or applications.
 
 \section{Case Description}
-\label{sec:case}
+\label{sec:optim_case}
 
 \subsection{Geometrical and Meshing considerations}
 
-Simulated reactors are tubular geometries, with a single-started helical rib added on the inner surface which constitutes the artificial roughness responsible for the heat transfer enhancement. Figure~\ref{geometry} represents an example of simulated ribbed reactor geometry. For comparison purpose, all reactors have an identical diameter $D=38.1$~mm. The rib has a rounded shape, illustrated on Figure~\ref{rib}, with a floor width $w$ equal to 3.2864 times the rib height $e$, so $w=3.2864 \times e$. The rib cross-section is then fully characterized only by its height $e$. In addition to $e$, an important geometrical parameter for the rib shape is the rib pitch $p$. Both $e$ and $p$ are uncertain geometrical parameters for the optimization process. Note that in this study the pitch-to-height ratio $p/e$ always remains larger than 8. All ribbed reactor geometries then belong to the K-type roughness ($p/e > 4$) following the classification introduced in \cite{jimenez2004, nagano2004}. K-type roughness is known to greatly affect the bulk flow and enhance heat transfer. As stated by Perry \cite{perry1969}, K-type roughness opposes to D-type roughness ($p/e < 4$) for which the ribs are so closely spaced that the eddy shedding from the roughness element has little impact on the bulk flow, which decreases heat transfer. As highlighted by the experimental work of Ravigururajan et al. \cite{ravigururajan1996}, the shape of the rib cross-section only has little influence on the heat transfer enhancement compared to its height and pitch, justifying a constant rounded shape in the current work. Discontinuities are included in the rib as a geometrical parameter to optimize. Size and positions of the rib discontinuities are fully characterized by the number of discontinuities per rib pitch $N_D$ and the length of the discontinuity relative to the length of the remaining rib, called the emptiness ratio $E_r$. $N_D$ and $E_r$ are also uncertain geometrical parameters to optimize, making the total number of input geometrical parameters to optimize equal to 4.\\
+Simulated reactors are tubular geometries, with a single-started helical rib added on the inner surface which constitutes the artificial roughness responsible for the heat transfer enhancement. \Cref{geometry} represents an example of simulated ribbed reactor geometry. For comparison purpose, all reactors have an identical diameter $D=38.1$~mm. The rib has a rounded shape, illustrated on~\cref{rib}, with a floor width $w$ equal to 3.2864 times the rib height $e$, so $w=3.2864 \times e$. The rib cross-section is then fully characterized only by its height $e$. In addition to $e$, an important geometrical parameter for the rib shape is the rib pitch $p$. Both $e$ and $p$ are uncertain geometrical parameters for the optimization process. Note that in this study the pitch-to-height ratio $p/e$ always remains larger than 8. All ribbed reactor geometries then belong to the K-type roughness ($p/e > 4$) following the classification introduced in~\cite{jimenez2004, nagano2004}. K-type roughness is known to greatly affect the bulk flow and enhance heat transfer. As stated by Perry \cite{perry1969}, K-type roughness opposes to D-type roughness ($p/e < 4$) for which the ribs are so closely spaced that the eddy shedding from the roughness element has little impact on the bulk flow, which decreases heat transfer. As highlighted by the experimental work of Ravigururajan et al.~\cite{ravigururajan1996}, the shape of the rib cross-section only has little influence on the heat transfer enhancement compared to its height and pitch, justifying a constant rounded shape in the current work. Discontinuities are included in the rib as a geometrical parameter to optimize. Size and positions of the rib discontinuities are fully characterized by the number of discontinuities per rib pitch $N_D$ and the length of the discontinuity relative to the length of the remaining rib, called the emptiness ratio $E_r$. $N_D$ and $E_r$ are also uncertain geometrical parameters to optimize, making the total number of input geometrical parameters to optimize equal to 4.\\
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/geometry.png}
+\includegraphics[width=0.8\linewidth]{fig/applications/optim/geometry.png}
 \caption{Geometry of an helically ribbed tube reactor. 3 pitches are represented.}
 \label{geometry}
 \end{figure}
@@ -693,20 +708,18 @@ Simulated reactors are tubular geometries, with a single-started helical rib add
 \label{rib}
 \end{figure}
 
-The computational domains consist in one pitch long periodic tubes, as periodic tubes have been used for long to study steady turbulent flows and proved to give accurate results \cite{rogallo1984,kim1987,JimenezMoin1991}, including for helically ribbed tubes \cite{campet2018}. Previous works on helically ribbed tubes using periodic conditions \cite{Zhu2015,campet2018} showed that the result does not depend on the number of periodic patterns that are computed, as turbulent structures are always found smaller than the rib pitch, even for smaller pitch-to-diameter ratios $p/D$ than studied in the current work. Following the numerical methodology validated by Campet et al. \cite{campet2018} for steady turbulent flows in similar geometries, the meshes are fully unstructured and constituted of tetrahedral cells. Because of the complex flow behaviour, in particular in the near-wall region, due to the presence of the rib, no wall law is applied. Consequently it has been chosen to systematically refine the grid in the near-wall region and in the rib vicinity, as shown on Figure \ref{mesh}. The influence of the distance to the wall for the first grid point on turbulent flow for this kind of geometry was first investigated by Zhu \cite{Zhu2015}, demonstrating that a dimensionless wall resolution $y^+ = y u_{\tau} / \nu \approx 10$ gives good results and saves a lot of computational time when compared to finer grid resolutions ($y^+ \approx 1$). As all simulations are performed at similar Reynolds number, a wall distance of the first grid point away from the wall $y = 0.323$ mm is imposed between two ribs in all simulations, holding a wall resolution $y^+ \approx 10$, despite the numerous simulated geometries. Because of the expected flow acceleration of the fluid in the rib vicinity, the cell size is twice smaller on the rib surface to ensure the same resolution criterion. The cell size is progressively increased toward the centreline of each computational domain. Finally, the smallest cell volume is fixed to $2.0 \times 10^{-13}$ m$^3$ in all computational domains in order to control the computational time step. Depending on the simulated geometry, one mesh is constituted of 2 to 6 million nodes. Each simulation is first run for approximately 50 convective times $\tau_{conv} = \frac{p}{U_b}$ before the flow statistics are gathered in order to reach steady state and then the averaging of the flow is performed on approximately 100 more convective times $\tau_c$. The corresponding mean CPU time of one simulation is about $45,000$ hours.\\  
+The computational domains consist in one pitch long periodic tubes, as periodic tubes have been used for long to study steady turbulent flows and proved to give accurate results \cite{rogallo1984,kim1987,JimenezMoin1991}, including for helically ribbed tubes \cite{campet2018}. Previous works on helically ribbed tubes using periodic conditions \cite{Zhu2015,campet2018} showed that the result does not depend on the number of periodic patterns that are computed, as turbulent structures are always found smaller than the rib pitch, even for smaller pitch-to-diameter ratios $p/D$ than studied in the current work. Following the numerical methodology validated by Campet et al. \cite{campet2018} for steady turbulent flows in similar geometries, the meshes are fully unstructured and constituted of tetrahedral cells. Because of the complex flow behaviour, in particular in the near-wall region, due to the presence of the rib, no wall law is applied. Consequently it has been chosen to systematically refine the grid in the near-wall region and in the rib vicinity, as shown on~\cref{mesh}. The influence of the distance to the wall for the first grid point on turbulent flow for this kind of geometry was first investigated by Zhu~\cite{Zhu2015}, demonstrating that a dimensionless wall resolution $y^+ = y u_{\tau} / \nu \approx 10$ gives good results and saves a lot of computational time when compared to finer grid resolutions ($y^+ \approx 1$). As all simulations are performed at similar Reynolds number, a wall distance of the first grid point away from the wall $y = 0.323$ mm is imposed between two ribs in all simulations, holding a wall resolution $y^+ \approx 10$, despite the numerous simulated geometries. Because of the expected flow acceleration of the fluid in the rib vicinity, the cell size is twice smaller on the rib surface to ensure the same resolution criterion. The cell size is progressively increased toward the centreline of each computational domain. Finally, the smallest cell volume is fixed to $2.0 \times 10^{-13}$ m$^3$ in all computational domains in order to control the computational time step. Depending on the simulated geometry, one mesh is constituted of 2 to 6 million nodes. Each simulation is first run for approximately 50 convective times $\tau_{conv} = \frac{p}{U_b}$ before the flow statistics are gathered in order to reach steady state and then the averaging of the flow is performed on approximately 100 more convective times $\tau_c$. The corresponding mean CPU time of one simulation is about $45,000$ hours.\\  
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/mert_mesh2.pdf}
+\includegraphics[width=\linewidth]{fig/applications/optim/mert_mesh2.pdf}
 \caption{Example of a mesh cut in the Z-normal plane for (a) a full computational domain and (b) a detail of the near wall region.}
 \label{mesh}
 \end{figure}
 
 \subsection{Numerical set-up}
 
-The simulations have been performed using the \emph{AVBP}~\cite{gicquel2011} solver. This parallel code solves the three-dimensional compressible Navier-Stokes equations for both steady and unsteady reacting flows. The code is capable of handling hybrid unstructured meshes and allows to address complex geometries. High-order numerical schemes based on the \emph{Taylor-Galerkin} (TTG) family are used~\cite{quartapelle1993}.\\
-
-For comparison purpose, all geometries are computed for the same flow regime $Re = U_b D / \nu = 76800$, with $U_b$ the bulk velocity, $D$ the pipe diameter and $\nu$ the viscosity of the fluid. Bulk velocity $U_b$ and bulk temperature $T_b$ are set constant and similar in all geometries, ensuring similar viscosity and Reynolds number. A no-slip condition is imposed at the walls. Moreover, a spatially and temporally constant wall heat flux is imposed at the walls, providing heat to the fluid. In order to compare all geometries at similar operating conditions, all simulated heat exchangers receive the same amount of heat per meter, the imposed wall heat flux being scaled by the wall surface. The total heat provided to the fluid $\Phi_w$ is set equal to $9,576$ W/m in all geometries, which correspond to a wall heat flux of $80,000$ W/m$^2$ in a smooth tube of diameter D. The operating conditions and the fluid properties have been chosen to be representative of the thermal cracking process. They are summarized in Table~\ref{tab_opconditions}.\\
+As in~\cref{chap:ls89}, the simulations have been performed using the \emph{AVBP} solver. For comparison purpose, all geometries are computed for the same flow regime $Re = U_b D / \nu = 76800$, with $U_b$ the bulk velocity, $D$ the pipe diameter and $\nu$ the viscosity of the fluid. Bulk velocity $U_b$ and bulk temperature $T_b$ are set constant and similar in all geometries, ensuring similar viscosity and Reynolds number. A no-slip condition is imposed at the walls. Moreover, a spatially and temporally constant wall heat flux is imposed at the walls, providing heat to the fluid. In order to compare all geometries at similar operating conditions, all simulated heat exchangers receive the same amount of heat per meter, the imposed wall heat flux being scaled by the wall surface. The total heat provided to the fluid $\Phi_w$ is set equal to $9,576$ W/m in all geometries, which correspond to a wall heat flux of $80,000$ W/m$^2$ in a smooth tube of diameter D. The operating conditions and the fluid properties have been chosen to be representative of the thermal cracking process. They are summarized in Table~\ref{tab_opconditions}.\\
 
 \begin{table}
 \small
@@ -788,11 +801,11 @@ F_{cost} = K/K_s = \frac{St/St_s}{(f/f_s)^{1/3}}
 \end{equation}
 
 \section{Optimization Method}
-\label{sec:method}
+\label{sec:optim_method}
 
-Among the numerous methods that can be used to do an optimization~\cite{cavazzuti2013} are the one taking advantages of a surrogate model~\cite{forrester2009}. When dealing with complex cases, the numerical cost is such that only a limited number of simulations can be performed. However, ensuring the convergence of an optimization requires a minimal number of such evaluations for both deterministic and stochastic methods. In this context, building a proxy of the simulation setup allows to overcome the computational cost. As this proxy is being used for optimizing the problem, its quality is paramount. At some point refining the space of parameters---leading to a quality improvement of the model---can improve the optimization.
+Among the numerous methods that can be used to do an optimization~\cite{Cavazzuti2013} are the one taking advantages of a surrogate model~\cite{Forrester2009}. When dealing with complex cases, the numerical cost is such that only a limited number of simulations can be performed. However, ensuring the convergence of an optimization requires a minimal number of such evaluations for both deterministic and stochastic methods. In this context, building a proxy of the simulation setup allows to overcome the computational cost. As this proxy is being used for optimizing the problem, its quality is paramount. At some point refining the space of parameters---leading to a quality improvement of the model---can improve the optimization.
 
-In this study, the open-source \emph{BATMAN} tool~\cite{roy2018} is used. BATMAN handles all the workflow from the design of experiments, to the creation of the surrogate and the optimization. Its workflow is presented in~\cref{alg:workflow}.
+In this study, the open-source \emph{BATMAN} tool~\cite{Roy2018} is used. BATMAN handles all the workflow from the design of experiments, to the creation of the surrogate and the optimization. Its workflow is presented in~\cref{alg:workflow}.
 
 \begin{algorithm}
   \caption{Workflow using BATMAN}
@@ -831,27 +844,27 @@ Using the surrogate, the prediction is expressed as a random process with $Y\sim
 Thus, in this work we used the classical expected improvement formulation in order to avoid the definition of an additional constant. Due to the computational cost of the simulations, this parameter was not characterized.
 
 \section{Results}
-\label{sec:results}
+\label{sec:optim_results}
 
 \subsection{Continuous rib}
 \label{sec:continuous_rib}
 
-When considering a continuous rib, i.e.~$N_D=0$, the emptiness ratio parameter $E_r$ becomes irrelevant and the problem reduces to an optimization of 2 input parameters: $e$ and $p$. The response surface constructed with the Gaussian Process method is shown on Figure \ref{continuous_RS}. A total of 8 simulations were performed for heat exchangers with a continuous rib, indicated by symbols $\bullet$ on Figure~\ref{continuous_RS}. Note that few simulations are performed for a continuous rib, geometries with a discontinuous rib being more promising for the cost function optimization.\\
+When considering a continuous rib, i.e.~$N_D=0$, the emptiness ratio parameter $E_r$ becomes irrelevant and the problem reduces to an optimization of 2 input parameters: $e$ and $p$. The response surface constructed with the Gaussian Process method is shown on~\cref{continuous_RS}. A total of 8 simulations were performed for heat exchangers with a continuous rib, indicated by symbols $\bullet$ on~\cref{continuous_RS}. Note that few simulations are performed for a continuous rib, geometries with a discontinuous rib being more promising for the cost function optimization.\\
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/GP_continuous.pdf}
+\includegraphics[width=0.7\linewidth,keepaspectratio]{fig/applications/optim/GP_continuous.pdf}
 \caption{Response surface for a continuous rib.}
 \label{continuous_RS}
 \end{figure}
 
 Two optimal regions for the maximization of the objective function appear on the response surface. A first optimal is found for high $e$ and low $p$, while a second optimal is found for high $e$ and high $p$. Based on this observation, it appears that low $e$ always lead to a poor efficiency of the heat exchanger and high $e$ ($e > 2.0$ mm) should be favoured. Note however that the objective function is always evaluated greater than $1.0$, assessing better thermal efficiencies than a simple smooth heat exchanger. In the low-pitch optimal region, it appears that the influence of the rib height on the cost function is of little importance, the cost function remaining quite constant in this zone. Indeed, the combination of small pitch and high height leads to very important pressure loss, which balances the advantage of higher heat transfer efficiency. The high-pitch optimal region seems even more promising than the previous optimal region, the simulation performed in this zone leading to the sample point with maximum cost function. The optimal predicted value of the objective function is found to be $F_{\text{cost}} = 1.374$ for $e = 3.16$ mm and $p = 150$ mm. Few observations are done in this zone due to the limited computational cost allocated to the optimization process and more promising reactor design with discontinuous ribs.\\
 
-Figure~\ref{sensitivity2D} shows the first and total order Sobol' indices for the two input parameters $p$ and $e$. Both input parameters have an important impact on the response surface, $e$ impacting slightly more as $S_p = 0.322$ and $S_e = 0.444$. The two parameters are however correlated since the Sobol' total order indices are found significantly higher than the Sobol' first order indices ($S_{Tp} = 0.538$ and $S_{Te} = 0.632$). Those remarks are in good agreement with the conclusions drawn from the response surface. 
+\Cref{sensitivity2D} shows the first and total order Sobol' indices for the two input parameters $p$ and $e$. Both input parameters have an important impact on the response surface, $e$ impacting slightly more as $S_p = 0.322$ and $S_e = 0.444$. The two parameters are however correlated since the Sobol' total order indices are found significantly higher than the Sobol' first order indices ($S_{Tp} = 0.538$ and $S_{Te} = 0.632$). Those remarks are in good agreement with the conclusions drawn from the response surface. 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=7cm]{fig/applications/optim/Sobol_continu.pdf}
+\includegraphics[width=0.6\linewidth,keepaspectratio]{fig/applications/optim/Sobol_continu.pdf}
 \caption{First order and total order Sobol' indices for continuous rib optimization.}
 \label{sensitivity2D}
 \end{figure}
@@ -859,38 +872,38 @@ Figure~\ref{sensitivity2D} shows the first and total order Sobol' indices for th
 \subsection{Discontinuous rib}
 \label{sec:discontinuous_rib}
 
-\begin{figure*}[ht!]
+\begin{figure}[h!]
 \centering
-\includegraphics[width=18cm]{fig/applications/optim/GP_1ND.pdf}
+\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/optim/GP_1ND.pdf}
 \caption{Examples of response surfaces for a rib with 1 discontinuity per pitch ($N_D=1$). $E_r=0.2$ (left), $E_r=0.5$ (middle), $E_r=0.8$ (right).}
 \label{1D_RS}
-\end{figure*}
+\end{figure}
 
-As previously stated, discontinuities are also introduced in the rib leading to a total of 4 geometrical parameters to optimize. Figure~\ref{1D_RS} shows examples of response surfaces predicted for ribs including one discontinuity per rib pitch and for different values of $E_r$. The total number of simulations performed with discontinuous ribs is equal to $34$, the initial design of experiment consisting of $20$ simulations and $14$ simulations being added thanks to the EGO method.\\
+As previously stated, discontinuities are also introduced in the rib leading to a total of 4 geometrical parameters to optimize. \Cref{1D_RS} shows examples of response surfaces predicted for ribs including one discontinuity per rib pitch and for different values of $E_r$. The total number of simulations performed with discontinuous ribs is equal to $34$, the initial design of experiment consisting of $20$ simulations and $14$ simulations being added thanks to the EGO method.\\
 
 Results show similarities between the continuous rib response surface given in Figure \ref{continuous_RS} and response surfaces obtained with one small discontinuity ($N_D=1$ and $E_r < 0.5$). In both cases maximum values of the cost function are found for large $e$, while the minimum values for $F_{cost}$ are encountered for small $e$ and large $p$. It should be noted however that for discontinuous ribs with $E_r < 0.5$, the region of main interest is found to be the high $e$ and small $p$ region, large $p$ reducing the thermal efficiency of the heat exchanger. On the other hand, a very different response surface is observed when dealing with a larger discontinuity, and $0.5 < E_r < 0.6$ constitutes a transition zone between two behaviours. With the discontinuity becoming larger than the rib itself, the optimal $p$ value suddenly shifts from $50$ mm to about $115$ mm. This has however few influence on the optimal rib height, and optimal value of $e$ remains around $4.0$ mm. When associated with large $E_r$, $p$ only has a significant influence on the cost function in the $e > 2.0$ mm region.\\
 
 More discontinuities are included in the rib when increasing the value of $N_D$. Response surfaces are plotted for $N_D$ varying from $1$ to $5$, and some examples are displayed on Figure~\ref{total_RS}. For all investigated number of discontinuities, the response of the system to the input parameters is very similar and the same observations than for geometries with $N_D=1$ apply. In particular, the sudden transition in optimal roughness shape for $0.5 < E_r < 0.6$ is always observed. The main influence of the number of discontinuities is a slight increase of $F_{cost}$ in the large $E_r$ region when increasing $N_D$, which tends to favour a high number of discontinuities. This is explained by the lower pressure drop found with a larger number of discontinuities while increasing heat transfer enhancements. For $N_D > 1$, the global optimal design that maximizes the cost function clearly appears in the large $e$, large $E_r$ region and for moderate values of $p$. Based on those results, the best predicted geometry is shown on Figure~\ref{geom_optim}, and has the following geometrical parameters: $e=3.14$ mm, $p=105$ mm, $E_r=0.75$ and $N_D=5$. The corresponding value for the cost function is $F_{cost}=1.583$. The dynamic and thermal behaviour of the flow in the optimal predicted geometry is described in more details in the next section.\\
 
-\begin{figure*}[p!]
+\begin{figure}[h!]
 \centering
-\includegraphics[width=18cm]{fig/applications/optim/GP_discontinu_red.pdf}
+\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/optim/GP_discontinu_red.pdf}
 \caption{Examples of response surfaces for various $N_D$ and $E_r$.}
 \label{total_RS}
-\end{figure*}
+\end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/geom_opt.pdf}
+\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/applications/optim/geom_opt.pdf}
 \caption{Optimal predicted ribbed tube geometry for heat exchanger applications. Three pitches are represented. (a) Cut in the X-normal plane showing the inner surface and (b) view of the wall surface from the outside of the tube.}
 \label{geom_optim}
 \end{figure}
 
 Figure~\ref{sensitivity} represents the first and total order Sobol' indices for each input parameter. For the optimization of a discontinuous ribbed heat exchanger, the parameters do not have a similar impact on the cost function. The rib height $e$ one of the most influential parameter, the first order Sobol' indices reaching a value of $S_e = 0.290$. The total order Sobol' indices for $e$ is even higher ($S_{Te} = 0.539$), traducing an influence that depends on the other parameters, and in particular on $E_r$. This is in good agreement with the observed response surfaces, high $e$ being always more favourable, especially when associated with high values of $E_r$. Input parameters $p$ and $E_r$ have small first order Sobol' indices ($S_p = 0.006$ and $S_{E_r} = 0.070$), but their total order indices are much higher ($S_{Tp} = 0.395$ and $S_{TE_r} = 0.620$), meaning non-negligible but complex influence of those parameters on the cost function. Indeed, the influence of $p$ appears to be coupled with both $e$ and $E_r$, as small $e$ and large $E_r$ always lead to a small impact of $p$ on the cost function, due to geometries having fewer impact on the bulk flow and with no swirling motion. On the contrary, large values of $e$ lead to a roughness greatly impacting the flow, and $p$ is highly coupled to $e$ then. Finally, $N_D$ is the least influential parameter on the cost function. In particular, $S_{N_D} = 0.023$ which is quite small. The total Sobol' index is however not completely negligible ($S_{TN_D} = 0.138$), assessing a small impact of $N_D$ on the cost function.\\
 
-\begin{figure}[ht]
+\begin{figure}[!h]
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/Sobol_discontinu.pdf}
+\includegraphics[width=0.6\linewidth,keepaspectratio]{fig/applications/optim/Sobol_discontinu.pdf}
 \caption{First order and total order Sobol' indices for discontinuous rib optimization.}
 \label{sensitivity}
 \end{figure}
@@ -901,37 +914,37 @@ Figure~\ref{sensitivity} represents the first and total order Sobol' indices for
 
 Due to the presence of the discontinuous rib, the average flow parameters are considered as functions of both the radial and axial coordinates. The radial coordinate is normalized by the pipe radius $R$, ranging from $r/R=r^+=0$ at the pipe centre to $r^+=1$ at the pipe wall. The axial distance $X$ is normalized by the rib height, $X/e=X^+=0$ being the position just downstream the rib crossing the left periodic plane. Moreover, because of the rib discontinuities and the existing planes of symmetry, profiles are shown in two different longitudinal planes: the plane cutting the rib by its centre, called plane \circled{1}, and the plane being equidistant of two ribs called plane \circled{2}, as represented on Figure~\ref{planes}.\\
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/PlaneS.pdf}
+\includegraphics[width=0.6\linewidth,keepaspectratio]{fig/applications/optim/PlaneS.pdf}
 \caption{Representation of the two symmetry planes of interest. Plane \textcircled{1} is the longitudinal plane cutting the centre of the rib, and plane \textcircled{2} is the longitudinal plane equidistant of the two ribs.}
 \label{planes}
 \end{figure}
 
 The mean axial velocity profiles normalized by the bulk velocity in plane \circled{1} are represented in Figure~\ref{Ux_mean} (top) for positions $X^+=-1$ (rib top), $2.5$, $7.5$, $12.5$, $17.5$, $22.5$ and $27.5$. Mean axial velocity is strongly decelerated in the rib wake. The flow however fully establishes few rib heights farther and all axial velocity profiles are found almost similar from $X^+=7.5$ to $X^+=27.5$. Because of the rib shape, the recirculation zone is very small and does not appear in Figure~\ref{Ux_mean}, the first represented profile downstream the rib being at position $X^+=2.5$. The recirculation zone actually exhibits a very characteristic 'S' shape due to the rectangular rib shape, including two vertical planes slantwise to the flow direction inducing a flow detachment, as represented on Figure~\ref{recircul}. Mean axial velocity in plane \circled{2} are also displayed on Figure~\ref{Ux_mean} (bottom). In the path between two ribs, the axial velocity profiles are similar at every position, showing no impact of the rib roughness in those zones of the heat exchanger.\\
 
-\begin{figure}[ht]
+\begin{figure}[!h]
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/Axial_vel.pdf}
+\includegraphics[width=0.7\linewidth,keepaspectratio]{fig/applications/optim/Axial_vel.pdf}
 \caption{Mean axial normalized velocity profiles at various axial locations, both in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
 \label{Ux_mean}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[!h]
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/Radial_vel.pdf}
+\includegraphics[width=0.7\linewidth,keepaspectratio]{fig/applications/optim/Radial_vel.pdf}
 \caption{Mean radial normalized velocity profiles at various axial locations, both in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
 \label{Ur_mean}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/Azimuthal_vel.pdf}
+\includegraphics[width=0.7\linewidth,keepaspectratio]{fig/applications/optim/Azimuthal_vel.pdf}
 \caption{Mean azimuthal normalized velocity profiles at various axial locations, both in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
 \label{Uw_mean}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth]{fig/applications/optim/Recircul.pdf}
 \caption{Representation of the mean recirculation zone downstream the rib viewed from above the rib. The iso-surface of null axial velocity is used as the limits of the recirculation, and is coloured by the thickness of the recirculation zone.}
@@ -942,7 +955,7 @@ Mean radial velocity is investigated in Figure~\ref{Ur_mean} in both planes \cir
 
 Mean azimuthal velocity profiles are displayed on Figure~\ref{Uw_mean}. Similarly to the radial flow motion, the main azimuthal motion is located in the rib wake. Note that at this location, mean azimuthal velocity is negative, meaning a mean flow motion swirling in the opposite direction than the rib helix. This is due to the shape of the rib, and in particular to the flow impacting rib walls oriented perpendicularly to the helix direction in the near wall region. Upstream the rib, a positive mean azimuthal velocity is found in the near wall region, also due to the rib shape orienting the flow. In the rest of the domain, azimuthal motion remains very low, the large discontinuities between the ribs preventing the development of the swirling motion. Indeed, the disappearing of the swirling motion occurs for $E_r > 0.6$, the rib length becoming shorter than the rib width leading to a different orientation of the flow. This also explains the sudden change in the shape of the cost function when dealing with larger $E_r$, the swirling motion being detrimental to the heat transfer efficiency. Figure~\ref{streamlines} shows streamlines of the mean flow in the rib vicinity. The flow impacting the rib appears to bypass the roughness by both sides, explaining the azimuthal velocity profiles.\\
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth]{fig/applications/optim/Streamlines.png}
 \caption{Flow streamlines impacting the rib, coloured by velocity magnitude.}
@@ -1005,7 +1018,7 @@ f_s = \frac{1}{(1.58 ~ ln(Re) - 3.28)^2}
 
 Wall temperature on the coil inner surface is represented on Figure~\ref{Twall}. Wall temperature strongly decreases in the recirculation zone and downstream the rib, because of the important radial mixing at this location. This induces large cool zones in the wake of the ribs. Skin temperature is also low on the rib surface, thanks to the flow acceleration on the rib top inducing important heat transfer. In opposition, because of the lack of swirling motion in the near wall region, the skin temperature is more important in plane \circled{2}. Quantitative results are given on Figure~\ref{Twall_curves}, showing skin temperature in both plane \circled{1} and plane \circled{2}. In plane \circled{2}, skin temperature remains approximately constant to 1230 K, as all velocity profiles are similar at every axial location, and no swirl motion is responsible for azimuthal mixing of the temperature. In plane \circled{1}, skin temperature is slightly lower on the rib surface, reaching approximately 1210 K, thanks to the flow acceleration of the rib top. Downstream the rib, skin temperature decreases to 1203 K, as the radial motion brings cooler flow from the central region of the pipe in the near wall region. Moreover, the flow recirculation and the azimuthal motion in the rib wake increase the flow turbulence in this region, increasing the heat transfer. Skin temperature progressively increases downstream until reaching the maximum skin temperature of 1232 K at location $X^+=25$.\\
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth]{fig/applications/optim/Twall.pdf}
 \caption{Mean skin temperature in the optimal geometry.}
@@ -1015,14 +1028,14 @@ Wall temperature on the coil inner surface is represented on Figure~\ref{Twall}.
 \begin{figure}[h!]
 \begin{minipage}[c]{1.0\linewidth}
 \centering
-\includegraphics[width=0.96\linewidth]{fig/applications/optim/Twall_curves.pdf}
+\includegraphics[width=0.5\linewidth,keepaspectratio]{fig/applications/optim/Twall_curves.pdf}
 \caption{Profiles of mean skin temperature, in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
 \label{Twall_curves}
 \end{minipage}
 
 \begin{minipage}[c]{1.0\linewidth}
 \centering
-\includegraphics[width=0.96\linewidth]{fig/applications/optim/Nusselt.pdf}
+\includegraphics[width=0.5\linewidth,keepaspectratio]{fig/applications/optim/Nusselt.pdf}
 \caption{Profiles of mean local Nusselt number, in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
 \label{Nusselt}
 \end{minipage}
@@ -1036,7 +1049,7 @@ Nu_s = 0.023 \times Re^{0.8} \times Pr^{0.4}
 \end{equation}\\
 
 \section{Extension to dimpled heat exchangers}
-\label{sec:discussion}
+\label{sec:optim_discussion}
 
 \subsection{Flow dynamics}
 \label{sec:transition_shape}
@@ -1167,6 +1180,11 @@ It can be noted that, if the optimal discontinuous rib shape given by the optimi
 \label{Nusselt_compare}
 \end{minipage}
 \end{figure}
+
+\section{Conclusion}\label{sec:optim_ccl}
+In this work, a methodology for the simulation and optimization of turbulent flows in heat exchangers has been proposed. It relies on a series of wall resolved LES, using periodic domains. Four geometrical parameters are considered for the optimization, leading to a wide variety of continuous and discontinuous single-started internal roughness geometries. The objective function aims at maximizing the heat transfer efficiency while limiting the pressure loss, as proposed by Webb and Eckert~\cite{webb1972}. To avoid running a high number of LES, a surrogate model is built using Gaussian processes. The optimization leads to a heat exchanger geometry which increases the wall heat transfer efficiency by a factor 2.1 compared to a smooth tube, while increasing the pressure loss only by a factor 2.7 for the considered operating conditions, thanks to a roughness with low azimuthal blockage ratio. The introduction of large discontinuities in the rib is responsible for this important increase of heat transfer, because it suppresses the swirling motion, accelerating the flow in the rib vicinity and preserving important radial mixing. Changing the discontinuous rib shape with smoother edges is found to significantly decrease the pressure loss, but also the heat transfer efficiency in the rib wake, leading to a similar value of the objective function. The investigation of the optimum roughness for heat exchangers might be extended to more geometrical parameters, such as the radius of curvature of the smooth edges for dimpled tubes. The swirling motion being detrimental to the heat transfer efficiency, transverse roughness elements might also be considered instead of helical ones, along with more complex forms.\\
+
+To summarize, the proposed methodology is found well adapted for geometrical optimization based on few parameters and was successfully applied, leading to innovative geometrical designs for heat exchangers. These heat exchangers may be used for industrial application requiring important heat transfer and limited pressure loss in comparable operating conditions. The optimization methodology may be used in the future with other objective functions for specific industrial applications, such as thermal cracking.\\ 
 
 \chapter{Volumetric Particle-based Solar Receivers}
 
