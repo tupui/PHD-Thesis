@@ -1,12 +1,17 @@
 \chapter{Scientific Dissemination}
 
-During this thesis, I have produced~{\color[rgb]{0.9,0.2,0.16}\footnote{For an up-to-date list of my contributions, see my \emph{ResearchGate} profile: \href{https://www.researchgate.net/profile/Pamphile\_Roy}{https://www.researchgate.net/profile/Pamphile\_Roy}}}:
+The main contribution of this thesis lies in the dissemination of my work through an open source python library called BATMAN. Thus, all the new methodologies developed are openly available to the community.
+
+On a strict academic point of view, I have produced~{\color[rgb]{0.9,0.2,0.16}\footnote{For an up-to-date list of my contributions, see my \emph{ResearchGate} profile: \href{https://www.researchgate.net/profile/Pamphile\_Roy}{https://www.researchgate.net/profile/Pamphile\_Roy}}}:
 
 \begin{enumerate}
 \item[\textbf{7}] accepted and published articles,
 \item[\textbf{6}] communications in conferences,
-\item[\textbf{3}] reviews in international journals.
+\item[\textbf{3}] reviews in international journals,
+\item[\textbf{2}] implications in European projects.
 \end{enumerate}
+
+The following chapters provide an in-deep presentation of the new methodologies developed during this thesis.
 
 \addcontentsline{toc}{section}{Articles}
 \nociteJbib*
@@ -29,18 +34,50 @@ I have been reviewing manuscripts in the following journals~{\color[rgb]{0.9,0.2
 \item Computer Methods in Applied Mechanics and Engineering.
 \end{itemize}
 
-\chapter{Batman}
+\addcontentsline{toc}{section}{European Projects}
+\section*{European Projects}
+
+\begin{description}
+\item[EoCoE action:] Estimates of hydraulic variables and uncertainty estimates for major rivers in France used for hydropower production, Grand Agreement Number: EINFRA-676629.
+\item[COST action:] secondary proposer for: Model Auditing and SensItivity Analysis (MASIA).
+\end{description}
+
+
+\chapter{Batman}\label{chap:batman}
 
 \section{Description}
-Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) is an open source Python package dedicated to statistical analysis based on non-intrusive ensemble experiment.
 
-\emph{batman} library provides a convenient, modular and efficient framework for design of experiments, surrogate model and uncertainty quantification. *batman* relies on open source python packages dedicated to statistics (*openTURNS* and *scikit-learn* [@openturns, @scikit-learn]). It also implements advanced methods for resampling, robust optimization and uncertainty visualization [@roy2017a].
+Due to the increasing interest in UQ over the last decade, a significant number of UQ-dedicated tools/libraries are now available for the scientific community. OpenTURNS is an open-source (GNU LGPL) scientific library developed since 2005 by EDF, Airbus, Phimeca and IMACS and usable as a Python module dedicated to uncertainty treatment and reliability analysis in a structured industrial approach~\citep{baudin2015}. OpenTURNS offers a wide catalogue of features for UQ (e.g.~PC expansion, \citeauthor{dutka2009}~\citeyear{dutka2009}) and benefits from a well-organized developers' and users' community (forum, training, user guides). It can either be used as a Python module or as a component within a coupling platform. For further information on the OpenTURNS library, the reader is referred to the online reference and use case guides. OpenTURNS is a powerful and complete statistical library but as being used operationally, it was not envisageable to directly implement new methodologies. Moreover, as coded in C++, the development is known to be one order slower than with Python. Thus it has been decided that this thesis would rely on an in-house library.
 
-*batman* handles the workflow for statistical analysis. It makes the most of HPC resources by managing asynchronous parallel tasks. The internal parallelism of each task does not conflict with *batman*'s parallel environment.
+Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) is an open source Python package dedicated to statistical analysis based on non-intrusive ensemble experiment~\cite{roy2018}. Batman library provides a convenient, modular and efficient framework for design of experiments, surrogate model and uncertainty quantification---see~\cref{fig:batman_workflow}. Batman relies on open source python packages dedicated to statistics (OpenTURNS and Scikit-Learn~\citep{pedregosa2011}). Batman handles the workflow for statistical analysis. It makes the most of HPC resources by managing asynchronous parallel tasks. The internal parallelism of each task does not conflict with batman's parallel environment. Batman analysis is launched from a \emph{command line interface} and a setting file. Batman functionalities can also be accessed through an API.
 
-*batman* analysis is launched from a *command line interface* and a setting file. *batman* functionalities can also be accessed through an API.
+Batman is CECILL-B licensed; it is actively developed and maintained by researchers at CERFACS through the GitLab platform:
+\begin{align}
+\text{\href{https://gitlab.com/cerfacs/batman}{https://gitlab.com/cerfacs/batman}}	\nonumber
+\end{align}
 
-*batman* is CECILL-B licensed; it is actively developed and maintained by researchers at CERFACS.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/contributions/batman/workflow.pdf}
+\caption{Workflow to resample the parameter space in an Uncertainty Quantification framework.}
+\label{fig:batman_workflow}
+\end{figure}
+
+This project, and the code related, were started in 2007 at CERFACS under the name JPOD (Jack Proper Orthogonal Decomposition) by T. Braconnier and M. Ferrier, which were supervised by J-C. Jouhaud and J-F. Boussuge. During 5 years, the code has been successfully tested and validated on industrial configurations during the European SimSAC and ALEF (FP7) projects. Then, the project has been dormant until 2015 when Romain Dupuis (PhD student supervised by J-C. Jouhaud) started to be interested in Surrogate Models for aerothermal predictions. After that, in 2016, Uncertainty Quantification capabilities were added by Pamphile Roy (PhD student supervised by B. Cuenot, S. Ricci and J-C. Jouhaud) leading to the new name: Batman. On November, 23th 2017 the UQ team of Cerfacs have decided to release the code on GitLab as open-source under the CECILL-B free software license agreement.
+
+The following people have been core contributors to batman's development and maintenance:
+
+\begin{itemize}
+\item Pamphile Roy,
+\item Romain Dupuis,
+\item Jean-Christophe Jouhaud,
+\item Sophie Ricci,
+\item Robin Campet,
+\item Cyril Fournier,
+\item Antoine Dechaume (JPOD),
+\item Thierry Braconnier (JPOD),
+\item Marc Ferrier (JPOD).
+\end{itemize}
 
 \section{Implementation}
 
@@ -373,7 +410,7 @@ Compared to LHS and low discrepancy sequences, KDOE is totally iterative and sto
 The quality of the design is of prime importance as it determines the quality of the analysis of the experiments. The proposed method provides an alternative to classical one-shot methods to generate initial designs and to continue existing ones. Its versatility and performance allow the analysis of expensive and high-dimensional cases to be within affordable budgets.
 
 
-\chapter{Resampling the Design of Experiments}
+\chapter{Resampling the Design of Experiments}\label{chap:resample}
 \section{Introduction}
 
 The accuracy of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space. The presented techniques show an improvement of the predictive quality of the model with high dimensional analytical input functions. An industrial application is targeted, the aerothermal flow around the \textit{LS89}~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented (see~\cref{chap:ls89}). LES are high-fidelity full 3D unsteady simulations. This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
