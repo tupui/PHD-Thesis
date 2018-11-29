@@ -21,7 +21,7 @@ To overcome the issue of crude MC techniques, there is a need to develop efficie
 \end{equation}
 The key idea of non-intrusive UQ methods is to build a cost-effective surrogate to perform UQ and SA steps~\citep{iooss2010,iooss2016,lamboni2011,lemaitreknio2010,saltelli2007,storlie2009} (see~\cref{sec:surrogate}).
 
-The objective is to evaluate the performance of PC and GP surrogates mimicking the behaviour of 1-D open-channel flows for UQ and SA steps that are important in the design of EnKF and PF algorithms. The quantity of interest is the 1-D water level discretized along 50~km of the Garonne River (South-West France). As a preliminary step, the focus is made on steady flows and the flow remains fluvial. The treatment of strong non-linearity and discontinuity induce by fluvial/super-critical transitions is beyond the scope of this study. The main sources of uncertainties are the upstream discharge that is constant in steady state conditions and the friction coefficient that is a piecewise constant function. Under these hypotheses, the present work features scalar inputs and spatially varying outputs due to the heterogeneous bathymetry of the Garonne River. A convergence study is first carried out to determine the size of the training set $N$ that is required to build a valid surrogate using either PC expansion or GP model. GP and PC surrogates are then compared when a computational budget is set, i.e.~for the same number of snapshots (also called simulations in the paper) $N$ used to construct each surrogate. The comparison is carried out with respect to the following metrics on $\mathbf{h}$: PDF that is of interest for Bayesian inference and PF algorithms; spatially varying Sobol' indices (associated with the correlation between each uncertain input and the spatially distributed output) and correlation matrix (associated with the spatial correlation of the output) that are of interest for variational and EnKF algorithms.
+The objective is to evaluate the performance of PC and GP surrogates mimicking the behaviour of 1-D open-channel flows for UQ and SA steps that are important in the design of EnKF and PF algorithms. The quantity of interest is the 1-D water level discretized along 50~km of the Garonne River (South-West France). As a preliminary step, the focus is made on steady flows and the flow remains fluvial. The treatment of strong non-linearity and discontinuity induce by fluvial/super-critical transitions is beyond the scope of this study. The main sources of uncertainties are the upstream discharge that is constant in steady state conditions and the friction coefficient that is a piecewise constant function. Under these hypotheses, the present work features scalar inputs and spatially varying outputs due to the heterogeneous bathymetry of the Garonne River. A convergence study is first carried out to determine the size of the training set $N$ that is required to build a valid surrogate using either PC expansion or GP model. GP and PC surrogates are then compared when a computational budget is set, i.e.~for the same number of snapshots (also called simulations here) $N$ used to construct each surrogate. The comparison is carried out with respect to the following metrics on $\mathbf{h}$: PDF that is of interest for Bayesian inference and PF algorithms; spatially varying Sobol' indices (associated with the correlation between each uncertain input and the spatially distributed output) and correlation matrix (associated with the spatial correlation of the output) that are of interest for variational and EnKF algorithms.
 
 The structure of the chapter is as follows. \Cref{sec:hydrau} introduces the 1-D SWE solved using MASCARET and the Garonne River case study. \Cref{sec:UQresults} presents the results of the comparative study between PC and GP with respect to a MC reference. Conclusions and perspectives are given in~\cref{sec:ccl}.
 
@@ -267,12 +267,12 @@ The operating point addressed in this document, selected from Arts~\cite{arts199
 
 %Until now, simulations have shown disparate results and capacities to predict the heat transfer coefficient, $H = \frac{\dot{q}_{wall}}{T_0 - T_{wall}}$, where ${\dot{q}_{wall}}$ is the heat flux, $T_0$ is the total inlet temperature and $T_{wall}$ is the temperature on the blade surface.
 
-\begin{figure*}[!h]
+\begin{figure}[!h]
 \centering
-\includegraphics[width=0.6\linewidth,keepaspectratio]{fig/applications/ls89/10_2column_color-online-only_gradRhoRho.pdf}
+\includegraphics[width=0.7\linewidth,keepaspectratio]{fig/applications/ls89/10_2column_color-online-only_gradRhoRho.pdf}
 \caption{$\frac{\nabla \rho}{\rho}\; (m^{-1})$ with $Tu = 30\%$.}
 \label{fig:ls89-gradRhoRho}
-\end{figure*}
+\end{figure}
 
 %It is precisely the transition on the suction side which is targeted. This operating point has the particular difficulty of capturing the heat flux on the suction side in the region between approximately 25~mm, where the acoustic waves impact the surface blade, and 62~mm the approximate shock position. 
 
@@ -296,7 +296,18 @@ Tu \in [0, 30\%] \quad \alpha \in [-5,5\degree].
 
 The simulations have been performed using \textit{AVBP}~\cite{Gicquel2011}, a validated CFD LES solver co-developed by CERFACS and IFP-EN. This parallel code solves the three-dimensional compressible Navier-Stokes equations for both steady and unsteady reacting flows. The code is capable of handling hybrid unstructured meshes and allows to address complex geometries. High-order numerical schemes based on the \textit{Taylor-Galerkin} (TTG) family are used~\cite{Quartapelle1993}. 
 
-The simulations were performed on a 20 million cells mesh. Five layers of prisms in the near-wall region are present allowing a higher aspect ratio. The mean $\overline{y^+}$ has a value of $\simeq 6.62$ which limits the physical time step to $\unit{\numprint{1.94e-8}}{\second}$. In this context, a wall-resolved computation using the \textit{WALE} \cite{Nicoud1999} model is used to take into account the proper turbulence scaling in the near-wall region. To gather enough statistics, a simulation time of $\unit{\sim\numprint{4.1}}{\milli\second}$ was performed. This led to a CPU cost, for a single computation, of $\sim7500$~hours lasting $\sim5$~hours on a cluster of 1440 cores.
+The simulations were performed on a 20 million cells mesh. Five layers of prisms in the near-wall region are present allowing a higher aspect ratio---see~\cref{fig:ls89_mesh}. The mean $\overline{y^+}$ has a value of $\simeq 6.62$ which limits the physical time step to $\unit{\numprint{1.94e-8}}{\second}$. In this context, a wall-resolved computation using the \textit{WALE} \cite{Nicoud1999} model is used to take into account the proper turbulence scaling in the near-wall region. To gather enough statistics, a simulation time of $\unit{\sim\numprint{4.1}}{\milli\second}$ was performed. This led to a CPU cost, for a single computation, of $\sim7500$~hours lasting $\sim5$~hours on a cluster of 1440 cores.
+
+\begin{figure}[!h]               
+\centering
+\subfloat[Full domain]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/mesh_all.png}}
+ ~       
+\subfloat[At the blade's wall]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/mesh_zoom.png}}
+\caption{Visualization of the 20 million cells mesh of the domain.}
+\label{fig:ls89_mesh}
+\end{figure}
 
 The resolution of the mesh and the LES quality must be guaranteed to be sufficient to capture the complex physics encountered. Indeed, the interaction between the free-stream turbulence and the boundary layer requires to carefully mesh the near-wall region. It is reasonable then to compare the profiles of heat transfer obtained using the mesh for this UQ study, from here on denoted as \textit{M0}, to two finer meshes \text{M1} and \textit{M2}, see ~\cref{fig:M0M1M2_hcomp}. The corresponding spatial distributions of ${y^+}$ are shown in~\cref{fig:M0M1M2_y+comp} for the three meshes.
 
@@ -414,12 +425,12 @@ At the heart of a turbomachine is the combustion chamber, fed with fuel by injec
 \label{fig:sketch-swirler}
 \end{figure}
 
-To help in the development of future engines, numerical simulations---and here Computational Fluid Dynamics (CFD) simulations---, have undoubtedly become reliable and essential design tools~\cite{Sacks1989,Forrester2009}. Recently, the use of Large Eddy Simulations (LES) coupled with a mesh adaptation strategy has demonstrated its capacity to identify the relevant physics of swirling flows \cite{Daviller2017}. % TODO Complete
+To help in the development of future engines, numerical simulations---and here Computational Fluid Dynamics (CFD) simulations---, have undoubtedly become reliable and essential design tools~\cite{Sacks1989,Forrester2009}. Recently, the use of Large Eddy Simulations (LES) coupled with a mesh adaptation strategy has demonstrated its capacity to identify the relevant physics of swirling flows \cite{Daviller2017}. 
 From expert knowledge, the design of a swirler proceeds in three steps: (\emph{i})~an exploratory phase is first performed using Reynolds-averaged Navier-Stokes (RANS) computations; (\emph{ii})~the resulting possible geometries installed in the combustion chamber are simulated using LES of turbulent combustion; (\emph{iii}) prototypes are manufactured and tests are performed. The first step allows to explore a large range of possibilities in terms of geometrical modifications (angles, number of channels, etc.) to meet requirements such as the swirl number, effective surface and permeability. The second step is performed to assess the combustion stability and the combustor performances in various operating conditions. Finally experiments are conducted to finalize the design.
 
 For this last step, metal Additive Manufacturing (AM)~\cite{Frazier2014,Sames2016} is now in use. The AM technology has gained a lot of attention as it does not impose any constraint from the design point of view without sacrificing mechanical properties~\cite{Lewandowski2016}. However, AM induces some uncertainties regarding the structural composition of the produced metallic systems, making this an active topic of research. In particular, geometrical uncertainties may result from the deposition method, the scanning method or even the powder size. Moreover, due to the complexity of some designs, it might not be possible to polish surfaces using standard mills. This may leave some defects which size depends on the quality of the whole process.
 
-The present study aims to measure the effect of AM on the fluid motion. This is achieved through Uncertainty Quantification (UQ)~\cite{Iooss2015a} based on LES with varying geometry. A Principal Component Analysis (PCA) is first performed to build a reduced parameter space allowing to take into account all design variables. Then, uncertainties on the design variables are propagated in a series of 30 LES, providing summary statistics.
+The present study aims to measure the effect of AM on the fluid motion. This is achieved through Uncertainty Quantification (UQ)~\cite{Iooss2015a} based on LES with varying geometry. A Principal Component Analysis (POD) is first performed to build a reduced parameter space allowing to take into account all design variables. Then, uncertainties on the design variables are propagated in a series of 30 LES, providing summary statistics.
 
 The chapter is organized as follows: \cref{sec:swirler} presents the studied configuration as well as the LES numerical setup. \Cref{sec:dim} details the methodology used to reduce the parameter space. Results of the UQ study are then presented and analyzed in  \cref{sec:res} and \cref{sec:disc}, respectively.
 
@@ -536,7 +547,7 @@ Performing a UQ study requires a large number of numerical simulations in order 
 
 A set of 5 various real swirler geometries issued from AM was obtained from an engine manufacturer. Thanks to the layering process, two groups of channels are considered to separate the two stages: (\emph{i}) the inner set (first stage) of channels is noted $s=in$, and (\emph{ii}) the outer set (second stage) of channels is noted $s=ou$. Data of each of these two groups is aggregated in the form of a function: $d_{s}(i)$ with $d$ the channel dimension, $i$ the channel number and the subscript $s$ standing for the inner or the outer set. 
 
-The dataset is then represented as a matrix, each line containing the curve $d_{s}(i)$ corresponding to each channel geometry. In order to reveal the correlations in the data and reduce the number of parameters for the UQ study, this matrix is decomposed using a Principal Component Analysis (PCA)~\cite{AnindyaChatterjee2000}, which allows to represent data with a finite number of modes. This compression process turns the functional representation into a scalar representation in a reduced space. The retained variance from the initial data increases with the number of modes of the PCA. In this work, more than 90\% of the original dataset variance is retained with only three PCA components per stage, as shown in~\cref{fig:variance}. The 16 independent uncertain parameters are then reduced to 6 independent parameters (three for each stage), while still accounting for 90\% of the total variance of the original dataset. 
+The dataset is then represented as a matrix, each line containing the curve $d_{s}(i)$ corresponding to each channel geometry. In order to reveal the correlations in the data and reduce the number of parameters for the UQ study, this matrix is decomposed using a POD, which allows to represent data with a finite number of modes. This compression process turns the functional representation into a scalar representation in a reduced space. The retained variance from the initial data increases with the number of modes of the POD. In this work, more than 90\% of the original dataset variance is retained with only three POD components per stage, as shown in~\cref{fig:variance}. The 16 independent uncertain parameters are then reduced to 6 independent parameters (three for each stage), while still accounting for 90\% of the total variance of the original dataset. 
 
 \begin{figure}[!h]
 \centering
@@ -545,7 +556,7 @@ The dataset is then represented as a matrix, each line containing the curve $d_{
 \label{fig:variance}
 \end{figure}
 
-Within the reduced space of PCA components noted $\mathbf{x_r}$, the Highest Density Region (HDR) boxplot method~\cite{Hyndman2009} is used to summarize the data statistics and infer new swirler geometries. To determine the HDR, the PDF $f(\mathbf{x_r})$ is built with a multivariate KDE (see~\cref{sec:up}). From this PDF estimator, the HDR reads:
+Within the reduced space of POD components noted $\mathbf{x_r}$, the Highest Density Region (HDR) boxplot method~\cite{Hyndman2009} is used to summarize the data statistics and infer new swirler geometries. To determine the HDR, the PDF $f(\mathbf{x_r})$ is built with a multivariate KDE (see~\cref{sec:up}). From this PDF estimator, the HDR reads:
 \begin{align}
 R_\alpha = \left\{ \mathbf{x_r}: \hat{f}(\mathbf{x_r}) \geq f_{\alpha} \right\}
 \end{align}
@@ -555,7 +566,7 @@ The PDF estimator and the HDR allow to infer new realizations that are statistic
 
 \section{Generation of datasets }\label{sec:res}
 
-In the 3 PCA-components space defined from the experimental database, a set of 30 points was sampled from a low discrepancy sequence of \emph{Sobol'} (scrambled)~\cite{Cavazzuti2013,Kucherenko2015} which ensures a good coverage of low-dimensional parameter spaces. The 30 points are plotted in \Cref{fig:samples-scatter}~in 2D cuts of the 3D parameter space of each swirler stage. The PDF estimators obtained for each PCA component are shown in the plots placed along the diagonal of the figure.  
+In the 3 POD-components space defined from the experimental database, a set of 30 points was sampled from a low discrepancy sequence of \emph{Sobol'} (scrambled)~\cite{Cavazzuti2013,Kucherenko2015} which ensures a good coverage of low-dimensional parameter spaces. The 30 points are plotted in \Cref{fig:samples-scatter}~in 2D cuts of the 3D parameter space of each swirler stage. The PDF estimators obtained for each POD component are shown in the plots placed along the diagonal of the figure.  
 
 \begin{figure*}[!h]
 \centering
@@ -565,7 +576,7 @@ In the 3 PCA-components space defined from the experimental database, a set of 3
 \subfloat[Outer channels]{
 \includegraphics[width=0.49\textwidth,height=\textheight,keepaspectratio]{fig/applications/swirler/outer_samples_scatter.pdf}
 }
-\caption{Bivariate principal component score plots of the 30 generated samples in the reduced PCA parameter spaces of the inner and outer stages. Each point corresponds to a curve sample. Probability distributions for each component are shown in the diagonal plots: \emph{lines} represent the kernel PDF estimator and \emph{Shaded} areas are histograms (from which are based the scaling of the \emph{y-axis}).}
+\caption{Bivariate principal component score plots of the 30 generated samples in the reduced POD parameter spaces of the inner and outer stages. Each point corresponds to a curve sample. Probability distributions for each component are shown in the diagonal plots: \emph{lines} represent the kernel PDF estimator and \emph{Shaded} areas are histograms (from which are based the scaling of the \emph{y-axis}).}
 \label{fig:samples-scatter}
 \end{figure*}
 
@@ -664,7 +675,7 @@ Swirl number & 0.7609 & 0.7582 & 0.7639\\
 Although the construction of a surrogate model is not feasible in this case, the present uncertainty analysis highlights the intrinsic and chaotic variability of a self-compensation mechanism in the generated statistical data. This can be explained by: (\emph{i}) the nature of the geometrical modifications, where some channels are widened while others are tightened, limiting the overall impact on the pressure loss; and (\emph{ii}) the amplitude of these modifications which is very small compared to the width of the channels. Indeed, manufacturing defects were limited to a maximum 2\% of the cross section area of a channel, consistently with real observation of AM. Note that in such situation, the ability of the solver to respond with the correctly adapted physics is paramount. To check this, the relative numerical error on the pressure drop was estimated and found less than $1\%$ which is sufficient to capture with accuracy the pressure drop induced variation by geometrical modification of the order of $\simeq 5\%$. Thus, the solver accuracy is sufficient and the results are considered reliable.
 
 \section{Conclusion}
-The purpose of this work was to perform an Uncertainty Quantification (UQ) study of a swirler geometry. More precisely, this study focused on geometry deviations due to Additive Manufacturing (AM) and their effects on the pressure loss. As the number of parameters required to characterize the configuration was high, a Principal Component Analysis (PCA) was used, allowing to cut down the number of parameters from 16 to 6 independent variables. Statistic analysis based on Highest Density Region (HDR) highlighted the non-independence of the geometrical parameters and thus the impact of AM. Thanks to a mesh adaptation strategy, a set of 30 different statistically representative cases was accurately simulated with Large Eddy Simulations (LES). The uncertainty analysis then led to an overall view of the variation of the pressure drop induced by geometry changes. Results show that slight discrepancies in the swirler channel dimensions lead to slight differences in the pressure loss, without amplification or damping. This conclusion also holds for the flow, as shown by the comparison of the swirl numbers and velocity profiles. This is a critical information for engine manufacturers, as it means that AM will not affect the flow exiting the swirler and the stability of the flame developing downstream.
+The purpose of this work was to perform an Uncertainty Quantification (UQ) study of a swirler geometry. More precisely, this study focused on geometry deviations due to Additive Manufacturing (AM) and their effects on the pressure loss. As the number of parameters required to characterize the configuration was high, a Principal Component Analysis (POD) was used, allowing to cut down the number of parameters from 16 to 6 independent variables. Statistic analysis based on Highest Density Region (HDR) highlighted the non-independence of the geometrical parameters and thus the impact of AM. Thanks to a mesh adaptation strategy, a set of 30 different statistically representative cases was accurately simulated with Large Eddy Simulations (LES). The uncertainty analysis then led to an overall view of the variation of the pressure drop induced by geometry changes. Results show that slight discrepancies in the swirler channel dimensions lead to slight differences in the pressure loss, without amplification or damping. This conclusion also holds for the flow, as shown by the comparison of the swirl numbers and velocity profiles. This is a critical information for engine manufacturers, as it means that AM will not affect the flow exiting the swirler and the stability of the flame developing downstream.
 
 The analysis of the intrinsic variability of the system did not exhibit any noticeable pattern. As a consequence, no surrogate model could be built. This is explained by the nature of the modifications and most importantly by their amplitude. Augmenting the range of variability in the system, exploring for example other designs, would increase the impact on the pressure loss. %For the same reason, increasing the mass flow rate may have a stronger effect. Here the mass flow rate was taken as in the experiment~\cite{Daviller2017}, where it was restricted to low values. 
 
@@ -682,10 +693,10 @@ In this context, numerous experimental studies have investigated various turbule
 Numerical simulation of roughened heated tubes is a less expensive alternative for the investigation of heat exchanger efficiencies. Reynolds-Averaged Navier-Stokes (RANS) simulations are heavily used for this purpose, and various simulations of ribbed tubes can be found in the literature \cite{liou1993, shub1993, liu2001, ooi2002, iaccarino2002, liou2002, kim2004, kim_hm2004, ryu2007_a, ryu2007_b, kamali2008, eiamsaard2008, agra2011, ma2012}. Recently, Large Eddy Simulations (LES) have been introduced for the simulation of ribbed heat exchangers \cite{jordan2003, vijiapurapu2007, vijiapurapu2010, Zhu2015, campet2018}. Being more predictive than RANS, LES appears as a more reliable tool for the investigation of pressure loss and heat transfer in a heat exchanger.\\ 
 
 % what is the issue addressed?
-Because of the wide variety of possible roughness shapes, all geometries cannot be experimentally or numerically tested and optimal roughness shapes for heat exchangers remain unknown to this day. The objective of this paper is to find an optimal roughness shape for industrial heat exchangers applications. For the first time to the authors’ knowledge, series of LES are used in addition to Gaussian Process regression \cite{rasmussen2006} to construct a reliable surrogate model representative of the heat exchanger efficiency for various roughness shapes. This surrogate model lead to the prediction of an optimal design, which enables to understand the complex flow behaviour resulting in important heat transfer and limited pressure loss.\\
+Because of the wide variety of possible roughness shapes, all geometries cannot be experimentally or numerically tested and optimal roughness shapes for heat exchangers remain unknown to this day. The objective of this work is to find an optimal roughness shape for industrial heat exchangers applications. For the first time to the authors’ knowledge, series of LES are used in addition to Gaussian Process regression \cite{rasmussen2006} to construct a reliable surrogate model representative of the heat exchanger efficiency for various roughness shapes. This surrogate model lead to the prediction of an optimal design, which enables to understand the complex flow behaviour resulting in important heat transfer and limited pressure loss.\\
 
 % paper structure
-The chapter is tailored as follows; \cref{sec:optim_case} starts with a presentation of the numerical methodology used for the simulation of turbulent heated flow inside various internally ribbed heat exchanger. In particular, the tube inner surface geometry, the meshing method, the governing equations and the objective function to optimize are presented. \Cref{sec:optim_method} then describe the technique employed to optimize the geometry. After this methodological presentation, \cref{sec:optim_results} presents the results of the optimization procedure leading to a first optimal discontinuously ribbed tube geometry, and investigates more in detail the flow dynamics and the thermal behaviour inside it. \cref{sec:optim_discussion} investigates the influence of the rib shape on pressure loss and heat transfer. Smoother shapes representative of dimpled tube geometries are simulated and compared to the first optimal geometry studied in \cref{sec:optim_results}. Finally, \cref{sec:optim_ccl} put a closure to this paper by summarizing its contribution along with potential directions for future works or applications.
+The chapter is tailored as follows; \cref{sec:optim_case} starts with a presentation of the numerical methodology used for the simulation of turbulent heated flow inside various internally ribbed heat exchanger. In particular, the tube inner surface geometry, the meshing method, the governing equations and the objective function to optimize are presented. \Cref{sec:optim_method} then describe the technique employed to optimize the geometry. After this methodological presentation, \cref{sec:optim_results} presents the results of the optimization procedure leading to a first optimal discontinuously ribbed tube geometry, and investigates more in detail the flow dynamics and the thermal behaviour inside it. \cref{sec:optim_discussion} investigates the influence of the rib shape on pressure loss and heat transfer. Smoother shapes representative of dimpled tube geometries are simulated and compared to the first optimal geometry studied in \cref{sec:optim_results}. Finally, \cref{sec:optim_ccl} put a closure to this work by summarizing its contribution along with potential directions for future works or applications.
 
 \section{Case Description}
 \label{sec:optim_case}
@@ -805,7 +816,7 @@ F_{cost} = K/K_s = \frac{St/St_s}{(f/f_s)^{1/3}}
 
 Among the numerous methods that can be used to do an optimization~\cite{Cavazzuti2013} are the one taking advantages of a surrogate model~\cite{Forrester2009}. When dealing with complex cases, the numerical cost is such that only a limited number of simulations can be performed. However, ensuring the convergence of an optimization requires a minimal number of such evaluations for both deterministic and stochastic methods. In this context, building a proxy of the simulation setup allows to overcome the computational cost. As this proxy is being used for optimizing the problem, its quality is paramount. At some point refining the space of parameters---leading to a quality improvement of the model---can improve the optimization.
 
-In this study, the open-source \emph{BATMAN} tool~\cite{Roy2018} is used. BATMAN handles all the workflow from the design of experiments, to the creation of the surrogate and the optimization. Its workflow is presented in~\cref{alg:workflow}.
+Batman~\cref{chap:batman} was used to handle all the workflow from the design of experiments, to the creation of the surrogate and the optimization. Its workflow is presented in~\cref{alg:workflow}.
 
 \begin{algorithm}
   \caption{Workflow using BATMAN}
@@ -821,25 +832,27 @@ In this study, the open-source \emph{BATMAN} tool~\cite{Roy2018} is used. BATMAN
   \end{algorithmic}
 \end{algorithm}
 
-\Cref{sec:EGO} details the optimization strategy used in this work.
-
-
-\subsection{Efficient Global Optimization}
-\label{sec:EGO}
-
-\emph{Efficient Global Optimization} (EGO)~\cite{jones1998} is a Bayesian optimization taking into account the variance of the model. The objective of the optimization is to improve the current solution $y_{\min}$. The improvement is computed as:
-
+\emph{Efficient Global Optimization} (EGO)~\cite{jones1998} is a Bayesian optimization taking into account the variance of the model. The objective of the optimization is to improve the current solution $Y_{\min}$. The improvement is computed as:
 \begin{align}
-I(x) \left\{\begin{array}{rcl} y_{\min} - \hat{y}(x) & \text{if } \hat{y}(x) < y_{\min} \\ 0   & \text{otherwise} \end{array}\right. .
+I(\mathbf{x}) \left\{\begin{array}{rcl} Y_{\min} - \hat{Y}(\mathbf{x}) & \text{if } \hat{Y}(\mathbf{x}) < Y_{\min} \\ 0   & \text{otherwise} \end{array}\right. .
 \end{align}
 
-Using the surrogate, the prediction is expressed as a random process with $Y\sim \mathbb{N}(\hat{y}, s^2)$. Thus, the objective is to get the maximal mean improvement. The expected improvement (EI) is computed as a tradeoff between the minimal value $f_{\min}$ and an expected value given by the standard error $s$ for a given prediction $\hat{y}$. It reads:
-
+Using the surrogate, the prediction is expressed as a random process with $Y\sim \mathbb{N}(\hat{Y}, s^2)$. Thus, the objective is to get the maximal mean improvement. The expected improvement (EI) is computed as a tradeoff between the minimal value $Y_{\min}$ and an expected value given by the standard error $s$ for a given prediction $\hat{Y}$. It reads:
 \begin{align}
-\mathbb{E}[I(x)] = (f_{\min} - \hat{y})\Phi \left( \frac{f_{\min} - \hat{y}(x)}{s} \right) + s\phi \left( \frac{f_{\min} - \hat{y}(x)}{s} \right), 
+\mathbb{E}[I(\mathbf{x})] = (Y_{\min} - \hat{Y})\Phi \left( \frac{Y_{\min} - \hat{y}(\mathbf{x})}{s} \right) + s\phi \left( \frac{Y_{\min} - \hat{Y}(\mathbf{x})}{s} \right), 
 \end{align}
+\noindent with $\phi(.), \Phi(.)$, respectively, the Probability Density Function (PDF) and Cumulative Distribution Function (CDF) of the normal distribution. Selecting the point with the highest expected improvement is achieved either: \emph{(i)} by maximizing the difference between the minimal value and the predicted response; or \emph{(ii)} by increasing the standard deviation---see~\cref{fig:branin_ego}. Hence, the first component is said to \emph{exploit} the model while the other seeks to \emph{explore} it. These two phases are here automatically selected. In~\cite{schonlau1998}, they proposed with the \emph{Generalized Expected Improvement} a way to define a constant $g$ to adjust the degree of \emph{exploration vs exploitation}: $\mathbb{E}[I^g]$. The highest $g$ is, the more exploratory the strategy is. Indeed, the initial EI strategy tends to add too much effort at improving the current solution and only then consider other regions of the parameters space. But this raises another concern about the value of this constant.
 
-\noindent with $\phi(.), \Phi(.)$, respectively, the Probability Density Function (PDF) and Cumulative Distribution Function (CDF) of the normal distribution. Selecting the point with the highest expected improvement is achieved either: \emph{(i)} by maximizing the difference between the minimal value and the predicted response; or \emph{(ii)} by increasing the standard deviation. Hence, the first component is said to \emph{exploit} the model while the other seeks to \emph{explore} it. These two phases are here automatically selected. In~\cite{schonlau1998}, they proposed with the \emph{Generalized Expected Improvement} a way to define a constant $g$ to adjust the degree of \emph{exploration vs exploitation}: $\mathbb{E}[I^g]$. The highest $g$ is, the more exploratory the strategy is. Indeed, the initial EI strategy tends to add too much effort at improving the current solution and only then consider other regions of the parameters space. But this raises another concern about the value of this constant.
+\begin{figure}[!h]               
+\centering
+\subfloat[Response surface of the Branin function]{
+\includegraphics[width=0.6\linewidth,height=\textheight,keepaspectratio]{fig/applications/optim/branin_forrester.pdf}}
+   
+\subfloat[EGO]{
+\includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{fig/applications/optim/branin_forrester_ego.pdf}}
+\caption{Visualization of EGO on the Branin function---see~\cref{sec:dataset}. \emph{Left} is the response surface of the current surrogate model constructed using samples represented by \emph{black dots}. \emph{Center} is the variance of the GP surrogate. \emph{Right} is the expected improvement. The \emph{red triangle} represent the global optimum of the function.}
+\label{fig:branin_ego}
+\end{figure}
 
 Thus, in this work we used the classical expected improvement formulation in order to avoid the definition of an additional constant. Due to the computational cost of the simulations, this parameter was not characterized.
 
@@ -1096,19 +1109,20 @@ Mean radial and azimuthal velocity profiles are shown on Figures~\ref{radial_vel
 
 \begin{minipage}[c][11.5cm][c]{1.0\linewidth}
 \centering
-\includegraphics[width=8cm]{fig/applications/optim/Streamlines_compare.pdf}
+\includegraphics[width=0.6\linewidth]{fig/applications/optim/Streamlines_compare.pdf}
 \caption{Flow streamlines impacting the rib, coloured by velocity magnitude. Top: optimal discontinuous rib shape. Centre: Small Smooth Rib (SSR) shape. Bottom: Long Smooth Rib (LSR) shape.}
 \label{streamlines_compare}
 \end{minipage}
 
 \end{figure}
 
-\begin{figure*}[h]
+
+\begin{figure}[h]
 \centering
-\includegraphics[width=18cm]{fig/applications/optim/Recircul_zones2.pdf}
+\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/optim/Recircul_zones2.pdf}
 \caption{Representation of the mean recirculation zone downstream the ribs, viewed from above the rib. The iso-surface of null axial velocity is used as the limits of the recirculation, and is coloured by the thickness of the recirculation zone. Left: optimal discontinuous rib shape. Middle: Small Smooth Rib (SSR) shape. Right: Long Smooth Rib (LSR) shape.}
 \label{recircul_zones}
-\end{figure*}
+\end{figure}
 
 Contribution to the total drag for both SSR and LSR heat exchanger design are summarized in Table~\ref{tab_drags_compare}. All ribbed geometries induce similar friction drags, which are found about $25 \%$ smaller than in a smooth tube according to Eq.~(\ref{petukhov}). This is due to similar axial velocity profiles encountered in all geometries, leading to similar axial components of wall shear stress. However, due to the rib shape, the integrated value of the pressure drag is very different from one geometry to another. Abrupt rib transitions lead to higher pressure drag, as the flow impacts directly the abrupt wall faces, inducing important pressure gradients at those locations. Smoother rib transition reduces significantly the pressure drag, in particular when minimizing the rib surface. With the SSR shape, pressure drag reduces to less than half the friction drag encountered in a smooth tube ($46.1 \%$), and total drag is only slightly higher than in a completely smooth tube. LSR shape leads to slightly lower total drag than abruptly discontinuous ribs. Total pressure losses for all considered geometries are summarized in Table~\ref{tab_pressureloss_compare}, leading to the same conclusions as the total drag analysis.\\
 
@@ -1154,7 +1168,7 @@ Figure~\ref{Twall_compare} shows the mean wall temperature on the SSR and LSR he
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\linewidth]{fig/applications/optim/Twall_compare.pdf}
+\includegraphics[width=0.7\linewidth]{fig/applications/optim/Twall_compare.pdf}
 \caption{Mean skin temperature for all considered geometries.}
 \label{Twall_compare}
 \end{figure}
@@ -1168,14 +1182,14 @@ It can be noted that, if the optimal discontinuous rib shape given by the optimi
 \begin{figure}[h]
 \begin{minipage}[c]{1.0\linewidth}
 \centering
-\includegraphics[width=\linewidth]{fig/applications/optim/Twall_profile_compare.pdf}
+\includegraphics[width=0.55\linewidth]{fig/applications/optim/Twall_profile_compare.pdf}
 \caption{Profiles of mean skin temperature for all considered geometries, in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
 \label{Twall_profile_compare}
 \end{minipage}
 
 \begin{minipage}[c]{1.0\linewidth}
 \centering
-\includegraphics[width=\linewidth]{fig/applications/optim/Nusselt_compare.pdf}
+\includegraphics[width=0.55\linewidth]{fig/applications/optim/Nusselt_compare.pdf}
 \caption{Profiles of mean local Nusselt number for all considered geometries, in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
 \label{Nusselt_compare}
 \end{minipage}
