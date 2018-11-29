@@ -95,6 +95,11 @@
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
             \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
 
+\usepackage{fancyhdr}  % Header and footer
+ 
+
+
+
 
 % -------------------- Chapters/Parts ---------------------------
 
@@ -149,7 +154,7 @@
 
 \title{Uncertainty Quantification in High Dimensional Problem.} 
 \author{Pamphile Tupui ROY}
-\defencedate{1 May 2019}
+\defencedate{9 May 2019}
 \lab{CERFACS} 
 
 %% Directors
@@ -311,6 +316,19 @@
 %\include{fichier1}
 %\setacronymstyle{long-short} % \newacronym{}{}{description}
 
+
+% -------------------- Header and footer ------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\leftmark}
+\fancyhead[RO]{\rightmark}
+\renewcommand{\headrulewidth}{2pt}
+
+\renewcommand{\footrulewidth}{1pt}
+\fancyfoot[LE,LO]{Page \thepage}
+\fancyfoot[RE,RO]{PhD Thesis, Pamphile Tupui ROY}
+
+
 \part{Introduction}
 \begin{parttoc}
     \include{introduction}
@@ -328,20 +346,30 @@
 
 
 \part{Conclusion}
-\include{conclusion}
-
+\begin{parttoc}
+	\include{conclusion}
+\end{parttoc}
 
 % -------------------- ENDING ---------------------------
 
 %\listoffigures
 %\listoftables
 
-%\part*{Annexes}
+
+%\stopcontents[parts]
+\part{Annexes}
 %\addcontentsline{toc}{part}{\protect\numberline{}Annexes}
-%\appendix
+%\addcontentsline{toc}{part}{Annexes}
+\appendix
+
+\begin{parttoc}
+    \include{appendix}
+\end{parttoc}
+
 %\startcontents[parts]
 %\printcontents[parts]{}{-1}{\setcounter{tocdepth}{5}}
 %\chapter{Annexe A}
+
 
 %\stopcontents[parts]
 \backmatter                                          %si book

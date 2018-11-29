@@ -1,0 +1,60 @@
+
+\chapter{Functions and Datasets}
+
+\section{Analytical functions}
+\label{sec:functions}
+
+In order to test the new resampling methods, three analytical functions---see~\cref{tab:functions}---with increasing numbers of input dimensions are presented, namely: \textit{(i)} \textit{Rosenbrock} ; \textit{(ii)} \textit{Ishigami} ; and \textit{(iii)} \textit{g-function}~\cite{molga2005,ishigami1990,Saltelli2007,Legratiet2016}. They are all widely used because they are nonlinear and nonmonotonic. Note that similar results were obtained on other functions. Moreover, two versions of the \emph{g-function} 11-D are assessed. \textit{g-function (i)} 11-D demonstrates the behaviour of the methods whith a small number of input parameters contributing to the QoI, whereas \textit{g-function (ii)} 11-D exhibits more influent input parameters---see~\cref{tab:cv-budget-q2} for \emph{Sobol'} indices.
+
+\begin{table}[h]
+\centering
+\setcellgapes{5pt}
+\makegapedcells
+\begin{tabular}{lll}
+\toprule
+Function&Hypercube & Definition \\
+\cmidrule{1-3}
+\textit{Rosenbrock} 2-D& $[-2.048, 2.048]^2$ & $
+f(X_1, X_2) = \sum_{i = 1}^{d-1}[100(x_{i+1} - x_i^2)^2  +(x_i -1)^2].$\\
+\textit{Ishigami} 3-D& $[-\pi, \pi]^3$ & $ f(X_1, X_2, X_3) = \sin X_1 + 7 \sin^2 X_2 + 0.1 X_3^4 \sin X_1. $\\
+\textit{g-function} 4-D& $[0, 1]^4$ & $
+f(X_1, X_2, X_3, X_4) = \prod_{i=1}^4 \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i}, \quad a_{i} = i.$\\
+\textit{g-function (i)} 11-D & $[0, 1]^{11}$ & 
+$\begin{multlined}[t][0.6\linewidth]
+f(X_1, ..., X_{11}) = \prod_{i=1}^{11} \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i},\\[-1ex]
+\hspace{50pt} \mathbf{a} = [1, 2, 5, 10, 20, 50, 100, 500, 1000, 1000, 1000]\hfill
+\end{multlined}$\\
+\textit{g-function (ii)} 11-D & $[0, 1]^{11}$ &
+$\begin{multlined}[t][0.6\linewidth]
+f(X_1, ..., X_{11}) = \prod_{i=1}^{11} \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i},\\[-1ex]
+\hspace{51pt} \mathbf{a} = [1, 2, 2, 3, 3, 10, 50, 50, 50, 100, 100]\hfill
+\end{multlined}$\\
+\bottomrule
+\end{tabular}
+\caption{Analytical functions considered sorted by increasing number of input parameters.}
+\label{tab:functions}
+\end{table}
+
+\section{Datasets}
+\label{sec:dataset}
+
+\Cref{tab:dataset} presents two datasets. The first dataset (El Ni\~no) has no input-output relation and only features a temporal output. The second dataset Hydrodynamics features an input-output relation with spatially varying output. The datasets are as follows:
+\begin{itemize}
+\item The \emph{El Ni\~{n}o} dataset is a well-known functional dataset~\citep{Hyndman2009}. It consists in a time series of monthly averaged Sea Surface Temperature (SST) in degrees Celsius spatially averaged over the Pacific Ocean region (0-10°S and 90-80°W) from January 1950 to December 2007. The response variable is a vector of size 12 and the data set gathers 58 realizations. Data originate from NOAA ERSSTv5's database available at \href{http://www.cpc.ncep.noaa.gov/data/indices}{http://www.cpc.ncep.noaa.gov/data/indices}.
+\item The \emph{Hydrodynamics} dataset gathers water levels (in m) computed with the 1-dimensional Shallow Water Equation MASCARET solver (opentelemac.org) for a 50~km reach of the Garonne river in South-West of France~\citep{Roy2017}. Uncertain inputs relate to 4 scalars: the friction coefficients of the river bed $Ks1, Ks2, Ks3$ defined over three homogeneous spatial areas, and the upstream boundary condition described by a constant scalar value for the inflow $Q$ in stationary flow. The response variable is a vector of size 463 (number of computation nodes for the 1D mesh) and an ensemble of 200 realizations is considered here. 
+\end{itemize}
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+Dataset & Scalar input & Functional output & Sample size\\
+\midrule % \cmidrule{2-3}
+El Ni\~no & - & 12 & 58\\
+Hydrodynamics & 4 & 463 & 200\\
+\bottomrule
+\end{tabular}
+\caption{Description of the El Ni\~no and Hydrodynamics datasets.}
+\label{tab:dataset}
+\end{table}
+
