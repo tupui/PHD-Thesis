@@ -329,7 +329,7 @@ The heat transfer coefficient is seen to be different on the pressure side for t
 
 \section{Uncertainty Quantification results}\label{sec:ls89_results}
 
-This section presents the comparison between the different resampling methods on this complex case. In the following, an existing sample comprised of 16 simulations is used to generate a \textit{Sobol'} low-discrepancy sequence. As seen in~\cref{sec:doe}, the quality of \textit{Sobol'} sequence is similar to \textit{Halton}'s in low dimensional cases. Using this initial set of simulations, the sequence has been continued adding 4 points to give a total of 20 simulations. Then using the same initial sample, the previous set is compared to the use of the $\sigma$ method and the LOO-\textit{Sobol'} method. The LOO-$\sigma$ method gives similar results compared to LOO-\textit{Sobol'} method. It is not tested on this case. Quality results evaluated by LOO as described in~\cref{sec:error} are shown in~\cref{tab:ls89-q2}. 
+This section presents the comparison between the different resampling methods on this complex case. In the following, an existing sample comprised of 16 simulations is used to generate a \textit{Sobol'} low-discrepancy sequence. As seen in~\cref{sec:doe}, the quality of \textit{Sobol'} sequence is similar to \textit{Halton}'s in low dimensional cases. Using this initial set of simulations, the sequence has been continued adding 4 points to give a total of 20 simulations. Then using the same initial sample, the previous set is compared to the use of the $\sigma$ method and the LOO-\textit{Sobol'} method. The LOO-$\sigma$ method gives similar results compared to LOO-\textit{Sobol'} method. It is not tested on this case. Quality results evaluated by LOO as described in~\cref{sec:validation} are shown in~\cref{tab:ls89-q2}. 
 
 \begin{table}[h]
 \centering
@@ -850,7 +850,7 @@ Using the surrogate, the prediction is expressed as a random process with $Y\sim
    
 \subfloat[EGO]{
 \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{fig/applications/optim/branin_forrester_ego.pdf}}
-\caption{Visualization of EGO on the Branin function---see~\cref{sec:dataset}. \emph{Left} is the response surface of the current surrogate model constructed using samples represented by \emph{black dots}. \emph{Center} is the variance of the GP surrogate. \emph{Right} is the expected improvement. The \emph{red triangle} represent the global optimum of the function.}
+\caption{Visualization of EGO on the Branin function---see~\cref{sec:functions}. \emph{Left} is the response surface of the current surrogate model constructed using samples represented by \emph{black dots}. \emph{Center} is the variance of the GP surrogate. \emph{Right} is the expected improvement. The \emph{red triangle} represent the global optimum of the function.}
 \label{fig:branin_ego}
 \end{figure}
 

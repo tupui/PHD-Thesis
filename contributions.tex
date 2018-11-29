@@ -85,6 +85,28 @@ The following people have been core contributors to batman's development and mai
 
 \section{Dissemination}
 
+Since batman was publicly made available in 2017, we have been using it with industrial partners:
+
+\begin{itemize}
+\item EDF,
+\item AIRBUS,
+\item SAFRAN,
+\item Total.
+\end{itemize}
+
+Moreover, we are actively collaborating with academic and institutional partners:
+
+\begin{itemize}
+\item Stanford University,
+\item Basque center for applied mathematics (bcam),
+\item Cerema,
+\item SCHAPI,
+\item INSA Toulouse,
+\item ENSEEIHT,
+\item MONASH University,
+\item CSIRO,
+\item University of Hohenheim.
+\end{itemize}
 
 \chapter{Constructing a Design of Experiments}\label{chap:doe}
 
@@ -494,7 +516,7 @@ The benefits and mechanisms of the methods are first evaluated on complex analyt
 \subsection{Restriction of the DoE}
 \label{sec:delta-space}
 
-The first step when constructing a model is to define the DoE. This is done by defining the range of each input parameter, the boundaries that describe a hypercube. Then, using a low discrepancy sequence as described in \cref{sec:doe}, an initial pool of snapshots is computed within the hypercube. However, when constructing a model based on Gaussian Process regression, the error is important at the boundaries of the DoE due to the lack of information. The model is thus not able to extrapolate accurately at these locations. If using the variance technique as it is, the algorithm tends to add points around the corners and only after it considers other parts of the domain. When dealing with a low dimensional case---fewer than three parameters as with the \textit{Michalewicz} function which uses two input parameters, see \cref{fig:rs-michalewicz}---, a few iterations are "wasted" in the process.
+The first step when constructing a model is to define the DoE. This is done by defining the range of each input parameter, the boundaries that describe a hypercube. Then, using a low discrepancy sequence as described in \cref{sec:doe}, an initial pool of snapshots is computed within the hypercube. However, when constructing a model based on Gaussian Process regression, the error is important at the boundaries of the DoE due to the lack of information. The model is thus not able to extrapolate accurately at these locations. If using the variance technique as it is, the algorithm tends to add points around the corners and only after it considers other parts of the domain. When dealing with a low dimensional case---fewer than three parameters as with the \textit{Michalewicz} function which uses two input parameters (see~\cref{sec:functions}), see \cref{fig:rs-michalewicz}---, a few iterations are "wasted" in the process.
 
 \begin{figure}[h]
 \centering
@@ -503,7 +525,7 @@ The first step when constructing a model is to define the DoE. This is done by d
 \label{fig:rs-michalewicz}
 \end{figure}
 
-When increasing the number of parameters, there is a larger number of boundaries to cover. This has been confirmed on the \textit{Ishigami} function (3 input parameters) for which the reported $Q_2$ values are even worse. As shown in \cref{tab:size-q2-ishigami}, the optimization process is being over constrained in these regions and the global predictions are degraded. To obtain this Table, the initial sample was increased using a constant number of resampling points (10 points) and the error was measured using a uniform distribution on the domain, confirming the importance of the boundary treatment.
+When increasing the number of parameters, there is a larger number of boundaries to cover. This has been confirmed on the \textit{Ishigami} function (3 input parameters, \cref{sec:functions}) for which the reported $Q_2$ values are even worse. As shown in \cref{tab:size-q2-ishigami}, the optimization process is being over constrained in these regions and the global predictions are degraded. To obtain this Table, the initial sample was increased using a constant number of resampling points (10 points) and the error was measured using a uniform distribution on the domain, confirming the importance of the boundary treatment.
 
 \begin{table}[h]
 \centering

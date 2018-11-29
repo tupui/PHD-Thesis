@@ -4,7 +4,7 @@
 \section{Analytical functions}
 \label{sec:functions}
 
-In order to test the new resampling methods, three analytical functions---see~\cref{tab:functions}---with increasing numbers of input dimensions are presented, namely: \textit{(i)} \textit{Rosenbrock} ; \textit{(ii)} \textit{Ishigami} ; and \textit{(iii)} \textit{g-function}~\cite{molga2005,ishigami1990,Saltelli2007,Legratiet2016}. They are all widely used because they are nonlinear and nonmonotonic. Note that similar results were obtained on other functions. Moreover, two versions of the \emph{g-function} 11-D are assessed. \textit{g-function (i)} 11-D demonstrates the behaviour of the methods whith a small number of input parameters contributing to the QoI, whereas \textit{g-function (ii)} 11-D exhibits more influent input parameters---see~\cref{tab:cv-budget-q2} for \emph{Sobol'} indices.
+Analytical functions---see~\cref{tab:functions}---with increasing numbers of input dimensions are presented, namely: \textit{(i)} \textit{Rosenbrock} ; \textit{(ii)} \textit{Michalewicz} ; \textit{(iii)} \textit{Branin} ; \textit{(iv)} \textit{Ishigami} ; and \textit{(v)} \textit{g-function}~\cite{molga2005,ishigami1990,Saltelli2007,Legratiet2016,forrester2008a}. They are all widely used because they are nonlinear and nonmonotonic. Moreover, two versions of the \emph{g-function} 11-D are also used. \textit{g-function (i)} 11-D demonstrates the behaviour of the methods whith a small number of input parameters contributing to the QoI, whereas \textit{g-function (ii)} 11-D exhibits more influent input parameters.
 
 \begin{table}[h]
 \centering
@@ -15,10 +15,18 @@ In order to test the new resampling methods, three analytical functions---see~\c
 Function&Hypercube & Definition \\
 \cmidrule{1-3}
 \textit{Rosenbrock} 2-D& $[-2.048, 2.048]^2$ & $
-f(X_1, X_2) = \sum_{i = 1}^{d-1}[100(x_{i+1} - x_i^2)^2  +(x_i -1)^2].$\\
-\textit{Ishigami} 3-D& $[-\pi, \pi]^3$ & $ f(X_1, X_2, X_3) = \sin X_1 + 7 \sin^2 X_2 + 0.1 X_3^4 \sin X_1. $\\
+f(X_1, X_2) = \sum_{i = 1}^{d-1}[100(x_{i+1} - x_i^2)^2  +(x_i -1)^2]$\\
+\textit{Michalewicz} 2-D& $[0, \pi]^2$ & $
+f(X_1, X_2) = -\sum_{i=1}^d \sin(x_i)\sin^{2m}\left(\frac{ix_i^2}{\pi}\right)$\\
+\textit{Branin} 2-D& $[-5, 10] \times [0, 15]$ &
+$\begin{multlined}[t][0.6\linewidth]
+f(X_1, X_2) = \left( x_2 - \frac{5.1}{4\pi^2}x_1^2 + \frac{5}{\pi}x_1 - 6
+              \right)^2\\[-1ex]
++ 10 \left[ \left( 1 - \frac{1}{8\pi} \right) \cos(x_1) + 1 \right] + 5x_1\hfill
+\end{multlined}$\\
+\textit{Ishigami} 3-D& $[-\pi, \pi]^3$ & $ f(X_1, X_2, X_3) = \sin X_1 + 7 \sin^2 X_2 + 0.1 X_3^4 \sin X_1 $\\
 \textit{g-function} 4-D& $[0, 1]^4$ & $
-f(X_1, X_2, X_3, X_4) = \prod_{i=1}^4 \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i}, \quad a_{i} = i.$\\
+f(X_1, X_2, X_3, X_4) = \prod_{i=1}^4 \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i}, \quad a_{i} = i$\\
 \textit{g-function (i)} 11-D & $[0, 1]^{11}$ & 
 $\begin{multlined}[t][0.6\linewidth]
 f(X_1, ..., X_{11}) = \prod_{i=1}^{11} \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i},\\[-1ex]
