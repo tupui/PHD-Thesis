@@ -5,18 +5,21 @@
 \usepackage{amsmath}  				  % add align
 %\usepackage{unicode-math}     % add unicode math in text
 \usepackage{luatextra, luacolor}
+
 \setmainfont{SFText-Light}[
-		  Ligatures={TeX, Common},
-          BoldFont={SFText-Semibold},
+%		  Ligatures={SFText-Light},
+          BoldFont={SFDisplay-Semibold},
           BoldItalicFont={SFText-SemiboldItalic},
 		  ItalicFont={SFText-LightItalic},
-		  SmallCapsFont={Tex Gyre Heros},%SF UI Display Light}
+%		  SmallCapsFont={SFText-Light},%SF UI Display Light}
 		  %SmallCapsFont={Linux Libertine O},
-		  BoldFeatures={SmallCapsFont=Tex Gyre Heros},
+%		  BoldFeatures={SmallCapsFont=Tex Gyre Heros},
     	  SmallCapsFeatures={Letters=SmallCaps, Renderer=Basic},
 ]
-\setmathrm{SFText-Regular}
-\setboldmathrm{SFText-Semibold}
+
+
+%\setmathrm{SFText-Regular}
+%\setboldmathrm{SFText-Semibold}
 %\usepackage[babel=true,tracking=true]{microtype}
 %\usepackage[babel,french=guillemets*]{csquotes} 
 %\MakeOuterQuote{"}	   
@@ -102,9 +105,11 @@
 
 
 % -------------------- Chapters/Parts ---------------------------
+\definecolor{gray75}{gray}{0.75}
+\usepackage{lettrine}
+\renewcommand{\LettrineFontHook}{\fontfamily{yfrak}\color[gray]{0.75}}
 
 \usepackage{titletoc,titlesec, blindtext}     % add table, changer look chapter etc.
-\definecolor{gray75}{gray}{0.75}
 \newcommand{\hsp}{\hspace{20pt}}
 \titlespacing*{\chapter}{0pt}{0pt}{30pt}
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
@@ -155,7 +160,7 @@
 \title{Uncertainty Quantification in High Dimensional Problem.} 
 \author{Pamphile Tupui ROY}
 \defencedate{9 May 2019}
-\lab{CERFACS} 
+\lab{Centre Européen de Recherche et de Formation Avancée en Calcul Scientifique (CERFACS)} 
 
 %% Directors
 \nboss{2}                                    % Nombre de directeur(s) de thèse
@@ -171,14 +176,19 @@
 \makesomeone{judge}{2}{Didier Lucor}{Astronome Adjoint, Marseille}{Rapporteur}
 \makesomeone{judge}{3}{Nicole Goutal}{Chargé de Recherche, Bordeaux}{Examinateur}
 \makesomeone{judge}{4}{Gianluca Iaccarino}{Chargé de Recherche}{Examinateur}
-\makesomeone{judge}{5}{Sophie Ricci}{Chargé de Recherche}{...} 
-\makesomeone{judge}{6}{Bénédicte CUENOT}{Chargé de Recherche}{Directeur de thèse} 
-\makesomeone{judge}{7}{Jean-Christophe Jouhaud}{Chargé de Recherche}{Co-directeur de thèse} 
+\makesomeone{judge}{5}{Bertrand Iooss}{Chargé de Recherche, Paris}{Examinateur}
+\makesomeone{judge}{6}{Bénédicte CUENOT}{Chargé de Recherche, Toulouse}{Directeur de thèse} 
+\makesomeone{judge}{7}{Jean-Christophe Jouhaud}{Chargé de Recherche, Toulouse}{Co-directeur de thèse}
+%\makesomeone{judge}{7}{Sophie Ricci}{Chargé de Recherche, Toulouse}{Examinateur}  
 
 
 % -------------------- Begin ---------------------------
 
 \begin{document}
+
+% TODO acknowledgements
+% TODO abstract
+% TODO Résumé
 
 \frontmatter   						% si book
 
@@ -329,23 +339,23 @@
 \fancyfoot[RE,RO]{PhD Thesis, Pamphile Tupui ROY}
 
 
-\part{Introduction}
+\part{Introduction}\label{part:intro}
 \begin{parttoc}
     \include{introduction}
 \end{parttoc}
 
-\part{Scientific Contributions}
+\part{Scientific Contributions}\label{part:contributions}
 \begin{parttoc}
     \include{contributions}
 \end{parttoc}
 
-\part{Realistic Applications}
+\part{Applications}\label{part:applications}
 \begin{parttoc}
     \include{applications}	
 \end{parttoc}
 
 
-\part{Conclusion}
+\part{Conclusion}\label{part:conclusion}
 \begin{parttoc}
 	\include{conclusion}
 \end{parttoc}

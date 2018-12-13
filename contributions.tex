@@ -1,8 +1,8 @@
 \chapter{Scientific Dissemination}
 
-The main contribution of this thesis lies in the dissemination of my work through an open source python library called BATMAN. Thus, all the new methodologies developed are openly available to the community.
+\lettrine{T}{he main} contribution of this thesis lies in the dissemination of my work through an open source python library called BATMAN. Thus, all the new methodologies developed are openly available to the community.
 
-On a strict academic point of view, I have produced~{\color[rgb]{0.9,0.2,0.16}\footnote{For an up-to-date list of my contributions, see my \emph{ResearchGate} profile: \href{https://www.researchgate.net/profile/Pamphile\_Roy}{https://www.researchgate.net/profile/Pamphile\_Roy}}}:
+On a strict academic point of view, I have produced~\footnote{For an up-to-date list of my contributions, see my \emph{ResearchGate} profile: \href{https://www.researchgate.net/profile/Pamphile\_Roy}{https://www.researchgate.net/profile/Pamphile\_Roy}}:
 
 \begin{enumerate}
 \item[\textbf{7}] accepted and published articles,
@@ -26,7 +26,7 @@ The following chapters provide an in-deep presentation of the new methodologies 
 \addcontentsline{toc}{section}{Reviews}
 \section*{Reviews}
 
-I have been reviewing manuscripts in the following journals~{\color[rgb]{0.9,0.2,0.16}\footnote{Reviews have been verified on \emph{publons}: \href{https://publons.com/a/1567681}{publons.com/a/1567681}}}:
+I have been reviewing manuscripts in the following journals~\footnote{Reviews have been verified on \emph{publons}: \href{https://publons.com/a/1567681}{publons.com/a/1567681}}:
 
 \begin{itemize}
 \item Computational Geosciences,
@@ -47,7 +47,7 @@ I have been reviewing manuscripts in the following journals~{\color[rgb]{0.9,0.2
 
 \section{Description}
 
-Due to the increasing interest in UQ over the last decade, a significant number of UQ-dedicated tools/libraries are now available for the scientific community. OpenTURNS is an open-source (GNU LGPL) scientific library developed since 2005 by EDF, Airbus, Phimeca and IMACS and usable as a Python module dedicated to uncertainty treatment and reliability analysis in a structured industrial approach~\citep{baudin2015}. OpenTURNS offers a wide catalogue of features for UQ (e.g.~PC expansion, \citeauthor{dutka2009}~\citeyear{dutka2009}) and benefits from a well-organized developers' and users' community (forum, training, user guides). It can either be used as a Python module or as a component within a coupling platform. For further information on the OpenTURNS library, the reader is referred to the online reference and use case guides. OpenTURNS is a powerful and complete statistical library but as being used operationally, it was not envisageable to directly implement new methodologies. Moreover, as coded in C++, the development time is known to be one order slower than with Python. Thus it has been decided that this thesis would rely on an in-house library.
+\lettrine{D}{ue to} the increasing interest in UQ over the last decade, a significant number of UQ-dedicated tools/libraries are now available for the scientific community. OpenTURNS is an open-source (GNU LGPL) scientific library developed since 2005 by EDF, Airbus, Phimeca and IMACS and usable as a Python module dedicated to uncertainty treatment and reliability analysis in a structured industrial approach~\citep{baudin2015}. OpenTURNS offers a wide catalogue of features for UQ (e.g.~PC expansion, \citeauthor{dutka2009}~\citeyear{dutka2009}) and benefits from a well-organized developers' and users' community (forum, training, user guides). It can either be used as a Python module or as a component within a coupling platform. For further information on the OpenTURNS library, the reader is referred to the online reference and use case guides. OpenTURNS is a powerful and complete statistical library but as being used operationally, it was not envisageable to directly implement new methodologies. Moreover, as coded in C++, the development time is known to be one order slower than with Python. Thus it has been decided that this thesis would rely on an in-house library.
 
 Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) is an open source Python package dedicated to statistical analysis based on non-intrusive ensemble experiment~\cite{roy2018}. Batman library provides a convenient, modular and efficient framework for design of experiments, surrogate model and uncertainty quantification---see~\cref{fig:batman_workflow}. Batman relies on open source python packages dedicated to statistics (OpenTURNS and Scikit-Learn~\citep{pedregosa2011}). Batman handles the workflow for statistical analysis. It makes the most of HPC resources by managing asynchronous parallel tasks. The internal parallelism of each task does not conflict with batman's parallel environment. Batman analysis is launched from a \emph{command line interface} and a setting file. Batman functionalities can also be accessed through an API.
 
@@ -112,7 +112,7 @@ Moreover, we are actively collaborating with academic and institutional partners
 
 \section{Introduction}
 
-This work proposes a new stochastic, iterative DoE ---\thinspace named KDOE\thinspace--- based on a modified Kernel Density Estimation (KDE). It is a two-step process: \emph{(i)} candidate samples are generated using MCMC based on KDE, and \emph{(ii)} one of them is selected based on some metric. The performance of the method is assessed by means of the $C^2$-discrepancy space-filling criterion. KDOE appears to be as performant as classical one-shot methods in low dimensions, while it presents increased performance for high-dimensional parameter spaces. This work proposes a new  methodology to stochastically sample the input parameter space iteratively allowing, at the same time, to take into account any constrains, such as non-rectangular DoE~\citep{Lekivetz2015}, sensitivity indices or even constrains on the quality on particular subprojections as in~\citep{Joseph2015}. It is a versatile method which offers an alternative to classical methods and, at the same time, is easy to implement and offers customization based on the objective of the DoE.
+\lettrine{T}{his work} proposes a new stochastic, iterative DoE ---\thinspace named KDOE\thinspace--- based on a modified Kernel Density Estimation (KDE). It is a two-step process: \emph{(i)} candidate samples are generated using MCMC based on KDE, and \emph{(ii)} one of them is selected based on some metric. The performance of the method is assessed by means of the $C^2$-discrepancy space-filling criterion. KDOE appears to be as performant as classical one-shot methods in low dimensions, while it presents increased performance for high-dimensional parameter spaces. This work proposes a new  methodology to stochastically sample the input parameter space iteratively allowing, at the same time, to take into account any constrains, such as non-rectangular DoE~\citep{Lekivetz2015}, sensitivity indices or even constrains on the quality on particular subprojections as in~\citep{Joseph2015}. It is a versatile method which offers an alternative to classical methods and, at the same time, is easy to implement and offers customization based on the objective of the DoE.
 
 \section{Presentation of the method}\label{sec:method}
 
@@ -410,7 +410,7 @@ Using this method, it is also possible to consider non-rectangular domains~\cite
 \label{fig:constrain}
 \end{figure}
 
-The ability to change the selection criterion is even more useful. With a prior knowledge on the sensitivity of the parameters to the quantity of interest~\citep{Saltelli2007}, it is possible to bias the design. Considering a 2-dimensional space ---\thinspace as the example in~\cref{fig:sensitivity}\thinspace---, if the parameter $x_2$ is known to have a small impact, it might be more interesting to optimize the $C^2$-discrepancy on the parameter $x_1$. More complicated things can be performed if one wants to optimize a particular subprojection as in~\citep{Joseph2015}. This is referred to as \emph{Maximum Projection Design}.
+The ability to change the selection criterion is even more useful. With a prior knowledge on the sensitivity of the parameters to the quantity of interest~\citep{saltelli2007}, it is possible to bias the design. Considering a 2-dimensional space ---\thinspace as the example in~\cref{fig:sensitivity}\thinspace---, if the parameter $x_2$ is known to have a small impact, it might be more interesting to optimize the $C^2$-discrepancy on the parameter $x_1$. More complicated things can be performed if one wants to optimize a particular subprojection as in~\citep{Joseph2015}. This is referred to as \emph{Maximum Projection Design}.
 
 \begin{figure}[!h]
 \centering
@@ -437,7 +437,7 @@ The quality of the design is of prime importance as it determines the quality of
 \chapter{Resampling the Design of Experiments}\label{chap:resample}
 \section{Introduction}
 
-The accuracy of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space. The presented techniques show an improvement of the predictive quality of the model with high dimensional analytical input functions. An industrial application is targeted, the aerothermal flow around the \textit{LS89}~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented (see~\cref{chap:ls89}). LES are high-fidelity full 3D unsteady simulations. This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
+\lettrine{T}{he accuracy} of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space. The presented techniques show an improvement of the predictive quality of the model with high dimensional analytical input functions. An industrial application is targeted, the aerothermal flow around the \textit{LS89}~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented (see~\cref{chap:ls89}). LES are high-fidelity full 3D unsteady simulations. This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
 
 \section{Presentation of the methods}
 
@@ -675,11 +675,11 @@ Two new methods have been introduced in this work for resampling the parameter s
 
 By taking into account the physics in this process, the proposed methods will help build better models at lower costs. This will also allow Uncertainty Quantification of high-dimensional or expensive cases to be within reach.
 
-\chapter{Uncertainty Visualization}
+\chapter{Uncertainty Visualization}\label{chap:visu}
 
 \section{Introduction}
 
-This chapter proposes a solution to visualize high input and output dimensions. This solution relies on HOPs applied to functional response surface, HDR metrics,  and a 3-dimensional version of Kiviat plot. For the 3D-Kiviat, each layer stands for a hypothetical outcome (a realization) coloured by a scalar value related to the response variable. This value is either the response variable at a given point and time or some distance computed with the HDR metrics. This solution can be augmented with data sonification to traduce the HDR metrics.
+\lettrine{T}{his chapter} proposes a solution to visualize high input and output dimensions. This solution relies on HOPs applied to functional response surface, HDR metrics,  and a 3-dimensional version of Kiviat plot. For the 3D-Kiviat, each layer stands for a hypothetical outcome (a realization) coloured by a scalar value related to the response variable. This value is either the response variable at a given point and time or some distance computed with the HDR metrics. This solution can be augmented with data sonification to traduce the HDR metrics.
 
 % Content
 The chapter is tailored as follows: \cref{sec:uqvisu} presents our innovative technique to visualize output uncertainties based on f-HOPS with sonification for HDR metrics. \Cref{sec:input} extends this advanced solution to both input and output uncertainties visualization building on 3D-Kiviat representation augmented with HDR metrics and sonification. Conclusion and discussion are finally given in~\cref{sec:visu_ccl}.
@@ -713,7 +713,7 @@ The HOPs dynamic visualization can be applied to functional outputs~\citep{Kale2
 \includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/f-hops_nominal.png}}
 \subfloat[Frame \#$n+1$]{
 \includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/f-hops_outlier.png}} 
-\caption{Functional-HOPs. \textbf{a} close to median realization. \textbf{b} outlier realization. An animated version of this figure is available as supplementary material (\hyperref[S1]{S1}).}
+\caption{Functional-HOPs. \textbf{a} close to median realization. \textbf{b} outlier realization.}
 \label{fig:f-hops}
 \end{figure*}
 
@@ -781,7 +781,7 @@ From~\cref{fig:Kiviat_order}(a, c, d), the impact of $Q$ on the water level is e
 ~
 \subfloat[Stacking: response variable - Colouring: response variable]{
 \includegraphics[width=0.42\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/mascaret_kiviat_qoi_qoi.pdf}}
-\caption{Kiviat plot on the Hydrodynamics dataset: comparison of different stacking orders and colour map strategies. \textbf{a} samples stacked by response variable and coloured by HDR. \textbf{b} samples stacked by HDR and coloured by response variable. \textbf{c} samples stacked by $Q$ and coloured by HDR. \textbf{d samples} stacked by response variable and coloured by response variable. An animated version of \textbf{a} is available (\hyperref[S2]{S2}).}
+\caption{Kiviat plot on the Hydrodynamics dataset: comparison of different stacking orders and colour map strategies. \textbf{a} samples stacked by response variable and coloured by HDR. \textbf{b} samples stacked by HDR and coloured by response variable. \textbf{c} samples stacked by $Q$ and coloured by HDR. \textbf{d} samples stacked by response variable and coloured by response variable.}
 \label{fig:Kiviat_order}
 \end{figure*}
 
@@ -789,7 +789,7 @@ From~\cref{fig:Kiviat_order}(a, c, d), the impact of $Q$ on the water level is e
 
 While the \emph{Sobol'} indices quantify the importance of each parameter on the response variable's variance, they do not indicate the nature of these contributions. Indeed, it is stated that $Q$ has a significant impact but from~\cref{fig:Kiviat_order}(a, c, d), we can also add that the contribution is monotonous. Additionally, the weak impact of $Ks1$ and $Ks2$ is confirmed by the lack of a pattern in the 3D-Kiviat along these axes. Finally, while the $Ks3$ Sobol index is weak, the 3D-Kiviat indicates that small $Ks3$ values lead to high-water level values.
 
-It appears that 3D-Kiviat plot becomes difficult to manipulate when the dimension of the input parameter increases ($>10$). To overcome this caveat, we have designed a method to generate a surface mesh of the Kiviat plot as shown in~\cref{fig:mesh}. This allows the use of regular CAD viewers and thus facilitates the manipulation of the 3D object as well as the comprehension of the data structure. The construction is based on a vertex-vertex representation using quadrilateral elements. An animated version of~\cref{fig:mesh} is provided in~\cref{S3} with stacking with respect to the response variable value, colouring with respect to the HDR metric, then colouring with respect to the input parameters in~\cref{S4}. 
+It appears that 3D-Kiviat plot becomes difficult to manipulate when the dimension of the input parameter increases ($>10$). To overcome this caveat, we have designed a method to generate a surface mesh of the Kiviat plot as shown in~\cref{fig:mesh}. This allows the use of regular CAD viewers and thus facilitates the manipulation of the 3D object as well as the comprehension of the data structure. The construction is based on a vertex-vertex representation using quadrilateral elements. %An animated version of~\cref{fig:mesh} is provided in~\cref{S3} with stacking with respect to the response variable value, colouring with respect to the HDR metric, then colouring with respect to the input parameters in~\cref{S4}. 
 
 %\pamphile{OK on peut enlever si tu veux}
 %\sophie{JE NE PENSE PAS QUE CES 2 PHRASES AIENT UN INTERET  : As it can be seen in~\cref{fig:mesh}, this technique is not only convenient but it allows different kind of post-treatment. Another thing to notice is that as the number of parameter increases, the order in which the parameters are arranged can help. Correlations between parameters are more likely to exists with parameters linked with each other.}
