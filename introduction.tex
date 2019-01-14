@@ -1,6 +1,6 @@
 \chapter{Context}
 
-\lettrine{D}{esign} process and robust optimization are major purposes of engineering works dealing with numerical simulations, especially in aeronautical or automotive industry~\cite{duchaine2009}. Despite the large amount of work that has been devoted to the design of efficient optimization techniques, the design process still requires important investments (financial and human)~\cite{forrester2009}. As a consequence, design errors appear after the industrialization phase and the implications these can have may be critical~\cite{draper1995}. A classical example of such failure is the Space Shuttle \emph{Challenger} disaster in 1986. During the Space Shuttle's ascent, a failure of O-ring seals on its right solid rocket booster caused its disintegration. It has been shown that an uncertainty on the behaviour of this O-ring had been a key factor to the accident. On the launch day, the temperature was particularly low and the effect of such low temperature on the O-ring was not known. Engineers had to extrapolate the response of the system to this event. Linked to a strong pressure at NASA for this launch, the decision to maintain the launch was made even-though engineers warned about the uncertainties of their findings. This lead to the creation of NASA's Safety, Reliability, Maintainability, and Quality Assurance (SRM\&QA) program.
+\lettrine{D}{esign} process and robust optimization are major purposes of engineering works dealing with numerical simulations, especially in aeronautical or automotive industry~\cite{duchaine2009}. Despite the large amount of work that has been devoted to the design of efficient optimization techniques, the design process still requires important investments (financial and human)~\cite{forrester2009}. As a consequence, design errors appear after the industrialization phase and the implications these can have may be critical. A classical example of such failure is the Space Shuttle \emph{Challenger} disaster in 1986~\cite{draper1995}. During the Space Shuttle's ascent, a failure of O-ring seals on its right solid rocket booster caused its disintegration. It has been shown that an uncertainty on the behaviour of this O-ring had been a key factor to the accident. On the launch day, the temperature was particularly low and the effect of such low temperature on the O-ring was not known. Engineers had to extrapolate the response of the system to this event. Linked to a strong pressure at NASA for this launch, the decision to maintain the launch was made even-though engineers warned about the uncertainties of their findings. This lead to the creation of NASA's Safety, Reliability, Maintainability, and Quality Assurance (SRM\&QA) program.
 
 Computational Fluid Dynamics (CFD) tools have been used more and more in the past decades to decrease the number of iterations between conception and experiments, and to avoid irreversible errors during the preliminary design phase. Nowadays, CFD codes have reached maturity and represent more accurately physical flow phenomena. Complex flow simulations on high-resolution grids are possible thanks to the continuous developments in numerical models and in High Performance Computing (HPC). Nevertheless, deterministic simulations only provide limited knowledge about a system. Uncertainties in the numerical model as well as in the problem formulation or inputs are necessarily present and translate into uncertainties in the outputs~\cite{Sacks1989}---see~\cref{fig:context}.
 
@@ -11,27 +11,24 @@ Computational Fluid Dynamics (CFD) tools have been used more and more in the pas
 \label{fig:context}
 \end{figure}
 
-The output variability of a system can be confusing and we have to determine the source of these uncertainties. Does it come from our model or from the physics? Uncertainties can be classified as:\begin{description}	\item [Aleatoric:] intrinsic to our system,	\item [Epistemic:] due to our lack of knowledge. We can reduce it by improving our model or adding experiments,	\item [Numerical error:] due to the construction of our numerical scheme.\end{description}
+The output variability of a system can be confusing regarding the source of these uncertainties. Does it come from our model or from the physics? Uncertainties can be classified as:\begin{description}	\item [Aleatoric:] intrinsic to our system,	\item [Epistemic:] due to our lack of knowledge. We can reduce it by improving our model or adding experiments,	\item [Numerical error:] due to the construction of our numerical scheme.\end{description}
 
-Ideally, our model should only contain aleatoric uncertainties as it is defined solely by the physics. In fact, the diversity of uncertainties on the CFD boundary conditions or initial conditions as well as on model parameters (input data, geometry, simplification of the model physics, etc.) limits the predictivity of the simulations: the Quantity of Interest (QoI) can be easily affected and shadowed by the conjugation of all these types of uncertainties. This assessment explains why Uncertainty Quantification (UQ) is now becoming a mandatory step in application-oriented modelling for operational and industrial purposes~\cite{degennaro2015,masquelet2017}. It provides insight into the level of uncertainty in the numerical simulation results but also gives access to a Sensitivity Analysis (SA) which aims at describing the respective influences of the input parameters on the QoI. The inclusion of UQ in a design optimization cycle hence allows manufacturers to design quicker and obtain better, cheaper and more robust (i.e. more stable) products.
+Ideally, our model should only contain aleatoric uncertainties as it is represents the physical variability of the system. However, the diversity of uncertainties due to the CFD boundary conditions or initial conditions as well as of model parameters (input data, geometry, simplification of the model physics, etc.) limits the predictivity of the simulations: the Quantity of Interest (QoI) can be easily affected and shadowed by the conjugation of all these types of uncertainties. This assessment explains why Uncertainty Quantification (UQ) is now becoming a mandatory step in application-oriented modelling for operational and industrial purposes~\cite{degennaro2015,masquelet2017}. It provides insight into the level of uncertainty in the numerical simulation results but also gives access to a Sensitivity Analysis (SA) which aims at describing the respective influences of the input parameters on the QoI. The inclusion of UQ in a design optimization cycle hence allows manufacturers to design quicker and obtain better, cheaper and more robust (i.e. more stable) products. Depending on the question we seek to answer, we have to determine the type of UQ study to conduce:\begin{itemize}	\item \emph{Uncertainty Propagation,}\hfill\\Propagate an initial perturbation within the system and observe its outputs.	\item \emph{Sensitivity Analysis,}\hfill\\Rank the input parameters regarding their impact on the output.	\item \emph{Risk assessment.}\hfill\\Observe the probability to exceed a threshold or the probability of a particular quantile.\end{itemize}
 
- %The main objective of uncertainty studies is to be able to quantify this uncertainty in order to reduce the design margin or even perform complex system optimization. Thus, 
- 
- The first thing to come up with is to determine the type of UQ study to conduce:\begin{itemize}	\item \emph{Uncertainty Propagation,}\hfill\\Propagate an initial perturbation within the system and observe its outputs.	\item \emph{Sensitivity Analysis,}\hfill\\Rank the input parameters regarding their impact on the output.	\item \emph{Risk assessment.}\hfill\\Observe the probability to exceed a threshold or the probability of a particular quantile.\end{itemize}
+Each question is answered using specific tools and it special care has to be taken if ones want to conduce multiple analysis. It might not be possible to reuse the same data used for Uncertainty Propagation to do Sensitivity Analysis.
 
-Classical UQ methods, based on the Monte-Carlo approach, require a large number of simulations~\cite{saltelli2007}, which quickly go beyond the limits of available computational resources (CPU, financial costs). This is especially true when it comes to large dimensional problems, both with respect to the domain discretization and to the number of uncertain input parameters. The cost of the UQ study can, however, be significantly reduced when the experiment is replaced by a proxy, or surrogate model, which is formulated in a parameter space and which is fast to evaluate for any set of uncertain variables~\cite{martin2005}. 
+Classical UQ methods, based on the \emph{Monte-Carlo} approach, require a large number of simulations~\cite{saltelli2007}, which quickly go beyond the limits of available resources (CPU, financial costs). This is especially true when it comes to large dimensional problems, both with respect to the domain discretization and to the number of uncertain input parameters. The cost of the UQ study can, however, be significantly reduced when the experiment is replaced by a proxy, or surrogate model, which is formulated in a parameter space and which is fast to evaluate for any set of uncertain variables~\cite{martin2005}. 
 
 \begin{quotation}
 
 {\fontfamily{FiraCode-Light}\selectfont
 
 %\textit{
-The purpose of this thesis is to propose some directions of improvement on various methodological aspects of UQ applied to costly numerical environments. The methods developed can be used in various fields and are demonstrated through multiple applications. Moreover, these methods are not limited to the use of numerical experiments and can be used equally for \emph{in vivo} experiments.
+The purpose of this thesis is to propose some directions of improvement on various methodological aspects of Uncertainty Quantification applied to costly numerical environments. The methods developed can be used in various fields and are demonstrated through multiple applications. Moreover, these methods are not limited to the use of numerical experiments and can be used equally for \emph{in vivo} experiments.
 %}
 
 }
 \end{quotation}
-
 
 \newpage
 
@@ -42,14 +39,14 @@ This manuscript is divided into four parts and is tailored as followed:
 
 \begin{description}
 	\item[\Cref{part:intro}] after a general introduction about the context of this thesis,  \cref{chap:review} reviews the literature on concepts and methods around UQ,\hfill\\
-\Cref{sec:doe} goes from a state on the different methods to plan experiments; then \cref{sec:uq} describe the different technique commonly used to perform UQ as well as the latest advances. As explained above, such statistical analysis may require the usage of a surrogate model which are detailed in~\cref{sec:surrogate}. Once the uncertainties have been propagated, \cref{sec:visu} presents how uncertainties are visualized. After this literature review, some scientific questions arise and the complete scope of this thesis work is given in~\cref{chap:questions}.
+\Cref{sec:doe} goes from a state-of-the-art on the different methods to plan experiments; then \cref{sec:uq} describe the different technique commonly used to perform UQ as well as the latest advances. As explained above, such statistical analysis may require the usage of a surrogate model which are detailed in~\cref{sec:surrogate}. Once the uncertainties have been propagated, \cref{sec:visu} presents how uncertainties are visualized. After this literature review, some scientific questions arise and the complete scope of this thesis work is given in~\cref{chap:questions}.
 
 	\item[\Cref{part:contributions}] presents my scientific contributions,\hfill\\
 In~\cref{chap:batman}, a new UQ open-source tool is introduced. It serves as a demonstrator for all the methods developed. Following, \cref{chap:doe,chap:resample,chap:visu}~are the responses to the scientific questions rose.
 
 	\item[\Cref{part:applications}] some applications of the new methods are proposed through~\cref{chap:mascaret,chap:ls89,chap:swirler,chap:optim,chap:psaap},\hfill\\
 
-	\item[\Cref{part:conclusion}] put a point on this thesis work.
+	\item[\Cref{part:conclusion}] put a point on this thesis work and draw some perspectives for futur work.
 \end{description}
 
 
@@ -81,7 +78,17 @@ In its basis form, a DoE is described by a $d$-dimensional cube: a hypercube---s
 
 From exploratory phases to more advanced analyses, such as Uncertainty Quantification (UQ) and robust optimization, DoE aims at helping better understand the physical mechanisms governing the problem of interest~\citep{saltelli2007}. Therefore, the objective of efficient DoE is to maximize the coverage of input space, i.e., space filling, with the aspiration of capturing most of the underlying physics. Such analyses typically require large number of experiments in order for the statistics of the QoIs to converge. In this regard, many studies have focused on trying to reduce the computational cost. However, depending on the required quality of the analysis, the complexity of the experiment, or its return time, the total number of experiments may be limited. Thus, the objective is to optimize the space-filling properties for a given budget.
 
-One-At-a-Time (OAT) design is the most trivial form of DoE. It consists in changing only one parameter at a time. While this method is simple to implement and allow a quick interpretation on a physical aspect, this sampling procedure require a huge number of simulation. Indeed, it requires $n^d$ samples. This exponential growth is called the \emph{cuse-of-dimensionality}. To mitigate this problem, one could sparse the obtained DoE. The problem then comes to an assessment of the quality of this DoE. Different metrics are commonly used to assess the space filling of a DoE. They can be categorized into \emph{(i)} geometrical and \emph{(ii)} uniformity criteria. Among the most used geometrical criteria are the \emph{maximin} and \emph{minimax}~\citep{Pronzato2017}. They, respectively, maximize the minimal distance between all points or minimize the maximal distance between any location in space and all points of the sample. A similar criterion is found by using a \emph{minimum spanning tree}~\citep{Franco2009} in which the best design corresponds to a maximization of the mean distance between all connections and the minimization of the variance in these distances. The uniformity criterion, instead, measures how the spread of the points deviates from a uniform distribution. The central discrepancy is commonly used~\citep{Fang2006,Damblin2013} to measure the uniformity:
+One-At-a-Time (OAT) design is the most trivial form of DoE. It consists in changing only one parameter at a time. While this method is simple to implement and allow a quick interpretation on a physical aspect, this sampling procedure require a huge number of simulation. Indeed, it requires $n^d$ samples. This exponential growth is called the \emph{cuse-of-dimensionality}. If we take for instance the unit-hypercube. All bounds range from 0 to 1. Let's say that we want to have a distance between each points of 0.01. The number of points required to fill the unit interval would be 100. In 2D the same spacing would require 10 000 and in 3D 1 000 000 points. As the number of dimensions goes, the number of experiments which is required to fill the space evenly rises exponentially as the volume of the space---see~\cref{fig:curse_dim}.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/curse_dim.pdf}
+\caption{Sketch of the \emph{cuse-of-dimensionality}. VIsualization of the volume of the parameter space in 1, 2 and 3 dimensions.}
+\label{fig:curse_dim}
+\end{figure}
+
+
+To mitigate this problem, one could sparse the obtained DoE. The problem then comes to an assessment of the quality of this DoE. Different metrics are commonly used to assess the space filling of a DoE. They can be categorized into \emph{(i)} geometrical and \emph{(ii)} uniformity criteria. Among the most used geometrical criteria are the \emph{maximin} and \emph{minimax}~\citep{Pronzato2017}. They, respectively, maximize the minimal distance between all points or minimize the maximal distance between any location in space and all points of the sample. A similar criterion is found by using a \emph{minimum spanning tree}~\citep{Franco2009} in which the best design corresponds to a maximization of the mean distance between all connections and the minimization of the variance in these distances. The uniformity criterion, instead, measures how the spread of the points deviates from a uniform distribution. The central discrepancy is commonly used~\citep{Fang2006,Damblin2013} to measure the uniformity:
 \begin{align}
 C^2(\mathbf{X}^{N_s}_d) =& \left( \frac{13}{12} \right)^d - \frac{2}{N_s}\displaystyle\sum_{i=1}^{N_s}\prod_{k=1}^{d} \left( 1 + \frac{1}{2} \mid  x_k^{(i)} - 0.5\mid - \frac{1}{2} \mid  x_k^{(i)} - 0.5\mid^2\right)\\ \nonumber
 & + \frac{1}{N_s^2}\sum_{i,j=1}^{N_s}\prod_{k=1}^d \left( 1 + \frac{1}{2} \mid  x_k^{(i)} - 0.5\mid + \frac{1}{2} \mid  x_k^{(j)} - 0.5\mid - \frac{1}{2} \mid  x_k^{(i)} - x_k^{(j)}\mid \right). \label{eq:c2}
@@ -89,14 +96,29 @@ C^2(\mathbf{X}^{N_s}_d) =& \left( \frac{13}{12} \right)^d - \frac{2}{N_s}\displa
 
 There are three main methodologies for defining a DoE: \emph{(i)} \emph{Monte Carlo} (MC), \emph{(ii)} \emph{Latin Hypercube Sampling} (LHS) and \emph{(ii)} Quasi-\emph{Monte Carlo} (QMC) methods~\citep{Cavazzuti2013,Garud2017}. Kucherenko \emph{et al.}~\citep{Kucherenko2015} have recently compared MC and LHS against the well-established low discrepancy sequence of \emph{Sobol'}. They concluded that LHS and QMC both offer superior integration performance over MC.
 
-LHS-based sampling methods are one-shot design strategies~\citep{Mckay1979,Fang2006}. Their utilization requires the practitioner to set \emph{a priori} the total number of samples contained in the DoE. Although, there have been some attempts to construct progressive LHS, they still require an initial design to work properly~\citep{Sheikholeslami2017}. On the other hand, low discrepancy sequences are iterative designs which can be continued without compromising the discrepancy. The practitioner is then able to increase the number of samples afterwards for quality reasons, for instance, or if other experiments can be afforded. Liu \emph{et al.}~\citep{Liu2018} recently reviewed iterative DoE in a metamodeling context. In their study, it is shown that most iterative methods need an initial design as a starting point. A particular benefit of this approach is that it allows the use of physics information from the system to guide the DoE. In this case, such iterative methods are called adaptive methods. Except for some work in~\citep{Crombecq2011}, and to the best of the authors’ knowledge, the number of iterative methods not requiring an initial design is limited. This state-of-the-art can be explained both by the quality of the initial designs (using LHS of \emph{Sobol'} sequence) and by the performance of the refinement algorithm. There are even fewer options if the iterative design cannot take advantage of the output of the experiments. Low discrepancy sequences are an example of such methods. But in some context, stochastic methods may be required ---\thinspace to compute sensitivity indices for instance~\citep{Saltelli2010}. Scrambling the sequences~\citep{Owen1998} can avoid this pitfall but then the method is no longer iterative.
+LHS-based sampling methods are one-shot design strategies~\citep{Mckay1979,Fang2006}. The principle is simple: considering $N_s$ samples, in each 1-dimensional subprojection of the parameter space there should be $N_s$ samples. It means that samples are not sharing coordinates with each other. Orthogonal arrays are a slight evolution of this principle. Each 1-dimensional subprojection is spitted into $N_s$ to form an orthogonal grid of size $N_s^d$ and only one sample is allowed per cell. \Cref{fig:lhs} shows two different orthogonal LHS with $N_s=10$. Although both valid, they do not cover equally the parameter space. Constructing such design is numerically easy and it is possible to optimize the space filling properties by swapping elements for instance~\cite{Fang2006,Damblin2013}.
+
+\begin{figure}[!h]               
+\centering
+\subfloat[]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/literature/lhs_ok.pdf}}
+ ~       
+\subfloat[]{
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/literature/lhs_ko.pdf}}
+\caption{Orthogonal LHS examples.}
+\label{fig:lhs}
+\end{figure}
+
+The use of LHS requires the practitioner to set \emph{a priori} the total number of samples contained in the DoE. Although, there have been some attempts to construct progressive LHS, they still require an initial design to work properly~\citep{Sheikholeslami2017}.
+
+On the other hand, low discrepancy sequences are iterative designs which can be continued without compromising the discrepancy. The practitioner is then able to increase the number of samples afterwards for quality reasons, for instance, or if other experiments can be afforded. \citet{Liu2018} recently reviewed iterative DoE in a metamodeling context. In their study, it is shown that most iterative methods need an initial design as a starting point. A particular benefit of this approach is that it allows the use of physics information from the system to guide the DoE. In this case, such iterative methods are called adaptive methods. Except for some work in~\citep{Crombecq2011}, and to the best of the authors’ knowledge, the number of iterative methods not requiring an initial design is limited. This state-of-the-art can be explained both by the quality of the initial designs (using LHS of \emph{Sobol'} sequence) and by the performance of the refinement algorithm. There are even fewer options if the iterative design cannot take advantage of the output of the experiments. Low discrepancy sequences are an example of such methods. But in some context, stochastic methods may be required ---\thinspace to compute sensitivity indices for instance~\citep{Saltelli2010}. Scrambling the sequences~\citep{Owen1998} can avoid this pitfall but then the method is no longer iterative.
 
 \section{Uncertainty Quantification}\label{sec:uq}
 
 \subsection{Uncertainty Propagation}\label{sec:up}
 \lettrine{U}{ncertainty Propagation} (UP) seeks to communicate uncertainties throughout the system. Uncertainties are defined at one side of the system, and their effects are observed at the other end. But are we talking about the uncertainties of the input parameters or the output QoI? Usually, uncertainties are defined on the input parameter space side, and it is the impact on the quantity of interest that is observed. The other way around is called an \emph{inverse problem} and is not discussed in this work.
 
-Uncertainties can be described using a probabilistic approach through the use of Probability Density Functions (PDF). Thus, propagating uncertainties comes to determining the PDF of the QoI.
+Uncertainties can be described using a probabilistic approach through the use of Probability Density Functions (PDF). This function computes the probability of occurence of a phenomenon. Thus, propagating uncertainties comes to determining the PDF of the QoI.
 
 \begin{figure}[!h]
 \centering
@@ -105,13 +127,15 @@ Uncertainties can be described using a probabilistic approach through the use of
 \label{fig:UP}
 \end{figure}
 
-\Cref{fig:UP} present a representation of the UP procedure. In practice, propagating uncertainties comes to sampling the PDFs of inputs and observing the impact on the QoI. As we are interested in computing statistics on the QoI, this requires a statistically significant sampling. A large number of samples is required to recover the empirical PDF of the QoI. One must note that in order to find the tail of the PDF---the least frequent event---it requires an even larger number of samples.
+\Cref{fig:UP} present a representation of the UP procedure. In practice, propagating uncertainties comes to sampling the PDFs of inputs and observing the impact on the QoI. It should be emphasised that the outcome of the UP \emph{depends} on the prescribed PDFs. The nature of the PDF and the ranges of each parameters is paramount. Without any prior knowledge on input parameters, uniform distributions are traditionally used. As for the ranges, some fixed percentage of variation is commonly used. While this strategy could indeed corresponds to the correct variability of some parameters, this may lead to wrong analysis. In~\citep{pilkey}, the exemple of radioactive waste transport on the Yucca Mountain is taken. In this UP analysis, the percolation rate of the water from the surface to the disposal was wrongly estimated between 0.02 and 1 millimetre per year while its true was close to $\sim 3000$. This lead to an underestimation of 4 orders of magnitude of the transport of some radioactive component.
 
-Histograms can be used to represent the PDF. However, continuous functions can be obtained using a technique called Kernel Density Estimation (KDE)~\cite{Wand1995}. The PDF estimator $\hat{f}(Y^*)$ is given by:
+As we are interested in computing statistics on the QoI, this requires a statistically significant sampling. A large number of samples is required to recover the empirical PDF of the QoI. One must note that in order to find the tail of the PDF---the least frequent event---it requires an even larger number of samples.
+
+Histograms can be used to represent the PDF. However, continuous functions can be obtained using a technique called Kernel Density Estimation (KDE)~\cite{Wand1995}. The probability to observe a QoI's value $Y^*$ is given by the PDF estimator $\hat{f}(Y^*)$
 \begin{align}
 \hat{f}(Y^*)&= \frac{1}{N_{s}}\sum_{i=1}^{N_{s}} K_{h_i}(Y^*-Y^{(i)}),
 \end{align}
-\noindent where $N_s$ is the number of samples and $K_{h_i}(.) = K(./h_i)/h_i$ is the scaled kernel chosen for the modal probability density function with $h_{i}$ the bandwidth for the \emph{i}th component. In the present work $K$ is the Gaussian kernel and $h_{i}$ are optimized by cross-validation of the log-likelihood of the data. It writes
+\noindent where $N_s$ is the number of samples. $K_{h_i}(.) = K(./h_i)/h_i$ is the scaled kernel chosen for the modal probability density function with $h_{i}$ the bandwidth for the \emph{i}th component. In the present work $K$ is the Gaussian kernel and $h_{i}$ are optimized by cross-validation of the log-likelihood of the data. It writes
 \begin{align}
 K\left(Y^*,Y^{(i)}\right) = \exp\left( - \frac{D\left(Y^*,Y^{(i)}\right)^2}{2h^2} \right), \label{eq:kde}
 \end{align}
@@ -147,10 +171,10 @@ Once the PDF of the QoI is available, it can be used to: \emph{(i)} observe the 
 \subsubsection{From local to global Sensitivity Analysis}
 
 An intuitive way to characterize the importance of each parameters toward a QoI is to compute the derivates of the simulator for a given set of inputs. This method is called \emph{elementary effects} and a successful implementation is found with \citet{morris1991}. An elementary effect $d\mathbf{x}_{k}^*$ is defined as
-\begin{align}d\mathbf{x}_{k}^* = \frac{ \mid Y(\mathbf{x}_{k}^*) -  Y(\mathbf{x}_{k})}{\mid \mathbf{x}_{k}^* - \mathbf{x}_{k}  \mid},\end{align}
+\begin{align}d\mathbf{x}_{k}^* = \frac{ \mid Y(\mathbf{x}_{k}^*) -  Y(\mathbf{x}_{k}) \mid}{\mid \mathbf{x}_{k}^* - \mathbf{x}_{k}  \mid},\end{align}
 \noindent with $\mathbf{x}_{k}$ a given sample and $\mathbf{x}_{k}^*$ a sample which differs from $\mathbf{x}_{k}$ by an increment $\delta$. This effect can be computed with respect to $N_s$ samples and $d$ dimensions which induce to a total number of sample $N = N_s\times(d + 1)$. It is called a screening method and it corresponds to an OAT walk of the DoE. \Cref{fig:morris} is an example with $N_s = 5, d = 3$. Then the mean of absolute elementary effects writes
 \begin{align}
-\hat{\mu_k} = \frac{1}{N_s} \sum_{i=1}^{N_s} \frac{ \mid Y(\mathbf{x}_{k}^*) -  Y(\mathbf{x}_{k}^i)}{\mid \mathbf{x}_{k}^* - \mathbf{x}_{k}^i  \mid}.
+\hat{\mu_k} = \frac{1}{N_s} \sum_{i=1}^{N_s} \frac{ \mid Y(\mathbf{x}_{k}^*) -  Y(\mathbf{x}_{k}^i) \mid}{\mid \mathbf{x}_{k}^* - \mathbf{x}_{k}^i  \mid}.
 \end{align}
 
 \begin{figure}[!h]
@@ -364,9 +388,9 @@ where $\mathbf{y}^{(k)} = \mathcal{M}(\mathbf{x}^{(k)})$ is the snapshot corresp
 
 
 %----Gaussian process
-\subsection{Gaussian Process surrogate}\label{sec:GP}
+\subsection{Gaussian Process (GP) surrogate}\label{sec:GP}
 
-The algorithm to build a Gaussian Process surrogate relies on a POD and proceeds as follows:
+The algorithm to build a Gaussian Process surrogate proceeds as follows:
 \begin{enumerate}
 \item choose the size of the training set $N_{s}$,
 \item draw $N_{s}$ samples (or snapshots) in the input random space $\mathbf{x}$,
@@ -550,17 +574,20 @@ Except if the response variable of the system of interest is chaotic under the p
 
 \chapter{Scientific Questions}\label{chap:questions}
 
-\lettrine{F}{rom} this literature review, we propose through this thesis to contribute to three axis:
+\lettrine{F}{rom} this literature review, I propose through this thesis to contribute to three axis:
 
 \begin{itemize}
-\item How to Construct a DoE in a High Dimensional Parameter Space?
-\item How to Resample a DoE by Considering the Output?
-\item How to Visualize Uncertainties in High Dimensional Cases?
+\item \emph{How to construct a DoE in a high dimensional parameter space?}\hfill\\
+	The number of simulation at hand is highly constrained by the computational power, the cost and the return time. A surrogate can only interpolate the physic which has already been seen, hence the need to explore uniformly the parameter space. When the number of parameters is high, controlling the sparsity in the DoE is challenging. I have developed a new sampling strategy that is versatile  and perform well with such constrains.
+	
+\item \emph{How to resample a DoE by considering the QoI of already sampled experiments?}\hfill\\
+	Using the aforementioned novel method, it is possible to iteratively complet the DoE. This method does not incorporate any prior information on the shape of the response of the system. Here I propose a method which combine a Gaussian Process surrogate model with a LOOCV procedure in order to add a new sample in the DoE. This method has proven good behaviour in high dimensional parameter space.
+
+\item \emph{How to visualize uncertainties in high dimensional cases?}\hfill\\
+    Analysing both input parameter space and QoI is challenging when the dimension is high. I present some new ways to help understand uncertainties in this context.
 \end{itemize}
 
-This thesis is tailored as follows:
 
-% TODO plan
 
 
 
