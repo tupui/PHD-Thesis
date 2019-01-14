@@ -81,7 +81,20 @@ The following people have been core contributors to batman's development and mai
 
 \section{Implementation}
 
+The library is developed in Python 3.x and the code is compatibility with legacy Python (2.7.x). The code is structured by an object oriented approach by using class. This allows to connect Batman with all Python's ecosystem.
 
+The code is developed using a Test Driven Development (TDD) approach. Thus every function and class is tested by unit-tests, system tests and integration tests. Moreover, programming style standards are respected meaning that the code is completely documented and should be maintainable with low effort.
+
+Git versioning system is used through the web interface of Gitlab. It allows to manage the project with issues and milestones. The git branching model follows the \emph{gitflow} initiative. A \emph{master} branch is used for releases while a \emph{develop} branch incorporate the latest stable changes. For each new code, \emph{feature} branches are created. In order to synchronize to these branches, the code must have been reviewed by at least two trusted developers. Along with every synchronization of the branches on the server, Continuous Integration (CI) tools are used. All this process ensure that both \emph{master} and \emph{develop} branches are bug free, tested and documented.
+
+There is no fixed release cycle. When a new release is made on \emph{master}, builds are created for easy installation with both \emph{conda} and \emph{pip}.
+
+The implementation details are not further discussed and the reader may refer to the online documentation: 
+
+\begin{align}
+\text{\href{http://batman.readthedocs.io}{http://batman.readthedocs.io}}	\nonumber
+\end{align}
+    
 
 \section{Dissemination}
 
@@ -158,13 +171,15 @@ D\left(\mathbf{x},\mathbf{x}^{(i)}\right)=\left(\sum_{j=1}^d |x_{j}-x_{ij}|^p\ri
 \end{align}
 where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star shape}, as shown in~\cref{fig:minkowsky} where one sample has already been selected. In the following, $p=0.5$ is used. In~\cref{fig:3d_kde}, three samples have already been selected. The star shape is present in all dimensions. Moreover, these shapes interact with each other as they cross as shown in \cref{fig:inter_kde}. In this case $\sigma=0.8$ to highlight this property.
 
+\cleardoublepage
+
 \begin{figure}[!h]               
 \centering
 %\subfloat[Wrap-around discrepancy]{
 %\includegraphics[width=0.49\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/wrap_disc.pdf}}
 %~
 %\subfloat[Inverse Mindkowsky distance]{
-\includegraphics[width=0.8\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/inv_minkowsky.pdf}
+\includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/inv_minkowsky.pdf}
 %}
 \caption{Probability density in a 2-dimensional parameter space. \emph{Dot} represents the sample already drawn at (0.5, 0.7).}
  \label{fig:minkowsky}
@@ -172,12 +187,11 @@ where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star sh
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/contributions/doe/3d_star.png}
+\includegraphics[width=0.7\linewidth,keepaspectratio]{fig/contributions/doe/3d_star.png}
 \caption{Scatter plot representation of a 3-dimensional KDE with three points in the parameter space. Points represents an iso contour of probability.}
 \label{fig:3d_kde}
 \end{figure}
 
-\cleardoublepage
 
 \begin{figure}[!h]
 \centering
@@ -373,7 +387,7 @@ C & $2^n \displaystyle\prod_{i=1}^n x_i$ & 10\\
 \label{fig:conv_int}
 \end{figure}
 
-\cleardoublepage
+%\cleardoublepage
 
 \section{Perspectives}
 

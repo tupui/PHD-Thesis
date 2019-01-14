@@ -159,7 +159,7 @@
 
 \title{Uncertainty Quantification in High Dimensional Problem.} 
 \author{Pamphile Tupui ROY}
-\defencedate{9 May 2019}
+\defencedate{1 March 2019}
 \lab{Centre Européen de Recherche et de Formation Avancée en Calcul Scientifique (CERFACS)} 
 
 %% Directors
@@ -186,137 +186,19 @@
 
 \begin{document}
 
-% TODO acknowledgements
-% TODO abstract
-% TODO Résumé
-
 \frontmatter   						% si book
 
 \makeflyleaf 
 
 \newgeometry{top=1.5cm, bottom=1.75cm, inner=2.75cm, marginparwidth=2cm, textwidth=16cm, includeheadfoot}
 
-\renewcommand{\contentsname}{Content}
+\include{preface}
 
+\renewcommand{\contentsname}{Content}
 \tableofcontents%\thispagestyle{empty}
 %\addtocontents{toc}{\protect\thispagestyle{empty}}\newpage %enlever si on veut numeroter les pages de TOC
 \newpage%\thispagestyle{empty}
 
-
-%% -------------------- Nomenclature ---------------------------
-%
-%\newcommand{\nomunit}[1]{
-%\renewcommand{\nomentryend}{\hspace*{\fill}
-%$\unit{}{#1}}$}
-%
-%% ordered names as they appear to make it easier
-%% greek/vector/mathcal notations
-%%\nomenclature{$\boldsymbol{\zeta}$}{Standardized random variable}
-%%\nomenclature{$\delta$}{Kronecker delta function}
-%%\nomenclature{$\ell$}{Correlation length scale}
-%%\nomenclature{$\gamma$}{Basis coefficient}
-%%\nomenclature{$\pi$}{Correlation function}
-%%\nomenclature{$\lambda$}{Singular value}
-%%\nomenclature{$\mathbb{E}$}{Expectation operator}
-%%\nomenclature{$\mathbb{V}$}{Variance}
-%%\nomenclature{$\mathbf{\Lambda}$}{Rectangular singular value matrix}
-%%\nomenclature{$\mathbf{C}$}{Snapshot covariance matrix}
-%%\nomenclature{$\mathbf{h}$}{Output random vector of size $M$}
-%%\nomenclature{$\mathbf{U}$}{Orthogonal square left singular matrix}
-%%\nomenclature{$\mathbf{V}$}{Orthogonal square right singular matrix}
-%%\nomenclature{$\mathbf{x}$}{Input random vector of size $d$}
-%%\nomenclature{$\mathbf{x}^*$}{Input random vector not included in the training set $\mathcal{X}$}
-%%\nomenclature{$\mathbf{Y}$}{Centred snapshot matrix}
-%%\nomenclature{$\mathcal{D}_N$}{MASCARET simulation database of size $N$}
-%%\nomenclature{$\mathcal{M}$}{MASCARET forward model operator}
-%%\nomenclature{$\mathcal{N}$}{Normal distribution characterized by mean and STD}
-%%\nomenclature{$\mathcal{U}$}{Uniform distribution characterized by minimum and maximum}
-%%\nomenclature{$\mathbf{\Pi}$}{Correlation matrix evaluated for the database $\mathcal{D}_N$}
-%%\nomenclature{$\mathcal{X}$}{Input training set of size $N \times d$}
-%%\nomenclature{$\mathcal{Y}$}{Output training set of size $N \times M$}
-%%\nomenclature{$\mu$}{Mean value}
-%%\nomenclature{$\omega$}{Gaussian quadrature weight}
-%%\nomenclature{$\Psi$}{Basis function}
-%%\nomenclature{$\rho$}{Joint probability density function}
-%%\nomenclature{$\sigma$}{STD}
-%%\nomenclature{$\tau$}{Nugget effect}
-%%\nomenclature{$\widehat{h}$}{Estimated water level}
-%
-%%% standard notations
-%%\nomenclature{$a \in [a_{\text{in}}; a_{\text{out}}]$}{Curvilinear abscissa \nomunit{km}}
-%%\nomenclature{$A$}{Hydraulic section \nomunit{m^2}}
-%%\nomenclature{$c(\alpha)$}{$\alpha$-level tabulated value associated with $D$}
-%%\nomenclature{$D$}{Kolmogorov-Smirnov statistic}
-%%\nomenclature{$d$}{Uncertain space size}
-%%\nomenclature{$h$}{Water level part of the hydraulic state $(h,Q)$ \nomunit{m}}
-%%\nomenclature{$i$}{Surrogate decomposition index}
-%%\nomenclature{$k$}{Snapshot index}
-%%\nomenclature{$K_s$}{Strickler friction coefficient \nomunit{m^{1/3}\,s^{-1}}}
-%%\nomenclature{$M = \numprint{14}$}{Number of observation stations}
-%%\nomenclature{$N$}{Training set size}
-%%\nomenclature{$N_{\text{ref}} = \numprint{100,000}$}{Validation set size}
-%%\nomenclature{$P$}{Wet perimeter \nomunit{m}}
-%%\nomenclature{$Q$}{Discharge part of the hydraulic state $(h,Q)$ \nomunit{m^{3}\,s^{-1}}}
-%%\nomenclature{$Q_2$}{Predictive squared correlation coefficient}
-%%\nomenclature{$r$}{Number of terms in surrogate model}
-%%\nomenclature{$R$}{Hydraulic radius \nomunit{m}}
-%%\nomenclature{$RC$}{Upstream water level-discharge local rating curve}
-%%\nomenclature{$S_0$}{Channel slope \nomunit{m\,km^{-1}}}
-%%\nomenclature{$S_f$}{Friction slope}
-%%\nomenclature{$S_i$}{First order Sobol' index}
-%%\nomenclature{$S_T$}{Total order Sobol' index}
-%%\nomenclature{$W$}{River width \nomunit{m}}
-%\nomenclature{$\mathbf{x}$}{Sample in the parameter space}
-%\nomenclature{$N_s$}{Number of samples in the parameter space}
-%\nomenclature{$\mathcal{M}_{\text{gp}}$}{POD-based Gaussian Process surrogate model}
-%\nomenclature{$m$}{Spatial discretization}
-%\nomenclature{$N_i$}{Snapshot \emph{i}}
-%\nomenclature{$z(m, N_i)$}{Quantity of interest or snapshot of size $m$}
-%\nomenclature{$\mathbb{A}$}{Snapshot matrix of size $m \times N_s$}
-%\nomenclature{$\mathbf{U}$}{Orthogonal square left singular matrix}
-%\nomenclature{$\mathbf{V}$}{Orthogonal square right singular matrix}
-%\nomenclature{$\mathbf{\Sigma}$}{Singular value matrix}
-%\nomenclature{$\lambda$}{Singular value}
-%\nomenclature{$\mathbb{V}$}{Variance}
-%\nomenclature{$\sigma$}{Variance at sample of maximum variance}
-%\nomenclature{$\mu$}{Mean value}
-%\nomenclature{$K$}{Kernel}
-%\nomenclature{$k$}{Rank of the snapshot matrix $A$}
-%\nomenclature{$\mathbb{E}$}{Expectation operator}
-%\nomenclature{$Q_2$}{Predictivity coefficient}
-%\nomenclature{$n_{dim}$}{Dimension of the parameter space}
-%\nomenclature{$S_i$}{First order \emph{Sobol'} index}
-%\nomenclature{$S_{ij}$}{Second order \emph{Sobol'} index}
-%\nomenclature{$S_T$}{Total order \emph{Sobol'} index}
-%\nomenclature{$N_b$}{Sample budget}
-%\nomenclature{$N_{rs}$}{Number of sample to use for resampling}
-%% acronyms, text indices
-%\nomenclature{CFD}{Computational Fluid Dynamics}
-%\nomenclature{QoI}{Quantity of Interest}
-%\nomenclature{DoE}{Design of Experiments}
-%\nomenclature{MC}{Monte Carlo}
-%\nomenclature{CDF}{Cumulative Distribution Function}
-%\nomenclature{PDF}{Probability Density Function}
-%\nomenclature{STD}{STandard Deviation}
-%\nomenclature{UQ}{Uncertainty Quantification}
-%\nomenclature{SA}{Sensitivity Analysis}
-%\nomenclature{GP}{Gaussian Process}
-%\nomenclature{PC}{Polynomial Chaos}
-%\nomenclature{pGP}{POD-based Gaussian Process}
-%\nomenclature{POD}{Proper Orthogonal Decomposition}
-%\nomenclature{SVD}{Singular Value Decomposition}
-%\nomenclature{RMSE}{Root Mean Square Error}
-%\nomenclature{LOO}{Leave-one-out}
-%
-%%\nomenclature{PF}{Particle Filter}
-%%\nomenclature{DA}{Data Assimilation}
-%%\nomenclature{EnKF}{Ensemble Kalman Filter}
-%%\nomenclature{SWE}{Shallow Water Equation}
-%
-%
-%\printnomenclature
-%
-%\newpage
 
 % -------------------- STARTING ---------------------------
 
