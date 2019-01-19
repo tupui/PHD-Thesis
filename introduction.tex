@@ -1,23 +1,23 @@
 \chapter{Context}
 
-\lettrine{D}{esign} process and robust optimization are major purposes of engineering works dealing with numerical simulations, especially in aeronautical or automotive industry~\cite{duchaine2009}. Despite the large amount of work that has been devoted to the design of efficient optimization techniques, the design process still requires important investments (financial and human)~\cite{forrester2009}. As a consequence, design errors appear after the industrialization phase and the implications these can have may be critical. A classical example of such failure is the Space Shuttle \emph{Challenger} disaster in 1986~\cite{draper1995}. During the Space Shuttle's ascent, a failure of O-ring seals on its right solid rocket booster caused its disintegration. It has been shown that an uncertainty on the behaviour of this O-ring had been a key factor to the accident. On the launch day, the temperature was particularly low and the effect of such low temperature on the O-ring was not known. Engineers had to extrapolate the response of the system to this event. Linked to a strong pressure at NASA for this launch, the decision to maintain the launch was made even-though engineers warned about the uncertainties of their findings. This lead to the creation of NASA's Safety, Reliability, Maintainability, and Quality Assurance (SRM\&QA) program.
+\lettrine{D}{esign} process and robust optimization are major purposes of engineering works dealing with numerical simulations, especially in aeronautical or automotive industry~\cite{duchaine2009}. Despite the large amount of work that has been devoted to the design of efficient optimization techniques, the design process still requires important investments (financial and human)~\cite{forrester2009}. As a consequence, design errors which appear after the industrialization phase and their possible implications may be critical. A classical example of such failure is the Space Shuttle \emph{Challenger} disaster in 1986~\cite{draper1995}. During the Space Shuttle's ascent, a failure of O-ring seals on its right solid rocket booster caused its disintegration. It has been shown that an uncertainty on the behaviour of this O-ring had been a key factor to the accident. On the launch day, the temperature was particularly low and the effect of such low temperature on the O-ring was not known. Engineers had to extrapolate the response of the system to this event. Linked to a strong pressure at NASA for this launch, the decision to maintain the launch was made even-though engineers warned about the uncertainties of their findings. This led to the creation of NASA's Safety, Reliability, Maintainability, and Quality Assurance (SRM\&QA) program.
 
 Computational Fluid Dynamics (CFD) tools have been used more and more in the past decades to decrease the number of iterations between conception and experiments, and to avoid irreversible errors during the preliminary design phase. Nowadays, CFD codes have reached maturity and represent more accurately physical flow phenomena. Complex flow simulations on high-resolution grids are possible thanks to the continuous developments in numerical models and in High Performance Computing (HPC). Nevertheless, deterministic simulations only provide limited knowledge about a system. Uncertainties in the numerical model as well as in the problem formulation or inputs are necessarily present and translate into uncertainties in the outputs~\cite{Sacks1989}---see~\cref{fig:context}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth,keepaspectratio]{fig/literature/schema_UQ.pdf}
-\caption{Schematisation of the Uncertainty Quantification procedure.}
+\caption{Schematization of the Uncertainty Quantification procedure.}
 \label{fig:context}
 \end{figure}
 
 The output variability of a system can be confusing regarding the source of these uncertainties. Does it come from our model or from the physics? Uncertainties can be classified as:\begin{description}	\item [Aleatoric:] intrinsic to our system,	\item [Epistemic:] due to our lack of knowledge. We can reduce it by improving our model or adding experiments,	\item [Numerical error:] due to the construction of our numerical scheme.\end{description}
 
-Ideally, our model should only contain aleatoric uncertainties as it is represents the physical variability of the system. However, the diversity of uncertainties due to the CFD boundary conditions or initial conditions as well as of model parameters (input data, geometry, simplification of the model physics, etc.) limits the predictivity of the simulations: the Quantity of Interest (QoI) can be easily affected and shadowed by the conjugation of all these types of uncertainties. This assessment explains why Uncertainty Quantification (UQ) is now becoming a mandatory step in application-oriented modelling for operational and industrial purposes~\cite{degennaro2015,masquelet2017}. It provides insight into the level of uncertainty in the numerical simulation results but also gives access to a Sensitivity Analysis (SA) which aims at describing the respective influences of the input parameters on the QoI. The inclusion of UQ in a design optimization cycle hence allows manufacturers to design quicker and obtain better, cheaper and more robust (i.e. more stable) products. Depending on the question we seek to answer, we have to determine the type of UQ study to conduce:\begin{itemize}	\item \emph{Uncertainty Propagation,}\hfill\\Propagate an initial perturbation within the system and observe its outputs.	\item \emph{Sensitivity Analysis,}\hfill\\Rank the input parameters regarding their impact on the output.	\item \emph{Risk assessment.}\hfill\\Observe the probability to exceed a threshold or the probability of a particular quantile.\end{itemize}
+Ideally, our model should only contain aleatoric uncertainties as it represents the physical variability of the system. However, the diversity of uncertainties due to the CFD boundary conditions or initial conditions as well as of model parameters (input data, geometry, simplification of the model physics, etc.) limits the predictivity of the simulations: the Quantity of Interest (QoI) can be easily affected and shadowed by the conjugation of all these types of uncertainties. This assessment explains why Uncertainty Quantification (UQ) is now becoming a mandatory step in application-oriented modelling for operational and industrial purposes~\cite{degennaro2015,masquelet2017}. It provides insight into the level of uncertainty in the numerical simulation results but also gives access to a Sensitivity Analysis (SA) which aims at describing the respective influences of the input parameters on the QoI. The inclusion of UQ in a design optimization cycle hence allows manufacturers to design quicker and obtain better, cheaper and more robust (i.e. more stable) products. Depending on the question, we seek to answer, we have to determine the type of UQ study to conduce:\begin{itemize}	\item \emph{Uncertainty Propagation,}\hfill\\Propagate an initial perturbation within the system and observe its outputs.	\item \emph{Sensitivity Analysis,}\hfill\\Rank the input parameters regarding their impact on the output.	\item \emph{Risk assessment.}\hfill\\Observe the probability to exceed a threshold or the probability of a particular quantile.\end{itemize}
 
 Each question is answered using specific tools and it special care has to be taken if ones want to conduce multiple analysis. It might not be possible to reuse the same data used for Uncertainty Propagation to do Sensitivity Analysis.
 
-Classical UQ methods, based on the \emph{Monte-Carlo} approach, require a large number of simulations~\cite{saltelli2007}, which quickly go beyond the limits of available resources (CPU, financial costs). This is especially true when it comes to large dimensional problems, both with respect to the domain discretization and to the number of uncertain input parameters. The cost of the UQ study can, however, be significantly reduced when the experiment is replaced by a proxy, or surrogate model, which is formulated in a parameter space and which is fast to evaluate for any set of uncertain variables~\cite{martin2005}. 
+Classical UQ methods, based on the \emph{Monte-Carlo} approach, require a large number of simulations~\cite{saltelli2007}, which quickly go beyond the limits of available resources (CPU, financial costs). This is especially true when it comes to large-dimensional problems, both with respect to the domain discretization and to the number of uncertain input parameters. The cost of the UQ study can, however, be significantly reduced when the experiment is replaced by a proxy, or surrogate model, which is formulated in a parameter space and which is fast to evaluate for any set of uncertain variables~\cite{martin2005}. 
 
 \begin{quotation}
 
@@ -32,21 +32,21 @@ The purpose of this thesis is to propose some directions of improvement on vario
 
 \newpage
 
-\section*{Organisation}
+\section*{Organization}
 %\addcontentsline{toc}{section}{}
 
-This manuscript is divided into four parts and is tailored as followed: 
+This manuscript is divided into four parts and is tailored as follows: 
 
 \begin{description}
 	\item[\Cref{part:intro}] \emph{after a general introduction about the context of this thesis,  \cref{chap:review} reviews the literature on concepts and methods around UQ,}\hfill\\
-\Cref{sec:doe} goes from a state-of-the-art on the different methods to plan experiments; then \cref{sec:uq} describe the different technique commonly used to perform UQ as well as the latest advances. As explained above, such statistical analysis may require the usage of a surrogate model which are detailed in~\cref{sec:surrogate}. Once the uncertainties have been propagated, \cref{sec:visu} presents how uncertainties are visualized. After this literature review, some scientific questions arise and the complete scope of this thesis work is given in~\cref{chap:questions}.
+\Cref{sec:doe} goes from a state-of-the-art on the different methods to plan experiments; then \cref{sec:uq} describe the different technique commonly used to perform UQ as well as the latest advances. As explained above, such statistical analysis may require the usage of a surrogate model which is detailed in~\cref{sec:surrogate}. Once the uncertainties have been propagated, \cref{sec:visu} presents how uncertainties are visualized. After this literature review, some scientific questions arise and the complete scope of this thesis work is given in~\cref{chap:questions}.
 
 	\item[\Cref{part:contributions}] \emph{presents my scientific contributions,}\hfill\\
 In~\cref{chap:batman}, a new UQ open-source tool is introduced. It serves as a demonstrator for all the methods developed. Following, \cref{chap:doe,chap:resample,chap:visu}~are the responses to the scientific questions rose.
 
 	\item[\Cref{part:applications}] \emph{some applications of the new methods are proposed through~\cref{chap:mascaret,chap:ls89,chap:swirler,chap:optim,chap:psaap},}\hfill\\
 
-	\item[\Cref{part:conclusion}] \emph{put a point on this thesis work and draw some perspectives for futur work.}
+	\item[\Cref{part:conclusion}] \emph{put a point on this thesis work and draw some perspectives for future work.}
 \end{description}
 
 
@@ -54,7 +54,7 @@ In~\cref{chap:batman}, a new UQ open-source tool is introduced. It serves as a d
 
 \section{Design of Experiments}\label{sec:doe}
 
-\lettrine{O}{ne} of the main objectives when performing numerical---or real---experiments is to understand the variation of a Quantity of Interest (QoI) with respect to the variation of some input parameters~\citep{Sacks1989}. Each experiment, or sample, corresponds to a particular set of input parameters $x_k$ with $k \in [1, \dots , d]$, where $d$ is the number of dimensions. As a result, the group of $N_s$ samples, or Design of Experiments (DoE), is noted as $\mathbf{X}^{N_s}_d$\footnote{For simplicity either the dimensionality $d$ or the number of sample $N_s$ is omitted. Nevertheless, the subscript denotes $d$ while the superscript denotes $N_s$.}. Then the forward model (or experiment) $\mathcal{M}$ can be simulated for each sample
+\lettrine{O}{ne} of the main objectives when performing numerical---or real---experiments is to understand the variation of a Quantity of Interest (QoI) with respect to the variation of some input parameters~\citep{Sacks1989}. Each experiment, or sample, corresponds to a particular set of input parameters $x_k$ with $k \in [1, \dots , d]$, where $d$ is the number of dimensions. As a result, the group of $N_s$ samples, or Design of Experiments (DoE), is noted as $\mathbf{X}^{N_s}_d$\footnote{For simplicity either the dimensionality $d$ or the number of samples $N_s$ is omitted. Nevertheless, the subscript denotes $d$ while the superscript denotes $N_s$.}. Then the forward model (or experiment) $\mathcal{M}$ can be simulated for each sample
 \begin{align}
 (\mathbf{X}^{N_s}_d, \mathcal{Y})=\left(\mathbf{x}^{(i)},\mathbf{Y}^{(i)}\right)_{1\leq i\leq N_{s}},
 \end{align}
@@ -67,7 +67,7 @@ In~\cref{chap:batman}, a new UQ open-source tool is introduced. It serves as a d
 \label{fig:doe}
 \end{figure}
 
-In its basis form, a DoE is described by a $d$-dimensional cube: a hypercube---see~\cref{fig:hypercube}. A hypercube is parametrised by the minimal and maximal values of each parameters. In case parameters depends on each others, or if there are constrains on the parameters, non-rectangular domains~\citep{Lekivetz2015} have to be considered.
+In its basis form, a DoE is described by a $d$-dimensional cube: a hypercube---see~\cref{fig:hypercube}. A hypercube is parametrized by the minimal and maximal values of each parameter. In case parameters depends on each other, or if there are constrains on the parameters, non-rectangular domains~\citep{Lekivetz2015} have to be considered.
 
 \begin{figure}[!h]
 \centering
@@ -76,14 +76,14 @@ In its basis form, a DoE is described by a $d$-dimensional cube: a hypercube---s
 \label{fig:hypercube}
 \end{figure}
 
-From exploratory phases to more advanced analyses, such as Uncertainty Quantification (UQ) and robust optimization, DoE aims at helping better understand the physical mechanisms governing the problem of interest~\citep{saltelli2007}. Therefore, the objective of efficient DoE is to maximize the coverage of the input space, i.e., space filling, with the aspiration of capturing most of the underlying physics. Such analyses typically require large number of experiments in order for the statistics of the QoIs to converge. In this regard, many studies have focused on trying to reduce the computational cost. However, depending on the required quality of the analysis, the complexity of the experiment, or its return time, the total number of experiments may be limited. Thus, the objective is to optimize the space-filling properties for a given number of experiments.
+From exploratory phases to more advanced analyses, such as Uncertainty Quantification (UQ) and robust optimization, DoE aims at helping better understand the physical mechanisms governing the problem of interest~\citep{saltelli2007}. Therefore, the objective of efficient DoE is to maximize the coverage of the input space, i.e. space filling, with the aspiration of capturing most of the underlying physics. Such analyses typically require a large number of experiments in order for the statistics of the QoIs to converge. In this regard, many studies have focused on trying to reduce the computational cost. However, depending on the required quality of the analysis, the complexity of the experiment, or its return time, the total number of experiments may be limited. Thus, the objective is to optimize the space-filling properties for a given number of experiments.
 
-One-At-a-Time (OAT) design is the most trivial form of DoE. It consists in changing only one parameter at a time. While this method is simple to implement and allow a quick interpretation on a physical aspect, this sampling procedure require a huge number of simulation. Indeed, it requires $n^d$ samples. This exponential growth is called the \emph{cuse-of-dimensionality}. If we take for instance the unit-hypercube. All bounds range from 0 to 1. Let's say that we want to have a distance between each points of 0.01. The number of points required to fill the unit interval would be 100. In 2D the same spacing would require 10 000 and in 3D 1 000 000 points. As the number of dimensions goes, the number of experiments which is required to fill the space evenly rises exponentially as the volume of the space---see~\cref{fig:curse_dim}. To mitigate this problem, one could sparse the obtained DoE. The problem then comes to an assessment of the quality of this DoE.
+One-At-a-Time (OAT) design is the most trivial form of DoE. It consists in changing only one parameter at a time. While this method is simple to implement and allow a quick interpretation on a physical aspect, this sampling procedure require a huge number of simulation. Indeed, it requires $n^d$ samples. This exponential growth is called the \emph{curse-of-dimensionality}. If we take for instance the unit-hypercube. All bounds range from 0 to 1. Let's say that we want to have a distance between each point of 0.01. The number of points required to fill the unit interval would be 100. In 2D the same spacing would require 10 000 and in 3D 1 000 000 points. As the number of dimensions goes, the number of experiments which is required to fill the space evenly rises exponentially as the volume of the space---see~\cref{fig:curse_dim}. To mitigate this problem, one could sparse the obtained DoE. The problem then comes to an assessment of the quality of this DoE.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/curse_dim.pdf}
-\caption{Sketch of the \emph{cuse-of-dimensionality}. VIsualization of the volume of the parameter space in 1, 2 and 3 dimensions.}
+\caption{Sketch of the \emph{curse-of-dimensionality}. Visualization of the volume of the parameter space in 1, 2 and 3 dimensions.}
 \label{fig:curse_dim}
 \end{figure}
 
@@ -95,7 +95,7 @@ C^2(\mathbf{X}^{N_s}_d) =& \left( \frac{13}{12} \right)^d - \frac{2}{N_s}\displa
 
 There are three main methodologies for defining a DoE: \emph{(i)} \emph{Monte Carlo} (MC), \emph{(ii)} \emph{Latin Hypercube Sampling} (LHS) and \emph{(ii)} Quasi-\emph{Monte Carlo} (QMC) methods~\citep{Cavazzuti2013,Garud2017}. Kucherenko \emph{et al.}~\citep{Kucherenko2015} have recently compared MC and LHS against the well-established low discrepancy sequence of \emph{Sobol'}. They concluded that LHS and QMC both offer superior integration performance over MC.
 
-LHS-based sampling methods are one-shot design strategies~\citep{Mckay1979,Fang2006}. The principle is simple: considering $N_s$ samples, in each 1-dimensional subprojection of the parameter space there should be $N_s$ samples. It means that samples are not sharing coordinates with each other. Orthogonal arrays are a slight evolution of this principle. Each 1-dimensional subprojection is spitted into $N_s$ to form an orthogonal grid of size $N_s^d$ and only one sample is allowed per cell. \Cref{fig:lhs} shows two different orthogonal LHS with $N_s=10$. Although both valid, they do not cover equally the parameter space. Constructing such design is numerically easy and it is possible to optimize the space filling properties by swapping elements for instance~\cite{Fang2006,Damblin2013}.
+LHS-based sampling methods are one-shot design strategies~\citep{Mckay1979,Fang2006}. The principle is simple: considering $N_s$ samples, in each 1-dimensional subprojection of the parameter space there should be $N_s$ samples. It means that samples are not sharing coordinates with each other. Orthogonal arrays are a slight evolution of this principle. Each 1-dimensional subprojection is spitted into $N_s$ to form an orthogonal grid of size $N_s^d$ and only one sample is allowed per cell. \Cref{fig:lhs} shows two different orthogonal LHS with $N_s=10$. Although both valid, they do not cover the parameter space equally. Constructing such design is numerically easy and it is possible to optimize the space-filling properties by swapping elements for instance~\cite{Fang2006,Damblin2013}.
 
 \begin{figure}[!h]               
 \centering
@@ -117,7 +117,7 @@ On the other hand, low discrepancy sequences are iterative designs which can be 
 \subsection{Uncertainty Propagation}\label{sec:up}
 \lettrine{U}{ncertainty Propagation} (UP) seeks to communicate uncertainties throughout the system. Uncertainties are defined at one side of the system, and their effects are observed at the other end. But are we talking about the uncertainties of the input parameters or the output QoI? Usually, uncertainties are defined on the input parameter space side, and it is the impact on the quantity of interest that is observed. The other way around is called an \emph{inverse problem} and is not discussed in this work.
 
-Uncertainties can be described using a probabilistic approach through the use of Probability Density Functions (PDF). This function computes the probability of occurence of a phenomenon. Thus, propagating uncertainties comes to determining the PDF of the QoI.
+Uncertainties can be described using a probabilistic approach through the use of Probability Density Functions (PDF). This function computes the probability of occurrence of a phenomenon. Thus, propagating uncertainties comes to determining the PDF of the QoI.
 
 \begin{figure}[!h]
 \centering
@@ -126,7 +126,7 @@ Uncertainties can be described using a probabilistic approach through the use of
 \label{fig:UP}
 \end{figure}
 
-\Cref{fig:UP} present a representation of the UP procedure. In practice, propagating uncertainties comes to sampling the PDFs of inputs and observing the impact on the QoI. It should be emphasised that the outcome of the UP \emph{depends} on the prescribed PDFs. The nature of the PDF and the ranges of each parameters is paramount. Without any prior knowledge on input parameters, uniform distributions are traditionally used. As for the ranges, some fixed percentage of variation is commonly used. While this strategy could indeed corresponds to the correct variability of some parameters, this may lead to wrong analysis. In~\citep{pilkey}, the exemple of radioactive waste transport on the Yucca Mountain is taken. In this UP analysis, the percolation rate of the water from the surface to the disposal was wrongly estimated between 0.02 and 1 millimetre per year while its true was close to $\sim 3000$. This lead to an underestimation of 4 orders of magnitude of the transport of some radioactive component.
+\Cref{fig:UP} is a representation of the UP procedure. In practice, propagating uncertainties comes to sampling the PDFs of inputs and observing the impact on the QoI. It should be emphasized that the outcome of the UP \emph{depends} on the prescribed PDFs. The nature of the PDF and the ranges of each parameter is paramount. Without any prior knowledge on input parameters, uniform distributions are traditionally used. As for the ranges, some fixed percentage of variation is commonly used. While this strategy could indeed correspond to the correct variability of some parameters, this may lead to wrong analysis. In~\citep{pilkey}, the example of radioactive waste transport on the Yucca Mountain is taken. In this UP analysis, the percolation rate of the water from the surface to the disposal was wrongly estimated between 0.02 and 1 millimetre per year while its true value was close to $\sim 3000$. This led to an underestimation of 4 orders of magnitude of the transport of some radioactive component.
 
 As we are interested in computing statistics on the QoI, this requires a statistically significant sampling. A high number of samples is required to recover the empirical PDF of the QoI. One must note that in order to find the tail of the PDF---the least frequent event---it requires an even larger number of samples.
 
@@ -138,9 +138,9 @@ Histograms can be used to represent the PDF. However, continuous functions can b
 \begin{align}
 K\left(Y^*,Y^{(i)}\right) = \exp\left( - \frac{D\left(Y^*,Y^{(i)}\right)^2}{2h^2} \right), \label{eq:kde}
 \end{align}
-\noindent with $D$ a distance function. It should be noted that estimating the density in a high dimensional parameter space is challenging~\citep{Scholkopf1999,Scott2015}. See \cref{sec:visu} for a $n$-dimensional representation of the PDF.
+\noindent with $D$ a distance function. It should be noted that estimating the density in a high-dimensional parameter space is challenging~\citep{Scholkopf1999,Scott2015}. See \cref{sec:visu} for a $n$-dimensional representation of the PDF.
 
-Depending on the number of sample available and on the parameters of the method, this process can lead to a PDF which is far from the real one. The principle is fairly easy to understand---see~\cref{fig:kde}. Each sample value $Y$ is represented on the $x$-axis. Around each value, a rectangle of fixed width and fixed height is draw. When there is an overlap, the rectangle values are summed-up. The value of the width represents the bandwidth, and the general shape of the \emph{rectangle} is called the kernel. As previously stated, Gaussian kernel is classically used and corresponds to a bell-cuve shape.
+Depending on the number of samples available and on the parameters of the method, this process can lead to a PDF which is far from the real one. The principle is fairly easy to understand---see~\cref{fig:kde}. Each sample value $Y$ is represented on the $x$-axis. Around each value, a rectangle of fixed width and fixed height is drawn. When there is an overlap, the rectangle values are summed up. The value of the width represents the bandwidth, and the general shape of the \emph{rectangle} is called the kernel. As previously stated, Gaussian kernel is classically used and corresponds to a bell-curve shape.
 
 \begin{figure}[!h]
 \centering
@@ -149,7 +149,7 @@ Depending on the number of sample available and on the parameters of the method,
 \label{fig:kde}
 \end{figure}
 
-\Cref{fig:ex_pdf}(a) presents a KDE of a 1-dimensional QoI along with a histogram representation of the data. It can be seen that the KDE act as a smoothing procedure of the histogram. Another possibility---\cref{fig:ex_pdf}(b)---is to use quantile dotplot \cite{kay2016} which allows to directly count the quantiles. In this example, there are 20 circles, and below $F=22.5$ there are 11 circles. Thus, >50\% of the samples are located below $F=22.5$.
+\Cref{fig:ex_pdf}(a) presents a KDE of a 1-dimensional QoI along with a histogram representation of the data. It can be seen that the KDE act as a smoothing procedure of the histogram. Another possibility---\cref{fig:ex_pdf}(b)---is to use the quantile dotplot \cite{kay2016} which allows to directly count the quantiles. In this example, there are 20 circles, and below $F=22.5$ there are 11 circles. Thus >50\% of the samples are located below $F=22.5$.
 
 \begin{figure}[!h]               
 \centering
@@ -162,16 +162,16 @@ Depending on the number of sample available and on the parameters of the method,
 \label{fig:ex_pdf}
 \end{figure}
 
-Once the PDF of the QoI is available, it can be used to: \emph{(i)} observe the probability to exceed a threashold; \emph{(ii)} compute the probability to have a certain event; or just \emph{(iii)} get general statistics (mean, variance, quantiles).
+Once the PDF of the QoI is available, it can be used to: \emph{(i)} observe the probability of exceeding a threshold; \emph{(ii)} compute the probability to have a certain event; or just \emph{(iii)} get general statistics (mean, variance, quantiles).
 
 \subsection{Sensitivity Analysis}\label{sec:sa}
-\lettrine{S}{ensitivity Analysis} (SA) refers to the determination of the contribution of different parameters on quantities of interest~\cite{saltelli2007,iooss2016}. The most natural way to do SA would be to consider the derivatives. But this information is known to be to local or general---although there are some work extending the capabilities of these methods~\cite{kucherenko2016}. In the literature, a distinction is made between local and global SA. In the following both local-based SA (derivative) and global-based SA (variance-based and moments-based) methods are presented.
+\lettrine{S}{ensitivity Analysis} (SA) refers to the determination of the contribution of different parameters on quantities of interest~\cite{saltelli2007,iooss2016}. The most natural way to do SA would be to consider the derivatives. But this information is known to be too local or general---although there are some works extending the capabilities of these methods~\cite{kucherenko2016}. In the literature, a distinction is made between local and global SA. In the following both local-based SA (derivative) and global-based SA (variance-based and moments-based) methods are presented.
 
-\subsubsection{From local to global Sensitivity Analysis}
+\subsubsection{From Local to Global Sensitivity Analysis}
 
-An intuitive way to characterize the importance of each parameters toward a QoI is to compute the derivates of the simulator for a given set of inputs. This method is called \emph{elementary effects} and a successful implementation is found with \citet{morris1991}. An elementary effect $d\mathbf{x}_{k}^*$ is defined as
+An intuitive way to characterize the importance of each parameter toward a QoI is to compute the derivatives of the simulator for a given set of inputs. This method is called \emph{elementary effects} and a successful implementation is found with \citet{morris1991}. An elementary effect $d\mathbf{x}_{k}^*$ is defined as
 \begin{align}d\mathbf{x}_{k}^* = \frac{ \mid Y(\mathbf{x}_{k}^*) -  Y(\mathbf{x}_{k}) \mid}{\mid \mathbf{x}_{k}^* - \mathbf{x}_{k}  \mid},\end{align}
-\noindent with $\mathbf{x}_{k}$ a given sample and $\mathbf{x}_{k}^*$ a sample which differs from $\mathbf{x}_{k}$ by an increment $\delta$. This effect can be computed with respect to $N_s$ samples and $d$ dimensions which induce to a total number of sample $N = N_s\times(d + 1)$. It is called a screening method and it corresponds to an OAT walk of the DoE. \Cref{fig:morris} is an example with $N_s = 5, d = 3$. Then the mean of absolute elementary effects writes
+\noindent with $\mathbf{x}_{k}$ a given sample and $\mathbf{x}_{k}^*$ a sample which differs from $\mathbf{x}_{k}$ by an increment $\delta$. This effect can be computed with respect to $N_s$ samples and $d$ dimensions which induce to a total number of samples $N = N_s\times(d + 1)$. It is called a screening method and it corresponds to an OAT walk of the DoE. \Cref{fig:morris} is an example with $N_s = 5, d = 3$. Then the mean of absolute elementary effects writes
 \begin{align}
 \hat{\mu_k} = \frac{1}{N_s} \sum_{i=1}^{N_s} \frac{ \mid Y(\mathbf{x}_{k}^*) -  Y(\mathbf{x}_{k}^i) \mid}{\mid \mathbf{x}_{k}^* - \mathbf{x}_{k}^i  \mid}.
 \end{align}
@@ -179,14 +179,14 @@ An intuitive way to characterize the importance of each parameters toward a QoI 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/morris.png}
-\caption{Sketch of \emph{Morris}' screening method. Source~\cite{Becker2018}.}
+\caption{Sketch of \emph{Morris}'s screening method. Source~\cite{Becker2018}.}
 \label{fig:morris}
 \end{figure}
 
 A popular extension of this method is found with the derivative-based global sensitivity measures (DGSM)~\cite{kucherenko2016,Becker2018}. Although these methods perform well in high dimensions and with a low sampling size, they are not exempt of flaws. As local methods, the construction of the indices is based on local OAT variations which are not able to take into account correctly correlations between the input parameters.
 
-\subsubsection{Variance-based Sensitivity Analysis}
-Variance-based Sensitivity Analysis allows to obtain the contribution of the parameters on the QoI's variance~\cite{ferretti2016}. Here, classical \textit{Sobol'}~\cite{Sobol1993} method is presented which gives not only a ranking but also quantifies the importance factor using the variance. This method makes the hypothesis of the independence of the input variables. It uses a functional decomposition of the variance of the function to explore
+\subsubsection{Variance-Based Sensitivity Analysis}
+Variance-based Sensitivity Analysis allows obtaining the contribution of the parameters on the QoI's variance~\cite{ferretti2016}. Here, classical \textit{Sobol'}~\cite{Sobol1993} method is presented which gives not only a ranking but also quantifies the importance factor using the variance. This method makes the hypothesis of the independence of the input variables. It uses a functional decomposition of the variance of the function to explore
 \begin{align}
 \mathbb{V}(Y) &= \sum_{i}^{d} \mathbb{V}_i (Y) + \sum_{i<j}^{d}\mathbb{V}_{ij}(Y) + ... + \mathbb{V}_{1,2,...,d}(Y),
 \end{align}
@@ -199,7 +199,7 @@ Variance-based Sensitivity Analysis allows to obtain the contribution of the par
 \begin{align}
 S_i = \frac{\mathbb{V}_i(Y)}{\mathbb{V}[Y]}\qquad S_{ij} = \frac{\mathbb{V}_{ij}(Y)}{\mathbb{V}[Y]}.
 \end{align}
-\noindent $S_{i}$ corresponds to the first order term which apprises the contribution of the \textit{i-th} parameter, while $S_{ij}$ corresponds to the second order term which informs about the correlations between the \textit{i-th} and the \textit{j-th} parameters. These equations can be generalized to compute higher order terms. However, the computational effort to converge them is most often not at hand and their analysis and interpretations are not simple.
+\noindent $S_{i}$ corresponds to the first-order term which apprises the contribution of the \textit{i-th} parameter, while $S_{ij}$ corresponds to the second-order term which informs about the correlations between the \textit{i-th} and the \textit{j-th} parameters. These equations can be generalized to compute higher order terms. However, the computational effort to converge them is most often not at hand and their analysis and interpretations are not simple.
 
 Total indices represents the global contribution of the parameters on the variance of the QoI and express as:
 \begin{align}
@@ -210,11 +210,11 @@ S_{T_i} = S_i + \sum_j S_{ij} + \sum_{j,k} S_{ijk} + ... = 1 - \frac{\mathbb{V}[
 \begin{align}
 Y(\mathbf{x}) = \sin x_1 + 7 \sin^2 x_2 + 0.1 x_3^4 \sin x_1,
 \end{align}
-\noindent with $\mathbf{x} \in [-\pi, \pi]^3$. This function exhibits strong nonlinearity and nonmonotonicity. It is particularly interesting because the first order indice of $S_{x_3} = 0$ whereas it's total order is $S_{T_{x_3}} = 0.244$. Note that on second order indices, $S_{x_1,x_3} = 0.244$. It means that almost 25\% of the observed variance on the QoI is due to the correlations between $x_3$ and $x_1$, although $x_3$ by itself has no impact on the QoI.
+\noindent with $\mathbf{x} \in [-\pi, \pi]^3$. This function exhibits strong non-linearity and non-monotonicity. It is particularly interesting because the first order indice of $S_{x_3} = 0$ whereas its total order is $S_{T_{x_3}} = 0.244$. Note that on second order indices, $S_{x_1,x_3} = 0.244$. It means that almost 25\% of the observed variance on the QoI is due to the correlations between $x_3$ and $x_1$, although $x_3$ by itself has no impact on the QoI.
 
-Looking at \cref{fig:sobol}(b), it can be noted that the convergence of these indices require a large sampling size. The required sampling size is case dependant as it depends on the number of input parameters and on the complexity of the function of interest.
+Looking at \cref{fig:sobol}(b), it can be noted that the convergence of these indices requires a large sampling size. The required sampling size is case dependant as it depends on the number of input parameters and on the complexity of the function of interest.
 
-\Cref{fig:scatter_sobol} gives a visual explanation of \emph{Sobol'} indices. It shows scatter plots of the output with respect to each parameter. By conditioning the output value by given values of the parameter (\emph{black lines}), the conditional output mean is computed. It corresponds to the term $\mathbb{E}(Y|x_i)]$. Taking the variance of this term gives the numerator of the \emph{Sobol'} indices. Looking at $x_3$, the variance of the mean is close to zero leading to $S_{x_3} = 0$. But we can further observe that the variance of the output is not constant along the parameter values of $x_3$. This heteroscedasticity is explained by higher order interactions. Moreover, an heteroscedasticity is also noticeable on $x_1$ leading to an interaction between $x_3$ and $x_1$. On $x_2$, the variance seems to be constant and thus null interaction with this parameter can be supposed. This case is fairly simple to analyse visually---although it is only a qualitative analysis. Nevertheless, when the number of input parameters increases such analysis becomes unrealistic as it would be difficult to conclude on high order terms.
+\Cref{fig:scatter_sobol} gives a visual explanation of \emph{Sobol'} indices. It shows scatter plots of the output with respect to each parameter. By conditioning the output value by given values of the parameter (\emph{black lines}), the conditional output mean is computed. It corresponds to the term $\mathbb{E}(Y|x_i)]$. Taking the variance of this term gives the numerator of the \emph{Sobol'} indices. Looking at $x_3$, the variance of the mean is close to zero leading to $S_{x_3} = 0$. But we can further observe that the variance of the output is not constant along the parameter values of $x_3$. This heteroscedasticity is explained by higher order interactions. Moreover, an heteroscedasticity is also noticeable on $x_1$ leading to an interaction between $x_3$ and $x_1$. On $x_2$, the variance seems to be constant and thus null interaction with this parameter can be supposed. This case is fairly simple to analyse visually---although it is only a qualitative analysis. Nevertheless, when the number of input parameters increases such analysis becomes unrealistic as it would be difficult to conclude on high-order terms.
 
 \begin{figure}[!h]               
 \centering
@@ -235,7 +235,7 @@ Looking at \cref{fig:sobol}(b), it can be noted that the convergence of these in
 \label{fig:scatter_sobol}
 \end{figure}
 
-Classical empirical formulations of \emph{Sobol'} indices require the use of 3 (resp. 4) matrices to compute first and total (resp. and second order indices)~\cite{Saltelli2010}. The computation requires two independent sampling $A$, $B$ of size $N$ and a matrice $AB$ which is a combination of both matrices (resp. $BA$). $AB_{n}$ corresponds to the matrice $A$ with the column $n$ from the matrice $B$. Hence the number of forward model evaluation is $N_s = N(d + 2)$. In~\citep{baudin2016}, they showed that \textit{Martinez}' formulation is stable and provides asymptotic confidence intervals---approximated with Fisher's transformation---for first order and total order indices. \textit{Martinez}' estimators write
+Classical empirical formulations of \emph{Sobol'} indices require the use of 3 (resp. 4) matrices to compute first and total (resp. and second order indices)~\cite{Saltelli2010}. The computation requires two independent samplings $A$, $B$ of size $N$ and a matrix $AB$ which is a combination of both matrices (resp. $BA$). $AB_{n}$ corresponds to the matrix $A$ with the column $n$ from the matrix $B$. Hence the number of forward model evaluation is $N_s = N(d + 2)$. In~\citep{baudin2016}, they showed that \textit{Martinez}'s formulation is stable and provides asymptotic confidence intervals---approximated with Fisher's transformation---for first order and total order indices. \textit{Martinez}'s estimators write
 \begin{align}
 \hat{S_i} = \rho (Y(B), Y(AB_{n})) \quad \hat{S_{T_i}} = 1 - \rho (Y(A), Y(AB_n)),
 \end{align}
@@ -262,19 +262,19 @@ It means that if the QoI's PDF is highly skewed, multimodal or with heteroscedas
 \item \emph{The parameters need to be uncorrelated,}\\
 This assumption can be mitigated by using some correlation matrices but the procedure is not really trivial.
 \item \emph{Null first order indices does not imply that the parameter is independent with the QoI,}\\
-Computation of high order terms and total effect require a lot of samples to converge. It may be impractical to compute these quantities.
+Computation of high-order terms and total effect require a lot of samples to converge. It may be impractical to compute these quantities.
 \end{itemize}
 
-Moment-based method are based on the whole PDF to mitigate these issues~\cite{borgonovo2007}. Based on the unconditional PDF, a conditional PDF per parameter is computed. The more the conditional PDF deviates from the unconditional PDF, the more the parameter has an impact on the quantity of interest. The same procedure can be done using the Empirical Cumulative Density Function (ECDF), respectively with the unconditional ECDF. \Cref{fig:scatter_moments} visually shows this procedure. Bins of samples (\emph{red circles}) are used to compute a conditional PDF of the output. This PDF is compared to the unconditional PDF.
+Moment-based methods are based on the whole PDF to mitigate these issues~\cite{borgonovo2007}. Based on the unconditional PDF, a conditional PDF per parameter is computed. The more the conditional PDF deviates from the unconditional PDF, the more the parameter has an impact on the quantity of interest. The same procedure can be done using the Empirical Cumulative Density Function (ECDF), respectively with the unconditional ECDF. \Cref{fig:scatter_moments} visually shows this procedure. Bins of samples (\emph{red circles}) are used to compute a conditional PDF of the output. This PDF is compared to the unconditional PDF.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=\linewidth,keepaspectratio]{fig/literature/scatter_moments.pdf}
-\caption{Scatter plot per component of the \textit{Ishigami} function. \emph{Black line} represents the unconditional PDF and \emph{red dots} the samples used to computed the conditioned PDF (\emph{dashed line}).}
+\caption{Scatter plot per component of the \textit{Ishigami} function. \emph{Black line} represents the unconditional PDF and \emph{red dots} the samples used to compute the conditioned PDF (\emph{dashed line}).}
 \label{fig:scatter_moments}
 \end{figure}
 
-\Cref{fig:moment_sa} shows the computation of both conditional and unconditional PDF (resp. ECDF). Based on these moment estimations, distance criteria can be computed such as: $L_1$, \emph{Kolmogorov-Smirnov} or the \emph{Kuiper} distances. The method does not require any particular sampling nor do not require the parameters to be independent. The limitations comes from the ability to correctly estimate the densities.
+\Cref{fig:moment_sa} shows the computation of both conditional and unconditional PDF (resp. ECDF). Based on these moment estimations, distance criteria can be computed such as: $L_1$, \emph{Kolmogorov-Smirnov} or the \emph{Kuiper} distances. The method does not require any particular sampling nor do not require the parameters to be independent. The limitations comes from the ability to correctly estimate the density.
 
 \begin{figure}[!h]
 \centering
@@ -295,15 +295,15 @@ Another visual approach is found with the Cumulative Sums Of NOrmalized Reordere
 
 \section{Surrogate Models}\label{sec:surrogate}
 
-\lettrine{C}{lassical} UQ methods, based on the Monte-Carlo approach, require a large number of experiments~\citep{iooss2010,iooss2016,lamboni2011,lemaitreknio2010,saltelli2007,storlie2009}, which quickly go beyond the limits of available resources (CPU cost, budget). In the following, numerical smulations are considered and especially CFD simulations. These limits are especially true when it comes to large dimensional problems, both with respect to the domain discretization and to the number of uncertain input parameters. The cost of the UQ study can, however, be significantly reduced when the CFD code is replaced by a surrogate model which is formulated in a parameter space and which is fast to evaluate for any set of uncertain variables~\cite{martin2005}.
+\lettrine{C}{lassical} UQ methods, based on the Monte-Carlo approach, require a large number of experiments~\citep{iooss2010,iooss2016,lamboni2011,lemaitreknio2010,saltelli2007,storlie2009}, which quickly go beyond the limits of available resources (CPU cost, budget). In the following, numerical simulations are considered and especially CFD simulations. These limits are especially true when it comes to large-dimensional problems, both with respect to the domain discretization and to the number of uncertain input parameters. The cost of the UQ study can, however, be significantly reduced when the CFD code is replaced by a surrogate model which is formulated in a parameter space and which is fast to evaluate for any set of uncertain variables~\cite{martin2005}.
 
 Formulating the surrogate model relies on a limited number of forward model integrations referred to as the DoE. Several surrogate models are found in the literature, among whom generalized linear models, polynomial models, splines, Polynomial Chaos (PC) expansions, artificial neural networks or Gaussian Process (GP) models. In this work, two types of surrogate models are used to approximate the behaviour of forward models. PC expansion on the one hand, GP regression on the other hand. 
 
 PC approach has received much attention lately~\citep{dubreuil2014,sudret2008,xiu2010,xiu2002,Ciriello2013}. The PC surrogate model is formulated as a polynomial expansion, in which the basis is defined according to the distribution of the uncertain inputs $\mathbf{x}$ and the coefficients relate to the statistics of the output $\mathbf{Y}$. The coefficients are computed so as to fit the training set $(\mathbf{X}, \mathcal{Y})$, either using regression or spectral projection methods. The merits of PC surrogates were demonstrated in various fields, e.g.~structural mechanics~\citep{dubreuil2014,berveiller2005}, CFD~\citep{hosder2006,lucor2007,saad2007phd}, hydrology~\citep{deman2015}, hydraulics~\citep{ge2008,elmocaydphd}, wildfires~\citep{rochoux2014}. A complementary approach between PC and EnKF was presented in~\citet{lixiu2009} and tested in the framework of wildfire behaviour forecasting in~\citet{rochoux2014}. A PC surrogate was used in place of the forward model to estimate the Kalman gain and thereby design a cost-effective EnKF inferring new estimates of the input parameters (e.g.~biomass moisture and fuel aspect ratio) reducing bias in the fire front location prediction. The resulting algorithm achieved convergence in spite of the non-linear surface response, showing promising results for environmental risk monitoring. 
 
-GP that are strongly related to Kriging in geostatistics also are of increasing interest~\citep{rasmussen2006,legratiet2017,lockwood2012,marrel2015}. The GP formalism treats the forward model response as a realization of a Gaussian stochastic process indexed by $\mathbf{x}$ and fully characterized with mean and covariance functions conditioned by the training set $(\mathbf{X}, \mathcal{Y})$. The GP surrogate is built first, by defining a covariance kernel function between output values and a trend function and then, by estimating the hyperparameters (e.g.~variance, characteristic length scale) that provide a good fit to the training set. GP surrogates were introduced in the context of SA for estimating \emph{Sobol'} indices~\citep{oakley2004,marrel2009,legratiet2014}. In an industrial context---which is the case here---, some benefits of this method are:\textit{(i)} it does not require any prior knowledge on the probability distribution of the uncertainties on the input parameters ; \textit{(ii)} it does not need a specific sampling of the parameter space which could lead to \textit{curse-of-dimensionality} or mis-evaluation of the space ; and \textit{(iii)} it provides an estimation of the predictive error.
+GP that is strongly related to Kriging in geostatistics also is of increasing interest~\citep{rasmussen2006,legratiet2017,lockwood2012,marrel2015}. The GP formalism treats the forward model response as a realization of a Gaussian stochastic process indexed by $\mathbf{x}$ and fully characterized with mean and covariance functions conditioned by the training set $(\mathbf{X}, \mathcal{Y})$. The GP surrogate is built first, by defining a covariance kernel function between output values and a trend function and then, by estimating the hyperparameters (e.g.~variance, characteristic length scale) that provide a good fit to the training set. GP surrogates were introduced in the context of SA for estimating \emph{Sobol'} indices~\citep{oakley2004,marrel2009,legratiet2014}. In an industrial context---which is the case here---, some benefits of this method are:\textit{(i)} it does not require any prior knowledge of the probability distribution of the uncertainties on the input parameters ; \textit{(ii)} it does not need a specific sampling of the parameter space which could lead to \textit{curse-of-dimensionality} or mis-evaluation of the space ; and \textit{(iii)} it provides an estimation of the predictive error.
 
-PC and GP surrogate models have recently been compared for UQ and SA studies~\citep{legratiet2017,owen2015,schoebi2015}. \citet{owen2015} evaluated the performance of each type of surrogate in terms of output mean, variance and PDF estimation. \citet{legratiet2017} compared \emph{Sobol'} indices with applications in structural mechanics; for a given size of the training set, PC and GP surrogate models were found to feature a similar predictive quality---with respect to the predictive coefficient $Q_2$, also called Nash-Sutcliffe model efficiency coefficient, which is equivalent to the coefficient of determination $R^2$ for residuals' prediction~\citep{krause2005} (see~\cref{sec:validation}). \citet{legratiet2017} also emphasized that the ranking between PC and GP approaches remains problem-dependent.
+PC and GP surrogate models have recently been compared for UQ and SA studies~\citep{legratiet2017,owen2015,schoebi2015}. \citet{owen2015} evaluated the performance of each type of surrogate in terms of output mean, variance and PDF estimation. \citet{legratiet2017} compared \emph{Sobol'} indices with applications in structural mechanics; for a given size of the training set, PC and GP surrogate models were found to feature a similar predictive quality---with respect to the predictive coefficient $Q_2$, also called Nash-Sutcliffe model efficiency coefficient, which is equivalent to the coefficient of determination $R^2$ for residuals's prediction~\citep{krause2005} (see~\cref{sec:validation}). \citet{legratiet2017} also emphasized that the ranking between PC and GP approaches remains problem-dependent.
 
 Before going further, let us clarify the nature of the forward model. The ensemble $\mathcal{Y}$ constitute a set of observed QoI. Each element can either be a scalar or a vectorial---or functional---QoI. When considering scalar QoI, a global physical parameter such as the mean temperature for instance, a single surrogate model mapping $Y^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$ can be constructed. In case of a multidimensional output the mapping comes to $\mathbf{Y}^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$. One can consider independent surrogate for each element but the computational cost can rapidly become intractable. Moreover, the elements of the vectorial QoI can be correlated. A classical solution is found through the use of a Proper Orthogonal Decomposition (POD)~\cite{anindyachatterjee2000}. By performing a POD on the QoI, each mode being orthogonal, they can be treated as independent and then a surrogate can be built on a reduced space. In~\cite{braconnier2011,margheri2016}, this method was used to reduce the computational cost and conserve the spatial/temporal correlation of the QoI.
 
@@ -314,11 +314,11 @@ Considering the general case of a functional QoI, the common idea of PC and GP a
 \end{align}
 where the coefficients $\gamma_{a,i}$ and the basis functions $\Psi_i$ are calibrated by the training set $\mathbf{X}^{N_s}$. The main difference between PC (Sect.~\ref{sec:PC}) and GP (Sect.~\ref{sec:GP}) approaches stands in the nature of these models: GP interpolates the training points and captures local variations, while PC is a regression method focusing on the global behaviour of the model. Basis functions and calibration methods also differ between these two approaches.
 
-\Cref{sec:POD} present the POD while \cref{sec:PC} and \cref{sec:GP} respectively define the PC and the GP surrogate methods.
+\Cref{sec:POD} present the POD while \cref{sec:PC} and \cref{sec:GP} respectively defines the PC and the GP surrogate methods.
 
 %For PC expansion, the maximum order of the decomposition and the basis functions are first chosen, then a spectral projection strategy is implemented to compute the decomposition coefficients in the polynomial basis. The GP strategy is two-fold: the first step consists in transforming the sampled output space to an orthogonal one, eventually reducing its dimension; the second step consists in interpolating with a GP approach the principal components of this new space to express water level in the basis for any friction and discharge values. It should be noted that the GP model could be replaced by any other interpolator. 
 
-\subsection{Snapshot method}\label{sec:POD}
+\subsection{Snapshot Method}\label{sec:POD}
 
 The key idea of the snapshot method~\citep{sirovich1987} is to achieve a POD of the centred snapshot matrix $\mathcal{Y} \in \mathbb{M}_{M,N}(\mathbb{R})$, which gathers the discretized QoI for the $N_{s}$ snapshots, from which the sample mean is subtracted. For simplicity purpose, the QoI anomaly element $a$ is denoted $y$ in the following. Thus, $\mathcal{Y} = \left(y_{a_i}^{(j)}\right)_{1\leq i \leq M \atop 1\leq j \leq N_{s}}$. The snapshots correspond to the column vectors; the $k$th snapshot of size $M$ is denoted by $\mathbf{y}^{(k)}$.
 
@@ -343,7 +343,7 @@ where for any $i\in\{1,\ldots,M\}$, $\gamma_{a,i}:=U_{a,i}$ and $\Psi_i(\mathbf{
 
 
 %----Polynomial Chaos
-\subsection{Polynomial Chaos (PC) surrogate model}\label{sec:PC}
+\subsection{Polynomial Chaos (PC) Surrogate Model}\label{sec:PC}
 
 The algorithm to build the PC surrogate proceeds as follows:
 \begin{enumerate}
@@ -355,7 +355,7 @@ The algorithm to build the PC surrogate proceeds as follows:
 \end{enumerate}
 Note that we use standard truncation and projection strategies presented in~\cite{lemaitreknio2010} and \cite{xiu2010}.
 
-\subsubsection{Polynomial basis}
+\subsubsection{Polynomial Basis}
 
 Each component of the random vector $\mathbf{x}$ defined in the input physical space is standardized and noted $\boldsymbol{\zeta}$ in the following way: $\zeta_i=\frac{x_i-\mu_i}{\sigma_i}$ where $\mu_i=N_{s}^{-1}\sum_{k=1}^{N_{s}}x_i^{(k)}$ and $\sigma_i=\sqrt{(N_{s}-1)^{-1}\sum_{k=1}^{N_{s}}\left(x_i^{(k)}-\mu_i\right)^2}$. 
 
@@ -384,7 +384,7 @@ meaning that all polynomials involving the $d$ random variables of total degree 
 \end{align}
 Note that for small $d$, advanced truncation strategies that consist in eliminating high-order interaction terms or using sparse structure~\citep{blatman2009phd,migliorati2013} are not necessary.
 
-\subsubsection{Spectral projection strategy}
+\subsubsection{Spectral Projection Strategy}
 
 We focus here on non-intrusive approaches to numerically compute the coefficients $\lbrace\gamma_{a,i}\rbrace_{i\in\mathbb{N}^d\atop |i|<P}$  in Eq.~\eqref{eq:SurrogatePC} using $N_{s}$ snapshots from $\mathbf{X}^{N_s}$. The spectral projection relies on the orthonormality property of the polynomial basis. The $i$th coefficient $\gamma_{a,i}$ is computed using Gaussian quadrature as:
 \begin{align}
@@ -395,7 +395,7 @@ where $\mathbf{y}^{(k)} = \mathcal{M}(\mathbf{x}^{(k)})$ is the snapshot corresp
 
 
 %----Gaussian process
-\subsection{Gaussian Process (GP) surrogate}\label{sec:GP}
+\subsection{Gaussian Process (GP) Surrogate}\label{sec:GP}
 
 The algorithm to build a Gaussian Process surrogate proceeds as follows:
 \begin{enumerate}
@@ -436,11 +436,11 @@ where $\bar{Y_a}$ is the mean realization, $\mathbf{x}^i$ the \textit{i-th} set 
 \end{align}
 The regression methodology is shown in~\cref{fig:gp_prior-post}. On \cref{fig:gp_prior-post}(a), the GP is sampled on the input parameter space. In this case, a GP with zero mean and unit variance is used. It means that for each $x^i$, the QoI is estimated as a Gaussian process of zero mean and unit variance. Thus along the parameter $x_{k}$, the GP is defined as an infinite collection of GPs. The link between each GP is assured through the correlation matrix defined by the kernel. Once some observations are added---see~\cref{fig:gp_prior-post}(b)---, the GP is conditioned so that each realization of the GP passes through the observations. This intrinsic property of the GP can be relaxed by changing the diagonal of the correlation matrix. This can be used to take into account some noise in the data for instance. Moreover, the matrix can be adapted per observation if the variance of the noise is known to be different---heteroscedastic noise.
 
-As said beforehand, the hyperparameters are choosen as to maximize the marginal log likelihood. It is the integral of the likelihood times the prior marginalized over the function values:
+As said beforehand, the hyperparameters are chosen as to maximize the marginal log likelihood. It is the integral of the likelihood times the prior marginalized over the function values:
 \begin{align}
 p(y|x) = \int p(y|\mathbf{f}, x)p(\mathbf{f}|x)d\mathbf{f}.
 \end{align}
-\noindent In other words, maximizing this quantity will tend to reduce the confidence interval between each points. It is to be noted that along each direction of the parameters space, having different set of hyperparameters  is possible so that anisotropy can be taken into account.
+\noindent In other words, maximizing this quantity will tend to reduce the confidence interval between each point. It is to be noted that along each direction of the parameters space, having different set of hyperparameters  is possible so that anisotropy can be taken into account.
 
 \begin{figure}[!h]
 \centering
@@ -453,7 +453,7 @@ p(y|x) = \int p(y|\mathbf{f}, x)p(\mathbf{f}|x)d\mathbf{f}.
 
 \subsection{Model Validation}\label{sec:validation}
 
-An important step after having constructed a surrogate model is to access its validity. There are lots of ways to do this and the common step is to compare the prediction of the model at a given point with its actual value. Depending on the number of simulation that can be afforded, extra validation simulation not used for constructing the model can be performed. On the other hand, the same dataset can be used.
+An important step after having constructed a surrogate model is to access its validity. There are lots of ways to do this and the common step is to compare the prediction of the model at a given point with its actual value. Depending on the number of simulations that can be afforded, extra validation simulation not used for constructing the model can be performed. On the other hand, the same dataset can be used.
 
 \begin{figure}[!h]
 \centering
@@ -462,8 +462,8 @@ An important step after having constructed a surrogate model is to access its va
 \label{fig:validation}
 \end{figure}
 
-\subsubsection{Mean Square Error and alike}
-Various metrics are used to compare the results of a known sample over the result of a prediction from a model. The Mean Square Error (MSE) basically computes the sum of the square differences. Taking its root allows to conserve the dimensionality of the QoI
+\subsubsection{Mean Square Error and Alike}
+Various metrics are used to compare the results of a known sample over the result of a prediction from a model. The Mean Square Error (MSE) basically computes the sum of the square differences. Taking its root allows conserving the dimensionality of the QoI
 \begin{align}
 \text{RMSE} = \sqrt{\frac{1}{N}\,
 \displaystyle\sum_{i = 1}^{N}\,(Y_i - \hat{Y}_{i})^2}.
@@ -477,7 +477,7 @@ Q_{2} = 1 - \frac{\displaystyle\sum_{i = 1}^{N}\,\left(Y_i - \widehat{Y}_i\right
 \end{align}
 A perfect model would have a $Q_2=1$. With a constant model, $\hat{Y}$ is equal to the mean leading to $Q_2=0$. Finally, $Q_2=0$ can be negative, meaning that the model is arbitrary worse than a constant model.
 
-\subsubsection{Kolmogorov-Smirnov statistical test}
+\subsubsection{Kolmogorov-Smirnov Statistical Test}
 
 The Kolmogorov-Smirnov test is a classical method used to evaluate the similarity between PDF~\citep{clarke1992}. Let $T_F$ (resp. $T_G$) be a random variable with cumulative distribution function (CDF) $F$ (resp. $G$). Let $F_n$ (resp. $G_m$) be its empirical CDF built from $n$ (resp. $m$) independent realizations of $T_F$ (resp. $T_G$). Then, let us define the test statistics:
 \begin{align}
@@ -495,14 +495,14 @@ An easy way to visualize the quality of the model is to plot a joint plot. Its c
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.9\linewidth,keepaspectratio]{fig/literature/qq_plot.png}
-\caption{Joint plot. QoI function of the predicted QoI given a parameter set. The triangle represent an observed value of 5.}
+\caption{Joint plot. QoI function of the predicted QoI given a parameter set. The triangle represents an observed value of 5.}
 \label{fig:qq_plot}
 \end{figure}
 
-\subsubsection{Holdout as opposed to \emph{K-fold} or cross validation}
-To use these different metrics, we have to come up in some ways with a validation set. The classical approach is to use a validation set which is different than the training set. This holdout procedure requires to split the entire dataset into two disjoints datasets. There are no rules about the data sharing proportions. Things like the fitting time or the total number of samples leads to various splitting strategies.
+\subsubsection{Holdout as Opposed to \emph{K-fold} or Cross Validation}
+To use these different metrics, we have to come up in some ways with a validation set. The classical approach is to use a validation set which is different than the training set. This holdout procedure requires to split the entire dataset into two disjointed datasets. There are no rules about the data sharing proportions. Things like the fitting time or the total number of samples lead to various splitting strategies.
 
-Another method is to keep the same sample set for both training and validation. It is called cross-validation or \emph{K-fold}~\cite{kohavi1995}. In this case, $K$ different models are constructed on subsets of the dataset and the metrics are computed on the points that are not used during the fitting of these different models. For \emph{K-fold} to work optimally, it assumes that the model is fairly stable to these points removal. In~\cref{fig:k_fold}, $K=3$ which leads to 3 subsets of 6 points being created. These 6 points are used for training a model while the other 3 points are used for computing a metric. These operations are repeated 3 times and all metric's results are aggregated. A particular case is found with $K$ being equal to the number of sample. This is called \emph{leave-one-out}.
+Another method is to keep the same sample set for both training and validation. It is called cross-validation or \emph{K-fold}~\cite{kohavi1995}. In this case, $K$ different models are constructed on subsets of the dataset and the metrics are computed on the points that are not used during the fitting of these different models. For \emph{K-fold} to work optimally, it assumes that the model is fairly stable to these points removal. In~\cref{fig:k_fold}, $K=3$ which leads to 3 subsets of 6 points being created. These 6 points are used for training a model while the other 3 points are used for computing a metric. These operations are repeated 3 times and all metrics results are aggregated. A particular case is found with $K$ being equal to the number of samples. This is called \emph{leave-one-out}.
 
 \begin{figure}[!h]
 \centering
@@ -514,7 +514,7 @@ Another method is to keep the same sample set for both training and validation. 
 
 \section{Uncertainty Visualization}\label{sec:visu}
 % Visualization issue
-\lettrine{I}{n spite} of a large literature on UQ, the community has yet to propose efficient ways to visualize uncertainties. Indeed, to the author’s knowledge, there is no chapter dedicated to visualization in UQ reference books~\citep{saltelli2007,sullivan2015,handbookUQ}. This remains to be investigated, especially for Computational Fluid Dynamics (CFD) applications~\citep{Moreland2016} that involve complex fields of large dimensions. Classical ways of visualizing standard statistics can lead to misinterpretation~\citep{Anscombe1973}. The challenge for state-of-the-art visualization solutions stands in the dimension of the data. Assuming that the dimension of the data is limited (a set of scalars), for instance when dealing with input data, canonical subplots of subspaces are adapted. Parallel coordinate plots~\citep{Inselberg1985} or Kiviat plot (also referred to as spider plot)~\citep{Hackstadt1994} that are represented in~\Cref{fig:sketch_Kiviat-parallel} offer an interesting alternative and share the same idea of dedicating one input variable (noted $x_i$) per axis; Kiviat (right panel) plot being the equivalent to parallel coordinates (left panel) plot in polar coordinates. 
+\lettrine{I}{n spite} of a wide literature on UQ, the community has yet to propose efficient ways to visualize uncertainties. Indeed, to the author’s knowledge, there is no chapter dedicated to visualization in UQ reference books~\citep{saltelli2007,sullivan2015,handbookUQ}. This remains to be investigated, especially for Computational Fluid Dynamics (CFD) applications~\citep{Moreland2016} that involve complex fields of large dimensions. Classical ways of visualizing standard statistics can lead to misinterpretation~\citep{Anscombe1973}. The challenge for state-of-the-art visualization solutions stands in the dimension of the data. Assuming that the dimension of the data is limited (a set of scalars), for instance when dealing with input data, canonical subplots of subspaces are adapted. Parallel coordinate plots~\citep{Inselberg1985} or Kiviat plot (also referred to as the spider plot)~\citep{Hackstadt1994} that are represented in~\Cref{fig:sketch_Kiviat-parallel} offer an interesting alternative and share the same idea of dedicating one input variable (noted $x_i$) per axis; Kiviat (right panel) plot being the equivalent to parallel coordinates (left panel) plot in polar coordinates. 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/parallel-kiviat.pdf}
@@ -523,7 +523,7 @@ Another method is to keep the same sample set for both training and validation. 
 \end{figure}
 % Outputs
 
-When the dimension of the data increases, for instance when dealing with \emph{functional} output fields discretized in both space and time on fine meshes, advanced strategies should be proposed. Different strategies are found in the literature to visualize statistics on the response variable~\citep{Potter2012a,Brodlie2012,Bonneau2014}. Beyond deterministic simulation, moving on to ensemble-based approaches, the dimension of the data further increases.
+When the dimension of the data increases, for instance when dealing with \emph{functional} output fields discretized in both space and time on fine meshes, advanced strategies should be proposed. Different strategies are found in the literature to visualize statistics on the response variable~\citep{Potter2012a,Brodlie2012,Bonneau2014}. Beyond deterministic simulations, moving on to ensemble-based approaches, the dimension of the data further increases.
 
 A first approach is to look at each realization of the data set individually, in the output space with curves, maps or 3D-graphs. In the early work of Sir Francis Galton and its bean machine, the sampling process illustrated the demonstration of the central limit theorem stating that the binomial distribution approximates the normal distribution. The animated version of the sampling procedure is referred to as the Hypothetical Outcome Plots (HOPs) technique~\citep{Ehlschlaeger1997} and was generalized by~\citep{Hullman2015} for a set of scalars as presented in~\cref{fig:pattern_hop}.
 
@@ -545,7 +545,7 @@ Statistical moments and Probability Density Function (PDF) plot are common tool 
 \label{fig:pattern_pdf}
 \end{figure}
 
-A complementary approach based on density criteria was proposed by~\citep{Hyndman2009,Sun2011}; it is noted HDR for Highest Density Region and represented in~\cref{fig:pattern_hdr}. It allows to depict some statistics (for instance median or outliers) taking into account the functional response variable as a whole and working in a reduced space spanned by the most significant directions of the output space. Within this reduced space, metrics for functional outputs are computed such as the distance to the median (blue curve) so that abnormal or outlier outputs (red and green curves) can be detected and quantiles can be estimated (blue envelope). Each curve represents either a realization within the data set or an additional realization sampled in the reduced space; thus functional characteristics such as spatial or temporal correlation are preserved.  From~\citep{Popelin2013,Ribes2015}, the HDR method is more robust to outlier detection than other methods such as functional boxplot~\citep{Sun2011,Whitaker2013}.
+A complementary approach based on density criteria was proposed by~\citep{Hyndman2009,Sun2011}; it is noted HDR for Highest Density Region and represented in~\cref{fig:pattern_hdr}. It allows depicting some statistics (for instance median or outliers) taking into account the functional response variable as a whole and working in a reduced space spanned by the most significant directions of the output space. Within this reduced space, metrics for functional outputs are computed such as the distance to the median (blue curve) so that abnormal or outlier outputs (red and green curves) can be detected and quantiles can be estimated (blue envelope). Each curve represents either a realization within the data set or an additional realization sampled in the reduced space; thus functional characteristics such as spatial or temporal correlation are preserved.  From~\citep{Popelin2013,Ribes2015}, the HDR method is more robust to outlier detection than other methods such as functional boxplot~\citep{Sun2011,Whitaker2013}.
 
 \begin{figure}[!h]
 \centering
@@ -557,7 +557,7 @@ A complementary approach based on density criteria was proposed by~\citep{Hyndma
 \subsection{Highest Density Region}
 \label{sec:HDR}
 
-The dataset output is considered as a matrix where each line corresponds to a realization. This matrix is decomposed by POD. The modes are ordered by decreasing importance in terms of contribution to the variance and only a finite number of modes are kept. In this reduced space, the functional dataset of large dimension is conveniently represented by a limited number of scalars mapped onto most significant directions that maximizes the variance of the response variable. Within this reduced space, the classification of different patterns or the computation of metrics is eased~\citep{Ren2017}. Hence, within this reduced space, the median realization corresponds to the HDR location. The distance to this point is computed in the modal space; the farther a point is from the HDR, the less probable is the realization.
+The dataset output is considered as a matrix where each line corresponds to a realization. This matrix is decomposed by POD. The modes are ordered by decreasing importance in terms of contribution to the variance and only a finite number of modes are kept. In this reduced space, the functional dataset of large dimensions is conveniently represented by a limited number of scalars mapped onto most significant directions that maximizes the variance of the response variable. Within this reduced space, the classification of different patterns or the computation of metrics is eased~\citep{Ren2017}. Hence, within this reduced space, the median realization corresponds to the HDR location. The distance to this point is computed in the modal space; the further a point is from the HDR, the less probable is the realization.
 
 A multivariate KDE (see~\cref{sec:up}) technique is used to estimate the PDF $\hat{f}(\mathbf{x_r})$ of this multivariate space. From this KDE, the HDR reads
 \begin{align}
@@ -589,13 +589,13 @@ Except if the response variable of the system of interest is chaotic under the p
 \lettrine{F}{rom} this literature review, I propose through this thesis to contribute to three axis:
 
 \begin{itemize}
-\item \emph{How to construct a DoE in a high dimensional parameter space?}\hfill\\
-	The number of simulation at hand is highly constrained by the computational power, the cost and the return time. A surrogate can only interpolate the physic which has already been seen, hence the need to explore uniformly the parameter space. When the number of parameters is high, controlling the sparsity in the DoE is challenging. I have developed a new sampling strategy that is versatile  and perform well with such constrains.
+\item \emph{How to construct a DoE in a high-dimensional parameter space?}\hfill\\
+	The number of simulations at hand is highly constrained by the computational power, the cost and the return time. A surrogate can only interpolate the physic which has already been seen, hence the need to explore uniformly the parameter space. When the number of parameters is high, controlling the sparsity in the DoE is challenging. I have developed a new sampling strategy that is versatile  and perform well with such constrains.
 	
 \item \emph{How to resample a DoE by considering the QoI of already sampled experiments?}\hfill\\
-	Using the aforementioned novel method, it is possible to iteratively complet the DoE. This method does not incorporate any prior information on the shape of the response of the system. Here I propose a method which combine a Gaussian Process surrogate model with a LOOCV procedure in order to add a new sample in the DoE. This method has proven good behaviour in high dimensional parameter space.
+	Using the aforementioned novel method, it is possible to iteratively complete the DoE. This method does not incorporate any prior information on the shape of the response of the system. Here I propose a method which combines a Gaussian Process surrogate model with a LOOCV procedure in order to add a new sample in the DoE. This method has proven good behaviour in high-dimensional parameter space.
 
-\item \emph{How to visualize uncertainties in high dimensional cases?}\hfill\\
+\item \emph{How to visualize uncertainties in high-dimensional cases?}\hfill\\
     Analysing both input parameter space and QoI is challenging when the dimension is high. I present some new ways to help understand uncertainties in this context.
 \end{itemize}
 

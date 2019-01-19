@@ -127,7 +127,7 @@ Moreover, we are actively collaborating with academic and institutional partners
 
 \lettrine{T}{his work} proposes a new stochastic, iterative DoE ---\thinspace named KDOE\thinspace--- based on a modified Kernel Density Estimation (KDE). It is a two-step process: \emph{(i)} candidate samples are generated using MCMC based on KDE, and \emph{(ii)} one of them is selected based on some metric. The performance of the method is assessed by means of the $C^2$-discrepancy space-filling criterion. KDOE appears to be as performant as classical one-shot methods in low dimensions, while it presents increased performance for high-dimensional parameter spaces. This work proposes a new  methodology to stochastically sample the input parameter space iteratively allowing, at the same time, to take into account any constrains, such as non-rectangular DoE~\citep{Lekivetz2015}, sensitivity indices or even constrains on the quality on particular subprojections as in~\citep{Joseph2015}. It is a versatile method which offers an alternative to classical methods and, at the same time, is easy to implement and offers customization based on the objective of the DoE.
 
-\section{Presentation of the method}\label{sec:method}
+\section{Presentation of the Method}\label{sec:method}
 
 In its basis form, our adaptive sampling strategy consists in adding a point far from the existing points in the parameter space. The notion of distance corresponds to a measure of discrepancy. However, instead of considering the whole hypercube, the technique proposed only focuses on empty regions defined using an Exclusion Field (EF). This exclusion field describes the probability of selecting a new point depending on its position.
 
@@ -153,7 +153,7 @@ By means of utilizing EF, it becomes possible to generate new samples that are l
 
 
 
-\subsection{Determination of the exclusion field}\label{sec:kde}
+\subsection{Determination of the Exclusion Field}\label{sec:kde}
 
 It is assumed that there are $N_s$ samples that have already been selected. The spatial probability density function used to draw a new sample is given by:
 \begin{align}
@@ -201,7 +201,7 @@ where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star sh
 \end{figure}
 
 
-\subsection{Sampling and selection procedures}\label{sec:sample}
+\subsection{Sampling and Selection Procedures}\label{sec:sample}
 
 %Using the modified version of the KDE, it is possible to generate samples following the posterior distribution.
 
@@ -453,7 +453,7 @@ The quality of the design is of prime importance as it determines the quality of
 
 \lettrine{T}{he accuracy} of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space. The presented techniques show an improvement of the predictive quality of the model with high dimensional analytical input functions. An industrial application is targeted, the aerothermal flow around the \textit{LS89}~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented (see~\cref{chap:ls89}). LES are high-fidelity full 3D unsteady simulations. This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
 
-\section{Presentation of the methods}
+\section{Presentation of the Methods}
 
 Aside from sequence designs that are intrinsically iterative, all designs can be increased step-by-step through several techniques. A natural way is to optimize the discrepancy or some other criteria such as the entropy or the distance between points~\cite{Fang2006}. These kinds of methods only take advantage of the position of the points in the parameter space. The expected quality of such method is, as expected (and from our testing, not presented in this work), at best close to a low discrepancy sequence. A complementary strategy consists in exploring the space using as few points as possible and then refine the exploration around interesting zones. In the work of~\cite{scheidt2006,braconnier2011}, they used detection of optima, nul gradients and also information about the Gaussian processes variance. This method is denoted hereafter $\sigma$ method. One caveat with crude $\sigma$ method is that points are preferentially added at boundaries of the parameter space. This is further described in~\cref{sec:delta-space}. This behaviour motivates the research of new refinement methods that would use this information without being constrained to boundaries.
 
@@ -605,7 +605,7 @@ Complementary to this analysis using an outer delta space, an inner delta space 
 
 This work has shown that setting an inner delta space comprised between 5 and 10\% is required to ensure the robustness of the model construction. Based on this observation, in the following the inner delta space is set to an arbitrary value of 8\%.
 
-\subsection{Application on analytical functions}
+\subsection{Application on Analytical Functions}
 \label{sec:res-functions}
 
 The operating mechanism and catches of the methods can be visualized on the \textit{Rosenbrock} function---see~\cref{fig:methods-rosenbrock}. Starting from the $\sigma$ method: points are first added close to the top boundary despite the inner delta space parameter. However, the lack of surrounding points made this choice fairly legitimate. Other points seem to be located in interesting regions---where there is a gradient and no points. It can be seen as a low discrepancy sequence, which made its use relevant for studying the delta space impact in \cref{sec:delta-space}. On the other hand, the LOO-$\sigma$ method does not seem to exhibit a boundary preference. But, on the bottom left-hand corner, there is an accumulation of points. Indeed, this method relies on the location of the most sensitive point. Considering the surroundings of a strong extremum---as it is the case here---, the method tends to add points first in this zone preventing further exploration of the domain and, in this case, totally misses the second extremum. Lastly, the LOO-\textit{Sobol'} method seems more balanced. Points have been added preferentially on the $X_1$ parameter axis, as it is slightly the most influent parameter ($S_{T_{X_1}} \simeq 0.7$). 

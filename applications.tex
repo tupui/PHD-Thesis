@@ -31,7 +31,7 @@ The structure of the chapter is as follows. \Cref{sec:hydrau} introduces the 1-D
 The SWE represent the dynamics of open-channel flows, typically in rivers with small bathymetry variations~\citep{horritt2002}. They form a hyperbolic system of partial differential equations that characterize subcritical and supercritical flows subject to hydraulic jumps. Here, we only deal with subcritical flows, in the plain.
 
 %------> Equations
-\subsection{1-D shallow water equations (SWE)}
+\subsection{1-D Shallow Water Equations (SWE)}
 
 We consider a 1-D hydraulic model commonly used in hydraulic engineering and flood forecasting. The stream channel is described by a hydraulic axis corresponding to the main flow direction, implying that the river channel is represented by a series of cross-sections (or profiles) identified by a curvilinear abscissa $a$ ranging from $a_{\text{in}}$ upstream of the river to $a_{\text{out}}$ downstream. 1-D SWE are derived from mass conservation and momentum conservation. The equations are written in terms of discharge (or flow rate) $Q$~(m$^3$\,s$^{-1}$) and hydraulic section $A$~(m$^2$) that relates to water level (or water height) $h$~(m) such that $A \equiv A(h)$. The non-conservative form of the 1-D SWE for non-stationary flow reads~\citep{thual2010} 
 \begin{eqnarray}
@@ -88,7 +88,7 @@ The present study is carried out on a real hydraulic network over the Garonne Ri
 
 The upstream steady boundary condition is prescribed by $Q(a_{\text{in}}) = Q_{\text{in}}$; the discharge $Q$ is constant along the reach ($Q = Q_{\text{in}}$). The downstream boundary condition is prescribed with a local rating curve $RC$ established at La R\'eole that sets $h(a_{\text{out}}) = RC(Q_{\text{out}}) = h_{\text{out}}$. The hydraulic model has been calibrated using channel and floodplain roughness coefficients as free parameters~\citep{besnard2011}. 
 
-\subsection{Sources of uncertainties and Quantity of Interest}\label{sec:database}
+\subsection{Sources of Uncertainties and Quantity of Interest}\label{sec:database}
 
 UQ and DA for flood forecasting are essential to ensure the predictive capability of the surrogate model at the observing stations such as Marmande. Previous work~\citep{elmocaydEMA} has shown that in steady state conditions and given some assumptions on the statistics of the input uncertain variables, the sensitivity of the hydraulic state at Marmande to $K_{s_3}$ is predominant; the sensitivity at Marmande to $K_{s_1}$ and $K_{s_2}$ is null because of the steady state assumption and given the present hydraulic model. Hence, the main sources of uncertainties taken into account here are the upstream mass flow rate $Q$ and the Strickler coefficient $K_{s_3}$. We denote by $\mathbf{x} = (Q, K_{s_3})$ the random vector of size $d = 2$. From expert knowledge, $Q$ and $K_{s_3}$ are considered as independent random variables. $Q$~(m$^3$\,s$^{-1}$) follows the normal distribution $\mathcal{N}(4031,400)$: the mean is set to the average flow in the Garonne River; the standard deviation (STD) is chosen in order to remain in subcritical flow. $K_{s_3}$~(m$^{1/3}$\,s$^{-1}$) follows the uniform distribution $\mathcal{U}(15,60)$: the range of the uniform distribution is chosen following calibration results. This range for the variables $Q$ and $K_{s_3}$ allows to test how the surrogates are affected by non-linearities. 
 
@@ -99,9 +99,9 @@ A database noted $\mathcal{D}_{N_{\text{ref}}}$ and containing $N_{\text{ref}} =
 $\mathcal{D}_N = (\mathcal{X}$, $\mathcal{Y})\subset \mathcal{D}_{N_{\text{ref}}}$ of size $N$; it is fully used to validate them a posteriori over a large ensemble (\cref{sec:validation}).
 
 
-\section{Comparison of Polynomial Chaos (PC) and Gaussian Process (pGP) surrogates}\label{sec:UQresults}
+\section{Comparison of Polynomial Chaos (PC) and Gaussian Process (pGP) Surrogates}\label{sec:UQresults}
 
-\subsection{Reference Monte Carlo (MC) results}
+\subsection{Reference Monte Carlo (MC) Results}
 \label{sec:UQresults_ref}
 
 We first present the results obtained using the MC reference sampling ($N_{\text{ref}} = 100,000$ in $\mathcal{D}_{N_{\text{ref}}}$) in terms of water level mean, STD, PDF, correlation matrix as well as Sobol' indices associated with $Q$ and $K_{s_3}$. These results are used as reference to evaluate the accuracy of the PC and pGP surrogate models.
@@ -244,7 +244,7 @@ Conclusions for the present test case highlight the validity of both quadrature-
 Those are crucial steps for the complementary use of surrogate models within data assimilation algorithms.
 
 
-\chapter{The aerothermal flow around the \textit{LS89} blade cascade}\label{chap:ls89}
+\chapter{The Aerothermal Flow Around the \textit{LS89} Blade Cascade}\label{chap:ls89}
 
 \section{Introduction}
 
@@ -252,7 +252,7 @@ Those are crucial steps for the complementary use of surrogate models within dat
 
 The chapter is tailored as follows; \cref{sec:ls89_case} presents the experimental setup while \cref{sec:ls89_num} presents its numerical simulation configuration. Finally, \cref{sec:ls89_results}  presents the results of the UQ.
 
-\section{Case description}\label{sec:ls89_case}
+\section{Case Description}\label{sec:ls89_case}
 The \textit{LS89} case is a blade cascade designed and tested experimentally at the Von Karman Institute for Fluid Dynamics (VKI)~\cite{arts1990}. The linear cascade consists of five high-pressure turbine vanes although only the centre vane is studied---see~\cref{fig:vki-setup}. The vane is a 2D extruded profile unlike most industrial vanes that are much more complex geometrically. It, however, remains of great interest because the operating points are representative of values found in real engines today. This test case represents one of the largest turbomachinery databases available for the validation of CFD models in complex geometries.
 
 \begin{figure}[!h]               \centering\subfloat[VKI installation]{\includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/VKI.png}} ~       \subfloat[Blade profile]{\includegraphics[width=0.3\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/blade.png}}\qquad       \subfloat[Geometrical Characteristics]{%\begin{table}[H]%\centering\begin{tabular}[b]{lc}\toprule $c$ (mm) &  67,647 \\ $g/c$& 0,850\\ $\gamma$ (degr.)& 55,0\\ $o/c$& 0,2207 \\ $r_{LE}/c$& 0,061\\ $r_{TE}/c$& 0,0105\\\bottomrule\end{tabular}%% \label{}%\end{table}}\caption{LS89 blade cascade experimental setup from the VKI. Source~\cite{arts1990}}\label{fig:vki-setup}\end{figure}
@@ -293,7 +293,7 @@ Tu \in [0, 30\%] \quad \alpha \in [-5,5\degree].
 \label{fig:space-tu-alpha}
 \end{figure*}
 
-\section{Numerical setup}\label{sec:ls89_num}
+\section{Numerical Setup}\label{sec:ls89_num}
 
 The simulations have been performed using \textit{AVBP}~\cite{Gicquel2011}, a validated CFD LES solver co-developed by CERFACS and IFP-EN. This parallel code solves the three-dimensional compressible Navier-Stokes equations for both steady and unsteady reacting flows. The code is capable of handling hybrid unstructured meshes and allows to address complex geometries. High-order numerical schemes based on the \textit{Taylor-Galerkin} (TTG) family are used~\cite{Quartapelle1993}. 
 
@@ -565,7 +565,7 @@ R_\alpha = \left\{ \mathbf{x_r}: \hat{f}(\mathbf{x_r}) \geq f_{\alpha} \right\}
 
 The PDF estimator and the HDR allow to infer new realizations that are statistically relevant to the original dataset and can be used for the UQ analysis. This is done in the next section. 
 
-\section{Generation of datasets }\label{sec:res}
+\section{Generation of Datasets }\label{sec:res}
 
 In the 3 POD-components space defined from the experimental database, a set of 30 points was sampled from a low discrepancy sequence of \emph{Sobol'} (scrambled)~\cite{Cavazzuti2013,Kucherenko2015} which ensures a good coverage of low-dimensional parameter spaces. The 30 points are plotted in \Cref{fig:samples-scatter}~in 2D cuts of the 3D parameter space of each swirler stage. The PDF estimators obtained for each POD component are shown in the plots placed along the diagonal of the figure.  
 
@@ -702,7 +702,7 @@ The chapter is tailored as follows; \cref{sec:optim_case} starts with a presenta
 \section{Case Description}
 \label{sec:optim_case}
 
-\subsection{Geometrical and Meshing considerations}
+\subsection{Geometrical and Meshing Considerations}
 
 Simulated reactors are tubular geometries, with a single-started helical rib added on the inner surface which constitutes the artificial roughness responsible for the heat transfer enhancement. \Cref{geometry} represents an example of simulated ribbed reactor geometry. For comparison purpose, all reactors have an identical diameter $D=38.1$~mm. The rib has a rounded shape, illustrated on~\cref{rib}, with a floor width $w$ equal to 3.2864 times the rib height $e$, so $w=3.2864 \times e$. The rib cross-section is then fully characterized only by its height $e$. In addition to $e$, an important geometrical parameter for the rib shape is the rib pitch $p$. Both $e$ and $p$ are uncertain geometrical parameters for the optimization process. Note that in this study the pitch-to-height ratio $p/e$ always remains larger than 8. All ribbed reactor geometries then belong to the K-type roughness ($p/e > 4$) following the classification introduced in~\cite{jimenez2004, nagano2004}. K-type roughness is known to greatly affect the bulk flow and enhance heat transfer. As stated by Perry \cite{perry1969}, K-type roughness opposes to D-type roughness ($p/e < 4$) for which the ribs are so closely spaced that the eddy shedding from the roughness element has little impact on the bulk flow, which decreases heat transfer. As highlighted by the experimental work of Ravigururajan et al.~\cite{ravigururajan1996}, the shape of the rib cross-section only has little influence on the heat transfer enhancement compared to its height and pitch, justifying a constant rounded shape in the current work. Discontinuities are included in the rib as a geometrical parameter to optimize. Size and positions of the rib discontinuities are fully characterized by the number of discontinuities per rib pitch $N_D$ and the length of the discontinuity relative to the length of the remaining rib, called the emptiness ratio $E_r$. $N_D$ and $E_r$ are also uncertain geometrical parameters to optimize, making the total number of input geometrical parameters to optimize equal to 4.\\
 
@@ -729,7 +729,7 @@ The computational domains consist in one pitch long periodic tubes, as periodic 
 \label{mesh}
 \end{figure}
 
-\subsection{Numerical set-up}
+\subsection{Numerical Set-Up}
 
 As in~\cref{chap:ls89}, the simulations have been performed using the \emph{AVBP} solver. For comparison purpose, all geometries are computed for the same flow regime $Re = U_b D / \nu = 76800$, with $U_b$ the bulk velocity, $D$ the pipe diameter and $\nu$ the viscosity of the fluid. Bulk velocity $U_b$ and bulk temperature $T_b$ are set constant and similar in all geometries, ensuring similar viscosity and Reynolds number. A no-slip condition is imposed at the walls. Moreover, a spatially and temporally constant wall heat flux is imposed at the walls, providing heat to the fluid. In order to compare all geometries at similar operating conditions, all simulated heat exchangers receive the same amount of heat per meter, the imposed wall heat flux being scaled by the wall surface. The total heat provided to the fluid $\Phi_w$ is set equal to $9,576$ W/m in all geometries, which correspond to a wall heat flux of $80,000$ W/m$^2$ in a smooth tube of diameter D. The operating conditions and the fluid properties have been chosen to be representative of the thermal cracking process. They are summarized in Table~\ref{tab_opconditions}.\\
 
@@ -860,7 +860,7 @@ Thus, in this work we used the classical expected improvement formulation in ord
 \section{Results}
 \label{sec:optim_results}
 
-\subsection{Continuous rib}
+\subsection{Continuous Rib}
 \label{sec:continuous_rib}
 
 When considering a continuous rib, i.e.~$N_D=0$, the emptiness ratio parameter $E_r$ becomes irrelevant and the problem reduces to an optimization of 2 input parameters: $e$ and $p$. The response surface constructed with the Gaussian Process method is shown on~\cref{continuous_RS}. A total of 8 simulations were performed for heat exchangers with a continuous rib, indicated by symbols $\bullet$ on~\cref{continuous_RS}. Note that few simulations are performed for a continuous rib, geometries with a discontinuous rib being more promising for the cost function optimization.\\
@@ -883,7 +883,7 @@ Two optimal regions for the maximization of the objective function appear on the
 \label{sensitivity2D}
 \end{figure}
 
-\subsection{Discontinuous rib}
+\subsection{Discontinuous Rib}
 \label{sec:discontinuous_rib}
 
 \begin{figure}[h!]
@@ -922,9 +922,9 @@ Figure~\ref{sensitivity} represents the first and total order Sobol' indices for
 \label{sensitivity}
 \end{figure}
 
-\subsection{Optimal discontinuously ribbed heat exchanger}
+\subsection{Optimal Discontinuously Ribbed Heat Exchanger}
 \label{sec:optimal}
-\subsubsection{Flow dynamics}
+\subsubsection{Flow Dynamics}
 
 Due to the presence of the discontinuous rib, the average flow parameters are considered as functions of both the radial and axial coordinates. The radial coordinate is normalized by the pipe radius $R$, ranging from $r/R=r^+=0$ at the pipe centre to $r^+=1$ at the pipe wall. The axial distance $X$ is normalized by the rib height, $X/e=X^+=0$ being the position just downstream the rib crossing the left periodic plane. Moreover, because of the rib discontinuities and the existing planes of symmetry, profiles are shown in two different longitudinal planes: the plane cutting the rib by its centre, called plane \circled{1}, and the plane being equidistant of two ribs called plane \circled{2}, as represented on Figure~\ref{planes}.\\
 
@@ -1062,10 +1062,10 @@ Nu_s = 0.023 \times Re^{0.8} \times Pr^{0.4}
 \label{dittus-boelter}
 \end{equation}\\
 
-\section{Extension to dimpled heat exchangers}
+\section{Extension to Dimpled Heat Exchangers}
 \label{sec:optim_discussion}
 
-\subsection{Flow dynamics}
+\subsection{Flow Dynamics}
 \label{sec:transition_shape}
 
 The current optimization process considers continuous and discontinuous ribbed tubes as possible heat exchanger geometries. In order to limit the number of geometrical parameters to optimize and save computational cost, discontinuities introduced in the rib always produce abrupt transitions in the rib shape. This makes easy the definition of the length of the discontinuities compared to the length of the ribs. In industry however, it is common to consider smoother, rounded transitions between ribs and discontinuities. Tubes with rounded discontinuous ribs and smooth transitions are also commonly called dimpled tubes. In order to compare the impact of an abrupt and a smoother transition between ribs and discontinuities, additional simulations of dimpled heat exchangers with geometries similar to the optimal discontinuously ribbed heat exchanger found during the optimization process are performed, i.e. $e=3.14$ mm, $p=105.5$ mm, $N_D=5$ and $E_r \approx 0.75$. Because no exact similarity in terms of $E_r$ can be defined between geometries with abrupt and smooth transitions, two different additional geometries are simulated: one with the maximal rib length on the wall surface equal to the abrupt rib length (called the Long Smooth Rib (LSR) geometry), and one with the minimal rib length on the wall surface equal to the abrupt rib length (called the Small Smooth Rib (SSR) geometry), as represented on Figure~\ref{rib_shapes}. Both geometries are compared to the geometry presented in the previous section.\\
@@ -1201,7 +1201,7 @@ In this work, a methodology for the simulation and optimization of turbulent flo
 
 To summarize, the proposed methodology is found well adapted for geometrical optimization based on few parameters and was successfully applied, leading to innovative geometrical designs for heat exchangers. These heat exchangers may be used for industrial application requiring important heat transfer and limited pressure loss in comparable operating conditions. The optimization methodology may be used in the future with other objective functions for specific industrial applications, such as thermal cracking.\\ 
 
-\chapter{Volumetric Particle-based Solar Receivers}\label{chap:psaap}
+\chapter{Volumetric Particle-Based Solar Receivers}\label{chap:psaap}
 
 \lettrine{A}{t present,} most common concentrated solar power (CSP) plants convert the incident radiation into thermal energy by means of surface-based collectors~\citep{Ho2014-A}.
 In this class of devices, the energy absorbed is transferred to the working fluid downstream of the collection point via heat exchangers, generally resulting in significant conversion losses at high temperatures.
