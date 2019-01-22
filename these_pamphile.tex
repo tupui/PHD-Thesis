@@ -4,6 +4,7 @@
 \usepackage[main=english, frenchb]{babel}	 %\usepackage{polyglossia} %\setmainlanguage{french}
 \usepackage{amsmath}  				  % add align
 %\usepackage{unicode-math}     % add unicode math in text
+
 \usepackage{luatextra, luacolor}
 
 \setmainfont{SFText-Light}[
@@ -31,9 +32,9 @@
 \usepackage{caption}
 \usepackage{wrapfig}
 \usepackage[bottom]{footmisc}
-\usepackage{color}
+%\usepackage{color}
 \usepackage{colortbl}
-%\usepackage{tcolorbox}               % beamer like box 
+\usepackage{tcolorbox}               % beamer like box 
 \usepackage{amssymb}				  % add symbole 
 
 \usepackage{mathtools}  % <-- added
@@ -82,15 +83,15 @@
 %\lstset{language=python} 
 
 
-%\newenvironment{warningbox}{\begin{tcolorbox}[colback={yellow!20},colframe={yellow!20}]
-%\makebox[0pt]{
-%\smash{
-%\fontsize{32pt}{32pt}\selectfont
-%\hspace*{-19pt}
-%\raisebox{2pt}{
-%{\color[rgb]{0.9,0.2,0.16} \bfseries !} }
-%}
-%}}{\end{tcolorbox}}
+\newenvironment{warningbox}{\begin{tcolorbox}[colback={yellow!20},colframe={yellow!20}]
+\makebox[0pt]{
+\smash{
+\fontsize{32pt}{32pt}\selectfont
+\hspace*{-19pt}
+\raisebox{2pt}{
+{\color[rgb]{0.9,0.2,0.16} \bfseries !} }
+}
+}}{\end{tcolorbox}}
 
 
 \usepackage{tikz}

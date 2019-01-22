@@ -66,3 +66,48 @@ Hydrodynamics & 4 & 463 & 200\\
 \label{tab:dataset}
 \end{table}
 
+\chapter{Optimization Method}
+\label{sec:optim_method}
+
+Among the numerous methods that can be used to do an optimization~\cite{Cavazzuti2013} are the one taking advantages of a surrogate model~\cite{forrester2009}. When dealing with complex cases, the numerical cost is such that only a limited number of simulations can be performed. However, ensuring the convergence of an optimization requires a minimal number of such evaluations for both deterministic and stochastic methods. In this context, building a proxy of the simulation setup allows to overcome the computational cost. As this proxy is being used for optimizing the problem, its quality is paramount. At some point refining the space of parameters---leading to a quality improvement of the model---can improve the optimization.
+
+Batman~\cref{chap:batman} was used to handle all the workflow from the design of experiments, to the creation of the surrogate and the optimization. Its workflow is presented in~\cref{alg:workflow}.
+
+\begin{algorithm}
+  \caption{Workflow using BATMAN}
+  \label{alg:workflow}
+  \begin{algorithmic}[1]
+  \Require $N_{max}$, $N_s$
+  \State Formulate the surrogate $\mathcal{M}$ on $N_s$' output
+  \While{$N_s < N_{max}$}
+    \State $\mathbf{x_{*}}$ $\gets$ optimization
+    \State Compute a new sample at $\mathbf{x_{*}}$
+    \State Update the surrogate $\mathcal{M}$
+  \EndWhile
+  \end{algorithmic}
+\end{algorithm}
+
+\emph{Efficient Global Optimization} (EGO)~\cite{jones1998} is a Bayesian optimization taking into account the variance of the model. The objective of the optimization is to improve the current solution $Y_{\min}$. The improvement is computed as:
+\begin{align}
+I(\mathbf{x}) \left\{\begin{array}{rcl} Y_{\min} - \hat{Y}(\mathbf{x}) & \text{if } \hat{Y}(\mathbf{x}) < Y_{\min} \\ 0   & \text{otherwise} \end{array}\right. .
+\end{align}
+
+Using the surrogate, the prediction is expressed as a random process with $Y\sim \mathbb{N}(\hat{Y}, s^2)$. Thus, the objective is to get the maximal mean improvement. The expected improvement (EI) is computed as a tradeoff between the minimal value $Y_{\min}$ and an expected value given by the standard error $s$ for a given prediction $\hat{Y}$. It reads:
+\begin{align}
+\mathbb{E}[I(\mathbf{x})] = (Y_{\min} - \hat{Y})\Phi \left( \frac{Y_{\min} - \hat{y}(\mathbf{x})}{s} \right) + s\phi \left( \frac{Y_{\min} - \hat{Y}(\mathbf{x})}{s} \right), 
+\end{align}
+\noindent with $\phi(.), \Phi(.)$, respectively, the Probability Density Function (PDF) and Cumulative Distribution Function (CDF) of the normal distribution. Selecting the point with the highest expected improvement is achieved either: \emph{(i)} by maximizing the difference between the minimal value and the predicted response; or \emph{(ii)} by increasing the standard deviation---see~\cref{fig:branin_ego}. Hence, the first component is said to \emph{exploit} the model while the other seeks to \emph{explore} it. These two phases are here automatically selected. In~\cite{schonlau1998}, they proposed with the \emph{Generalized Expected Improvement} a way to define a constant $g$ to adjust the degree of \emph{exploration vs exploitation}: $\mathbb{E}[I^g]$. The highest $g$ is, the more exploratory the strategy is. Indeed, the initial EI strategy tends to add too much effort at improving the current solution and only then consider other regions of the parameters space. But this raises another concern about the value of this constant.
+
+\begin{figure}[!h]               
+\centering
+\subfloat[Response surface of the Branin function]{
+\includegraphics[width=0.6\linewidth,height=\textheight,keepaspectratio]{fig/applications/optim/branin_forrester.pdf}}
+   
+\subfloat[EGO]{
+\includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{fig/applications/optim/branin_forrester_ego.pdf}}
+\caption{Visualization of EGO on the Branin function---see~\cref{sec:functions}. \emph{Left} is the response surface of the current surrogate model constructed using samples represented by \emph{black dots}. \emph{Center} is the variance of the GP surrogate. \emph{Right} is the expected improvement. The \emph{red triangle} represent the global optimum of the function.}
+\label{fig:branin_ego}
+\end{figure}
+
+Thus, in this work we used the classical expected improvement formulation in order to avoid the definition of an additional constant. Due to the computational cost of the simulations, this parameter was not characterized.
+
