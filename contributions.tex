@@ -1,4 +1,4 @@
-\chapter{Scientific Dissemination}
+\chapter{Scientific Dissemination}\label{chap:dissemination}
 
 \lettrine{T}{he main} contribution of this thesis lies in the dissemination of my work through an open source python library called BATMAN. Thus, all the new methodologies developed are openly available to the community.
 
@@ -277,9 +277,9 @@ As stated, $n_{gen}$ candidate samples are generated through MCMC. \Cref{fig:con
 \section{Results}\label{sec:results}
 
 \subsection{Uniformity of the Design}
-As stated previously, the uniformity of the DoE is paramount to ensure that the physics of interest are well captured. \Cref{fig:conv-dim-ns} presents a convergence study of the KDOE method versus \emph{Sobol'} sequences~\citep{Sobol1967}, classical LHS~\citep{Mckay1979}, and optimized LHS as proposed in~\citep{Baudin2015a}. Each point corresponds to a given sample size $N_s$ for a given number of dimensions $n_{dim}$. Due to the stochastic nature of the LHS algorithms and of the KDOE, confidence intervals are computed based on 100 realizations. To measure the improvement of a method with respect to one another, the $C^2$-discrepancy is used~\citep{Fang2006,Androulakis2016} and values are normalized by crude \emph{Monte Carlo} results. This transformation shows that a uniform improvement factor is obtained in comparison to MC. Looking for instance at $n_{dim} = 20$, LHS enables a 20\% improvement in terms of $C^2$-discrepancy over MC, \emph{Sobol'} sequence gives 30\% and both OLHS and KDOE roughly give 40\%.
+As stated previously, the uniformity of the DoE is paramount to ensure that the physics of interest are well captured. \Cref{fig:conv-dim-ns} presents a convergence study of the KDOE method versus \emph{Sobol'} sequences~\citep{Sobol1967}, classical LHS~\citep{Mckay1979}, and optimized LHS as proposed in~\citep{Baudin2015a}. Each point corresponds to a given sample size $N_s$ for a given number of dimensions $d$. Due to the stochastic nature of the LHS algorithms and of the KDOE, confidence intervals are computed based on 100 realizations. To measure the improvement of a method with respect to one another, the $C^2$-discrepancy is used~\citep{Fang2006,Androulakis2016} and values are normalized by crude \emph{Monte Carlo} results. This transformation shows that a uniform improvement factor is obtained in comparison to MC. Looking for instance at $d = 20$, LHS enables a 20\% improvement in terms of $C^2$-discrepancy over MC, \emph{Sobol'} sequence gives 30\% and both OLHS and KDOE roughly give 40\%.
 
-Looking only at the contestants' methods, their hierarchy is quite stable. OLHS is the best method followed by \emph{Sobol'} sequence and finally LHS. For KDOE, it performs closely to \emph{Sobol'} sequence up to $n_{dim} \lesssim 20$. For $n_{dim} \gtrsim 20$, KDOE performs better than the other methods tested. Moving on to the standard deviation at $2\sigma$ ---\thinspace see~\cref{fig:conv-dim-ns_err}\thinspace---, the variation of the $C^2$-discrepancy is contained between LHS’s and OLHS’s.
+Looking only at the contestants' methods, their hierarchy is quite stable. OLHS is the best method followed by \emph{Sobol'} sequence and finally LHS. For KDOE, it performs closely to \emph{Sobol'} sequence up to $d \lesssim 20$. For $d \gtrsim 20$, KDOE performs better than the other methods tested. Moving on to the standard deviation at $2\sigma$ ---\thinspace see~\cref{fig:conv-dim-ns_err}\thinspace---, the variation of the $C^2$-discrepancy is contained between LHS’s and OLHS’s.
 
 \newpage
 \begin{figure}[!h]               
@@ -295,7 +295,7 @@ Looking only at the contestants' methods, their hierarchy is quite stable. OLHS 
  ~       
 \subfloat[]{
 \includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_30_C.pdf}}
-\caption{Adimonsionalized $C^2$-discrepancy function of the number of dimensions $n_{dim}$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
+\caption{Adimonsionalized $C^2$-discrepancy function of the number of dimensions $d$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
 \label{fig:conv-dim-ns}
 \end{figure}
 \begin{figure}[!h]               
@@ -311,23 +311,23 @@ Looking only at the contestants' methods, their hierarchy is quite stable. OLHS 
  ~       
 \subfloat[]{
 \includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_30_C.pdf}}
-\caption{Adimonsionalized $2\sigma$ deviation on the $C^2$-discrepancy function of the number of dimensions $n_{dim}$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
+\caption{Adimonsionalized $2\sigma$ deviation on the $C^2$-discrepancy function of the number of dimensions $d$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
 \label{fig:conv-dim-ns_err}
 \end{figure}
 
 \newpage
 
 
-\Cref{fig:conv-dim-100} presents the convergence analysis of the $C^2$-discrepancy as function of the number of dimensions for $N_s = 100$. When the dimensionality increases, the gain with both LHS and \emph{Sobol'} sequences is close to zero. On the contrary, OLHS seems to stabilize around a 30\% improvement. Regarding KDOE, it performs equally with other methods up to $n_{dim} \lesssim 20$, while for $n_{dim} \gtrsim 20$ it becomes more performant. It can be seen that the method has yet to converge at $n_{dim} = 40$.
+\Cref{fig:conv-dim-100} presents the convergence analysis of the $C^2$-discrepancy as function of the number of dimensions for $N_s = 100$. When the dimensionality increases, the gain with both LHS and \emph{Sobol'} sequences is close to zero. On the contrary, OLHS seems to stabilize around a 30\% improvement. Regarding KDOE, it performs equally with other methods up to $d \lesssim 20$, while for $d \gtrsim 20$ it becomes more performant. It can be seen that the method has yet to converge at $d = 40$.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.9\linewidth,keepaspectratio]{fig/contributions/doe/kde_dim.pdf}
-\caption{Adimonsionalized $C^2$ discrepancy function of the number of dimensions $n_{dim}$ of the parameter space with a design of size $N_s = 100$ for various DoE methods.}
+\caption{Adimonsionalized $C^2$ discrepancy function of the number of dimensions $d$ of the parameter space with a design of size $N_s = 100$ for various DoE methods.}
 \label{fig:conv-dim-100}
 \end{figure}
 
-In terms of $C^2$-discrepancy, KDOE appears to perform better with respect to crude \emph{Monte Carlo}, LHS, OLHS and \emph{Sobol'} sequence. \Cref{fig:comp-subspace} shows an example of a sample of size $N_s = 50$ in dimension $n_{dim}=30$. The subprojection $x_{20}/x_8$ is represented. \Cref{fig:comp-subspace}(d) depicts the principal challenge with classical \emph{Sobol'} sequences. In high dimensional parameter space, clear patterns may appear in some subprojections. This behaviour was not observed with KDOE. In this case, the result of the KDOE may not appear optimized for 2-dimensional subprojections. This is due to the fact that the objective is to optimize the total discrepancy of the parameter space.
+In terms of $C^2$-discrepancy, KDOE appears to perform better with respect to crude \emph{Monte Carlo}, LHS, OLHS and \emph{Sobol'} sequence. \Cref{fig:comp-subspace} shows an example of a sample of size $N_s = 50$ in dimension $d=30$. The subprojection $x_{20}/x_8$ is represented. \Cref{fig:comp-subspace}(d) depicts the principal challenge with classical \emph{Sobol'} sequences. In high dimensional parameter space, clear patterns may appear in some subprojections. This behaviour was not observed with KDOE. In this case, the result of the KDOE may not appear optimized for 2-dimensional subprojections. This is due to the fact that the objective is to optimize the total discrepancy of the parameter space.
 
 %C^2\left(\mathbf{X}^{N_s}_{d}
 \begin{figure}[!h]               
@@ -343,7 +343,7 @@ In terms of $C^2$-discrepancy, KDOE appears to perform better with respect to cr
  ~       
 \subfloat[Sobol'---$C^2=3.76$]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/20_8_sobol.pdf}}
-\caption{Example of a 2-dimensional subprojection of the sample of size $N_s=50$ in dimension $n_{dim}=30$.}
+\caption{Example of a 2-dimensional subprojection of the sample of size $N_s=50$ in dimension $d=30$.}
 \label{fig:comp-subspace}
 \end{figure}
 
@@ -374,9 +374,9 @@ I_{N_s}^k [f] = \frac{1}{N_s} \sum_{i=1}^{N_s} f(\mathbf{X}^{i}_d),
 Type &  Function $f(x)$ & Dim $n$\\
  &   &  \\
 \midrule % \cmidrule{2-3}
-A & $\displaystyle\prod_{i=1}^n \frac{\mid 4x_i - 2 \mid + a_i}{1 + a_i}$& 30\\
-B & $\displaystyle\prod_{i=1}^n \frac{n-x_i}{n-0.5}$ & 30\\
-C & $2^n \displaystyle\prod_{i=1}^n x_i$ & 10\\
+A & $\displaystyle\prod_{i=1}^d \frac{\mid 4x_i - 2 \mid + a_i}{1 + a_i}$& 30\\
+B & $\displaystyle\prod_{i=1}^d \frac{d-x_i}{d-0.5}$ & 30\\
+C & $2^d \displaystyle\prod_{i=1}^d x_i$ & 10\\
 \bottomrule
 \end{tabular}
 \label{tab:conv_int}
@@ -539,13 +539,13 @@ To resample locally the parameter space, a hypercube is constructed around point
 \label{fig:hypercube}
 \end{figure}
 
-The hypercube is defined by the cartesian product of the intervals of the ${n_{dim}}$ parameters \textit{i.e.} $[a_i, b_i]^{n_{dim}}$. The constrained optimization problem consists in finding the coordinates of the hypercube, hence the problem writes
+The hypercube is defined by the cartesian product of the intervals of the ${d}$ parameters \textit{i.e.} $[a_i, b_i]^{d}$. The constrained optimization problem consists in finding the coordinates of the hypercube, hence the problem writes
 \begin{align}
-\left\{\begin{array}{rc} \max  &\parallel (\mathbf{b} - \mathbf{a}) \parallel_{2} \\\mathcal{P} &\notin [a_i, b_i]^{n_{dim}} \\ p &\in [a_i, b_i]^{n_{dim}} \end{array}\right. .
+\left\{\begin{array}{rc} \max  &\parallel (\mathbf{b} - \mathbf{a}) \parallel_{2} \\\mathcal{P} &\notin [a_i, b_i]^{d} \\ p &\in [a_i, b_i]^{d} \end{array}\right. .
 \end{align}
 A maximum cube-volume aspect ratio~\cite{smith1998} is also defined in order to preserve the locality. This gives the new constrain
 \begin{align}
-C : \sqrt[n]{\frac{\max (\mathbf{b} - \mathbf{a})}{\displaystyle\prod_{i = 1}^{n_{dim}} \max (b_i - a_i)}} < \epsilon ,
+C : \sqrt[n]{\frac{\max (\mathbf{b} - \mathbf{a})}{\displaystyle\prod_{i = 1}^{d} \max (b_i - a_i)}} < \epsilon ,
 \end{align}
 with $\epsilon = 1.5$, set arbitrarily to prevent too elongated hypercubes. The global optimum is found using a two-step strategy: first, a discrete optimization using $\mathcal{P}$ gives an initial solution; second a basin-hopping algorithm~\cite{wales1997} finds the optimum coordinates of the hypercube.
 
