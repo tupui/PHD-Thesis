@@ -1,4 +1,4 @@
-\documentclass[a4paper,twoside,11pt,openright]{book}
+\documentclass[a4paper,twoside,12pt,openright]{book}
 \usepackage[ED=MEGEP-DyF, Ets=INP]{tlsflyleaf} 
 
 \usepackage[main=english, frenchb]{babel}	 %\usepackage{polyglossia} %\setmainlanguage{french}
@@ -157,6 +157,7 @@
 
 
 % -------------------- Cover ---------------------------
+%\small
 
 \title{Uncertainty Quantification in High Dimensional Problem \\ Quantification des incertitudes pour des problèmes de dimensions élevées} 
 \author{Pamphile Tupui ROY}
@@ -185,13 +186,15 @@
 
 % -------------------- Begin ---------------------------
 
+\setlength{\headheight}{15pt}
+
 \begin{document}
 
 \frontmatter   						% si book
 
+\small  % fontsize 11
 \makeflyleaf 
-
-\fontsize{12}{15}\selectfont
+\normalsize  % fontsize 12
 
 \include{preface}
 
@@ -272,7 +275,7 @@
 \renewcommand{\bibsection}{\chapter*{Bibliography}}  % Biblio as a chapter instead of section
 \addcontentsline{toc}{chapter}{Bibliography}
 
-\bibliographystyle{plainnat}
+\bibliographystyle{chicagoa}
 \bibliography{global_these}
 
 
