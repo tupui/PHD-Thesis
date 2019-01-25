@@ -1,4 +1,4 @@
-\chapter{Comparison of PC and GP surrogates for UQ and correlation estimation of spatially distributed open-channel steady flows}\label{chap:mascaret}
+\chapter{Comparison of PC and GP surrogates for UQ of spatially distributed open-channel steady flows}\label{chap:mascaret}
 %\chaptermark{Comparison of PC and GP surrogates for UQ and correlation estimation of spatially distributed open-channel steady flows}
 
 \section{Introduction}
@@ -6,7 +6,7 @@
 \lettrine{T}{he predictive} skills of hydraulic models have greatly increased with advances in free surface flow numerical modelling and computational resources. Real-time flood forecasting relies on the use of sparse in situ observations as well as imperfect hydrology or hydraulic models usually solving the 1-D Shallow Water Equations (SWE). Assessing the predictive capabilities of these hyperbolic partial differential equations remains an important challenge as public safety and water resource management are at stake~\citep{weerts2011}. SWE solve for spatially varying water level and river discharge (referred to as the river state) using physical parameters (e.g.~friction coefficients, bathymetry), initial conditions and boundary conditions described as a hydrograph or water-level time series. These input data are subject to epistemic uncertainties due to an imperfect knowledge of the river properties as well as to aleatory uncertainties related to environmental and meteorological intrinsic hazards. Both types of errors translate into uncertainties in the simulated river state, thus preventing the hydraulic model from being effective in forecast mode. In practice, these uncertainties can be reduced when complementary data become available.
 
 %---Intro to data assimilation 
-Data assimilation (DA) offers a convenient framework to reduce model uncertainties by combining observations with the model simulation taking into account errors in both sources of information. Prior to DA, the main sources of uncertainties should be identified and included in the control vector; this is achieved with a sensitivity analysis (SA) study that allows classifying uncertainties in the inputs with respect to their impact on the model outputs, for instance in terms of variance using \emph{Sobol'} indices~\citep{iooss2016,DeLozzo2017}. Several studies in the framework of hydraulics demonstrated the merits of DA~\citep{barthelemy2015,cloke2009,dechant2011,habert2016,moradkhani2005} to provide a more accurate river state.
+Data assimilation (DA) offers a convenient framework to reduce model uncertainties by combining observations with the model simulation taking into account errors in both sources of information. Prior to DA, the main sources of uncertainties should be identified and included in the control vector; this is achieved with a sensitivity analysis (SA) study that allows classifying uncertainties in the inputs with respect to their impact on the model outputs, for instance in terms of variance using \emph{Sobol'} indices~\citep{iooss2016}. Several studies in the framework of hydraulics demonstrated the merits of DA~\citep{barthelemy2015,cloke2009,dechant2011,habert2016,moradkhani2005} to provide a more accurate river state.
 This is achieved by inferring an optimal set of parameters (e.g.~river and floodplain friction coefficients, upstream and lateral river discharge, bathymetry) and/or by directly correcting the river state.
 
 %---Ensemble-based data assimilation 
@@ -99,7 +99,7 @@ A database noted $\mathcal{D}_{N_{\text{ref}}}$ and containing $N_{\text{ref}} =
 $\mathcal{D}_N = (\mathcal{X}$, $\mathcal{Y})\subset \mathcal{D}_{N_{\text{ref}}}$ of size $N$; it is fully used to validate them a posteriori over a large ensemble (\cref{sec:validation}).
 
 
-\section{Comparison of Polynomial Chaos (PC) and Gaussian Process (pGP) Surrogates}\label{sec:UQresults}
+\section{Comparison of PC and pGP Surrogates}\label{sec:UQresults}
 
 \subsection{Reference Monte Carlo (MC) Results}
 \label{sec:UQresults_ref}
@@ -446,14 +446,14 @@ Using these PDFs, uncertainties are propagated by $\numprint{5000}$ predictions 
 
 \begin{figure*}[!ht]
 \centering
-\includegraphics[width=0.7\linewidth]{fig/applications/ls89/13_2column_color-online-only_pdf-moments.pdf}
+\includegraphics[width=\linewidth]{fig/applications/ls89/13_2column_color-online-only_pdf-moments.pdf}
 \caption{Probability Density Function and moments of the heat transfer coefficient along the chord line of the blade.}
 \label{fig:ls89-propagation}
 \end{figure*}
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[width=0.7\linewidth]{fig/applications/ls89/14_2column_color-online-only_sensitivity_map.pdf}
+\includegraphics[width=\linewidth]{fig/applications/ls89/14_2column_color-online-only_sensitivity_map.pdf}
 \caption{First order and total order \textit{Sobol'} indices along the chord line.}
 \label{fig:ls89-map}
 \end{figure*}
@@ -466,7 +466,7 @@ Finally, the \textit{Sobol'} indices have been estimated using $\numprint{200000
 A first Uncertainty Quantification LES study of the \textit{LS89} is presented. The parameter space was comprised of the turbulence intensity and the inflow angle. In order to increase the quality of the surrogate model, the LOO-\textit{Sobol'} method was used to refine the parameter space. We showed that it performed better than continuing the sampling sequence. Apart from an analysis of the variance, the model was used to propagate uncertainties. This study reveals that although the turbulence intensity is the main factor impacting the heat transfer coefficient, there is spatial evolution of its contribution along the blade.
 
 
-\chapter{Uncertainty Quantification-Driven Robust Design Assessment of a Swirler Geometry}\label{chap:swirler}
+\chapter{UQ-Driven Robust Design Assessment of a Swirler Geometry}\label{chap:swirler}
 
 \newcommand{\pdv}[2]{\frac{\partial{#1}}{\partial{#2}}}
 \newcommand{\tilda}[1]{\tilde{#1}}
@@ -486,12 +486,12 @@ A first Uncertainty Quantification LES study of the \textit{LS89} is presented. 
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/swirler/sketch_swirler.pdf}
+\includegraphics[width=0.9\linewidth,keepaspectratio]{fig/applications/swirler/sketch_swirler.pdf}
 \caption{Sketch of a swirler consisting of two contra-rotative sets of oxidizer channels.}
 \label{fig:sketch-swirler}
 \end{figure}
 
-To help in the development of future engines, numerical simulations---and here Computational Fluid Dynamics (CFD) simulations---, have undoubtedly become reliable and essential design tools~\cite{Sacks1989,Forrester2009}. Recently, the use of Large Eddy Simulations (LES) coupled with a mesh adaptation strategy has demonstrated its capacity to identify the relevant physics of swirling flows \cite{Daviller2017}. 
+To help in the development of future engines, numerical simulations---and here Computational Fluid Dynamics (CFD) simulations---, have undoubtedly become reliable and essential design tools~\cite{Sacks1989,forrester2009}. Recently, the use of Large Eddy Simulations (LES) coupled with a mesh adaptation strategy has demonstrated its capacity to identify the relevant physics of swirling flows \cite{Daviller2017}. 
 From expert knowledge, the design of a swirler proceeds in three steps: (\emph{i})~an exploratory phase is first performed using Reynolds-averaged Navier-Stokes (RANS) computations; (\emph{ii})~the resulting possible geometries installed in the combustion chamber are simulated using LES of turbulent combustion; (\emph{iii}) prototypes are manufactured and tests are performed. The first step allows exploring a large range of possibilities in terms of geometrical modifications (angles, number of channels, etc.) to meet requirements such as the swirl number, effective surface and permeability. The second step is performed to assess the combustion stability and the combustor performances in various operating conditions. Finally, experiments are conducted to finalize the design.
 
 For this last step, metal Additive Manufacturing (AM)~\cite{Frazier2014,Sames2016} is now in use. The AM technology has gained a lot of attention as it does not impose any constraint from the design point of view without sacrificing mechanical properties~\cite{Lewandowski2016}. However, AM induces some uncertainties regarding the structural composition of the produced metallic systems, making this an active topic of research. In particular, geometrical uncertainties may result from the deposition method, the scanning method or even the powder size. Moreover, due to the complexity of some designs, it might not be possible to polish surfaces using standard mills. This may leave some defects which size depends on the quality of the whole process.
@@ -697,7 +697,7 @@ Pressure drop (Pa) & 4128 & 4133 & 65 & 4020 & 4260\\
 
 As a consequence of this uniformity with no clear structure, it is difficult to build a reduced model. Several surrogate model strategies available in BATMAN---see~\cref{sec:swirler}---such as Gaussian process, polynomial chaos and Radial Basis Functions were tested, but none of these methods were able to fit the data and infer a satisfactory result. The reported quality---assessed by Leave-one-out cross validation~\cite{kohavi1995}---was negative, which implies that the tested surrogate models are worse than a simple constant guess.
 
-To further analyse the results, \cref{fig:dp-surface} shows the variation of the pressure loss with the total channel section area for each simulation. Again no clear pattern is making out. The swirl numbers---definition from Merkle~\cite{Merkle2006}---for cases with maximum, minimum and middle value of pressure drop are summarized in~\cref{tab:swirl}. It is interesting to see that despite pressure drop variation, the swirl number which drives the characteristics of the flow stays within negligible variation close to the theoretical value of $S=0.76$ in all three cases. These observations are confirmed by the comparison of the mean axial velocity profiles downstream the nozzle exit compared with PIV measurement for the same three cases (\cref{fig:profile-u}). Details and discussion about PIV are given in Daviller \textit{et al.}~\cite{Daviller2017}. Very close curves are obtained for the three LES at the shown positions. This means that, in accordance with the unchanged swirl number, no significant change occurs in the flow field downstream the nozzle. This is confirmed by the PSD of mean axial velocity at the plug tip in~\cref{fig:psd-u}. Each simulation exhibit a $k^{-5/3}$ slope over a range of frequency $5\time10^3 \leq f (Hz) \leq 5\time10^4$, characteristic of the inertial range of turbulent flows.
+To further analyse the results, \cref{fig:dp-surface} shows the variation of the pressure loss with the total channel section area for each simulation. Again no clear pattern is making out. The swirl numbers---definition from Merkle~\cite{Merkle2006}---for cases with maximum, minimum and middle value of pressure drop are summarized in~\cref{tab:swirl}. It is interesting to see that despite pressure drop variation, the swirl number which drives the characteristics of the flow stays within negligible variation close to the theoretical value of $S=0.76$ in all three cases. These observations are confirmed by the comparison of the mean axial velocity profiles downstream the nozzle exit compared with PIV measurement for the same three cases (\cref{fig:profile-u}). Details and discussion about PIV are given in Daviller \textit{et al.}~\cite{Daviller2017}. Very close curves are obtained for the three LES at the shown positions. This means that, in accordance with the unchanged swirl number, no significant change occurs in the flow field downstream the nozzle. This is confirmed by the PSD of mean axial velocity at the plug tip in~\cref{fig:psd-u}. Each simulation exhibit a $k^{-5/3}$ slope over a range of frequency $\numprint{5e3} \leq f (Hz) \leq \numprint{5e4}$, characteristic of the inertial range of turbulent flows.
 
 All in all, it ensures that the flame will be stable even though there is a change in pressure loss.
 
@@ -762,7 +762,7 @@ Numerical simulations of roughened heated tubes is a less expensive alternative 
 Because of the wide variety of possible roughness shapes, all geometries cannot be experimentally or numerically tested and optimal roughness shapes for heat exchangers remain unknown to this day. The objective of this work is to find an optimal roughness shape for industrial heat exchangers applications. Series of LES are used in addition to Gaussian Process regression \cite{rasmussen2006} to construct a reliable surrogate model representative of the heat exchanger efficiency for various roughness shapes. This surrogate model lead to the prediction of an optimal design, which enables to understand the complex flow behaviour resulting in important heat transfer and limited pressure loss.
 
 % paper structure
-The chapter is tailored as follows; \cref{sec:optim_case} starts with a presentation of the numerical methodology used for the simulation of turbulent heated flow inside various internally ribbed heat exchanger. In particular, the tube inner surface geometry, the meshing method, the governing equations and the objective function to optimize are presented. After this methodological presentation, \cref{sec:optim_results} presents the results of the optimization procedure leading to a first optimal discontinuously ribbed tube geometry, and investigates more in detail the flow dynamics and the thermal behaviour inside it. \cref{sec:optim_discussion} investigates the influence of the rib shape on pressure loss and heat transfer. Smoother shapes, representative of dimpled tube geometries, are simulated and compared to the first optimal geometry studied in \cref{sec:optim_results}. Finally, \cref{sec:optim_ccl} put a closure to this work by summarizing its contribution along with potential directions for future works or applications.
+The chapter is tailored as follows; \cref{sec:optim_case} starts with a presentation of the numerical methodology used for the simulation of turbulent heated flow inside various internally ribbed heat exchanger. In particular, the tube inner surface geometry, the meshing method, the governing equations and the objective function to optimize are presented. After this methodological presentation, \cref{sec:optim_results} presents the results of the optimization procedure leading to a first optimal discontinuously ribbed tube geometry, and investigates more in detail the flow dynamics and the thermal behaviour inside it. Finally, \cref{sec:optim_ccl} put a closure to this work by summarizing its contribution along with potential directions for future works or applications.
 
 \section{Case Description}
 \label{sec:optim_case}
@@ -1082,144 +1082,10 @@ The global Nusselt number is found equal to 389 in the optimal heat exchanger ge
 \begin{equation}
 Nu_s = 0.023 \times Re^{0.8} \times Pr^{0.4}
 \label{dittus-boelter}
-\end{equation}\\
-
-\section{Extension to Dimpled Heat Exchangers}
-\label{sec:optim_discussion}
-
-\subsection{Flow Dynamics}
-\label{sec:transition_shape}
-
-The current optimization process considers continuous and discontinuous ribbed tubes as possible heat exchanger geometries. In order to limit the number of geometrical parameters to optimize and save computational cost, discontinuities introduced in the rib always produce abrupt transitions in the rib shape. This makes easy the definition of the length of the discontinuities compared to the length of the ribs. In industry, however, it is common to consider smoother, rounded transitions between ribs and discontinuities. Tubes with rounded discontinuous ribs and smooth transitions are also commonly called dimpled tubes. In order to compare the impact of an abrupt and a smoother transition between ribs and discontinuities, additional simulations of dimpled heat exchangers with geometries similar to the optimal discontinuously ribbed heat exchanger found during the optimization process are performed, i.e. $e=3.14$ mm, $p=105.5$ mm, $N_D=5$ and $E_r \approx 0.75$. Because no exact similarity in terms of $E_r$ can be defined between geometries with abrupt and smooth transitions, two different additional geometries are simulated: one with the maximal rib length on the wall surface equal to the abrupt rib length (called the Long Smooth Rib (LSR) geometry), and one with the minimal rib length on the wall surface equal to the abrupt rib length (called the Small Smooth Rib (SSR) geometry), as represented on~\cref{rib_shapes}. Both geometries are compared to the geometry presented in the previous section.
-
-\begin{figure*}[ht]
-\centering
-\includegraphics[width=14cm]{fig/applications/optim/rib_shapes.pdf}
-\caption{Representation of the optimal discontinuous rib shape and of the two studied rib shapes with smooth transitions. Left: optimal discontinuous rib shape. Middle: Small Smooth Rib (SSR) shape. Right: Long Smooth Rib (LSR) shape. Distance $l$ is equal to the rib length in the optimal discontinuous rib case.}
-\label{rib_shapes}
-\end{figure*}
-
-Axial velocity profiles for the three geometries are presented on~\cref{axial_vel_compare}. It can be seen that in plane \circled{1}, all axial velocity profiles are similar except just downstream the rib, at location $X^+=2.5$. This is due to the different shape of the recirculation zones induces by different rib shapes. Figure~\ref{recircul_zones} shows the mean recirculation zones downstream the three different ribs. It appears that the recirculation zone induced by the optimal discontinuous rib is wider, as the flow does not bypass the rib easily due to vertical surfaces slantwise to the flow direction. The recirculation zone is much smaller with the LSR shape, with a recirculation zone only visible downstream the lower part of the rib, indicating a different flow behaviour in this case. As a consequence, mean axial velocity is higher in the near-wall region with the LSR shape and lower with the discontinuous rib, as shown on Figure~\ref{axial_vel_compare}. In plane \circled{2}, mean axial velocity profiles are similar between the discontinuous rib shape and the SSR shape. With the LSR shape however, axial velocity in the near-wall region is different and depends on the axial location $X^+$. Axial velocity is slightly lower in the near-wall region between two ribs ($X^+=-2.5$) and downstream the rib, up to $X^+ \approx 5$. From this position to $X^+ \approx 22.5$, axial velocity in the near-wall region is slightly higher with LSR shapes. Those results confirm a different flow behaviour when dealing with larger ribs.
-
-Mean radial and azimuthal velocity profiles are shown on Figures~\ref{radial_vel_compare} and \ref{azimuthal_vel_compare} respectively. Both in plane \circled{1} and \circled{2}, azimuthal velocity profiles are very similar between the discontinuous rib shape and the SSR shape, with an almost zero azimuthal velocity everywhere except in the rib vicinity (slightly positive upstream the rib and negative downstream the rib). The only difference lies just downstream the rib, where azimuthal motion is more important with the discontinuous rib shape, the rib surfaces orienting more abruptly the flow. With the LSR shape however, mean azimuthal flow in the near-wall region is much more important, being negative on the rib top and above the recirculation zone, and positive everywhere else. Azimuthal motion induced by the rib is then strong enough to be seen in plane \circled{2}, especially in the rib vicinity. This is due to the more important length of the rib, which is longer than the rib width and long enough to induce a persistent swirling motion in the near-wall region. This also impacts the radial motion. In plane \circled{2}, mean radial velocity in the near-wall region is much higher with the LSR shape : the flow is driven toward the wall at position $X^+=-2.5$, i.e. between the ribs, and toward the tube centre from position $X^+=12.5$ to $X^+=17.5$. In plane \circled{1}, radial motion goes in the opposite direction, with a strong radial motion toward the pipe centre on top of the rib and just downstream the rib. Figure~\ref{streamlines_compare} shows streamlines of the mean flow upstream and downstream the rib for the three considered rib shapes. The difference in flow motion appears very clearly, in particular the much more important swirling motion found with the LSR shape and the smaller recirculation zone.
-
-\begin{figure}[p]
-
-\begin{minipage}[c][11.5cm][t]{1.0\linewidth}
-\centering
-\includegraphics[width=8cm]{fig/applications/optim/Axial_vel_compare.pdf}
-\caption{Mean axial normalized velocity profiles in the three studied geometries at various axial locations, in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
-\label{axial_vel_compare}
-\end{minipage}
-
-\begin{minipage}[c][11.5cm][b]{1.0\linewidth}
-\centering
-\includegraphics[width=8cm]{fig/applications/optim/Radial_vel_compare.pdf}
-\caption{Mean radial normalized velocity profiles in the three studied geometries at various axial locations, in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
-\label{radial_vel_compare}
-\end{minipage}
-
-\end{figure}
-
-\begin{figure}[p]
-
-\begin{minipage}[c][11.5cm][t]{1.0\linewidth}
-\centering
-\includegraphics[width=8cm]{fig/applications/optim/Azimuthal_vel_compare.pdf}
-\caption{Mean azimuthal normalized velocity profiles in the three studied geometries at various axial locations, in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
-\label{azimuthal_vel_compare}
-\end{minipage}
-
-\begin{minipage}[c][11.5cm][c]{1.0\linewidth}
-\centering
-\includegraphics[width=0.6\linewidth]{fig/applications/optim/Streamlines_compare.pdf}
-\caption{Flow streamlines impacting the rib, coloured by velocity magnitude. Top: optimal discontinuous rib shape. Centre: Small Smooth Rib (SSR) shape. Bottom: Long Smooth Rib (LSR) shape.}
-\label{streamlines_compare}
-\end{minipage}
-
-\end{figure}
-
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/optim/Recircul_zones2.pdf}
-\caption{Representation of the mean recirculation zone downstream the ribs, viewed from above the rib. The iso-surface of null axial velocity is used as the limits of the recirculation, and is coloured by the thickness of the recirculation zone. Left: optimal discontinuous rib shape. Middle: Small Smooth Rib (SSR) shape. Right: Long Smooth Rib (LSR) shape.}
-\label{recircul_zones}
-\end{figure}
-
-Contribution to the total drag for both SSR and LSR heat exchanger design are summarized in Table~\ref{tab_drags_compare}. All ribbed geometries induce similar friction drags, which are found about $25 \%$ smaller than in a smooth tube according to~\cref{petukhov}. This is due to similar axial velocity profiles encountered in all geometries, leading to similar axial components of wall shear stress. However, due to the rib shape, the integrated value of the pressure drag is very different from one geometry to another. Abrupt rib transitions lead to higher pressure drag, as the flow impacts directly the abrupt wall faces, inducing important pressure gradients at those locations. Smoother rib transition reduces significantly the pressure drag, in particular when minimizing the rib surface. With the SSR shape, pressure drag reduces to less than half the friction drag encountered in a smooth tube ($46.1 \%$), and total drag is only slightly higher than in a completely smooth tube. LSR shape leads to slightly lower total drag than abruptly discontinuous ribs. Total pressure losses for all considered geometries are summarized in~\cref{tab_pressureloss_compare}, leading to the same conclusions as the total drag analysis.
-
-\begin{table}
-\small
-\centering
-\begin{tabular}{cccc}
-   Rib & Friction & Pressure & Total \\
-   shape & drag  & drag & drag \\
-         & ($\times 10^{-3}$) & ($\times 10^{-3}$) & ($\times 10^{-3}$) \\
-  \hline
-  SSR & 3.36 & 2.10 & 5.46 \\
-      & (73.8 \%) & (46.1 \%) & (120 \%) \\
-  \\
-  LSR & 3.54 & 4.71 & 8.25 \\
-      & (77.5 \%) & (103 \%) & (181 \%) \\
-  \hline
-\end{tabular}
-\caption{Integrated drag contributions normalized by ($0.5 ~ \rho_b ~ U_b^2$) for the both the SSR and LSR heat exchanger geometries. Percentages represent the contribution relative to the total drag in a smooth tube according to~\cref{petukhov}.}
-\label{tab_drags_compare}
-\end{table}
-
-\begin{table}
-\small
-\centering
-\begin{tabular}{cc}
-  Case & $\Delta P$ [Pa/m] \\
-  \hline
-  Optimal discontinuous rib & 6210 \\
-  SSR & 4810 \\
-  LSR & 5720 \\
-  Smooth tube (Eq.~(\ref{petukhov})) & 2308 \\
-  \hline
-\end{tabular}
-\caption{Global pressure loss for the three considered rib shapes and for the smooth tube correlation (Eq.~(\ref{petukhov})).}
-\label{tab_pressureloss_compare}
-\end{table}
-
-\subsection{Impact of the Rib Shape on Heat Transfer}
-\label{sec:swirl_impact}
-
-Figure~\ref{Twall_compare} shows the mean wall temperature on the SSR and LSR heat exchanger geometries, together with the mean wall temperature on the surface of the discontinuously ribbed geometry for comparison. It appears that the temperature distribution is very similar between the discontinuous rib and the SSR shapes. In both cases, lower wall temperatures are encountered on the rib top and downstream the rib. In the absence of swirling motion, slightly hotter flow is observed in longitudinal planes between the ribs. Note that due to the smaller recirculation zone in the SSR geometry, the low temperature region downstream the rib is slightly smaller. With the LSR shape, a lower wall temperature also appears on the rib top and downstream the rib. Due to the swirling motion, however, the coolest zone progressively shifts downstream the rib in the azimuthal direction, following an helix pattern. The flow in the near-wall region does not bypass the rib easily, because of the more important 'azimuthal blockage ratio' of the rib. As a consequence, the flow tends to bypass the rib toward the rib top, resulting in more important radial motion in the rib vicinity but much lower axial velocity at the same location. This leads to globally lower heat transfer efficiency.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.7\linewidth]{fig/applications/optim/Twall_compare.pdf}
-\caption{Mean skin temperature for all considered geometries.}
-\label{Twall_compare}
-\end{figure}
-
-Mean wall temperature profiles in planes \circled{1} and \circled{2} are shown on~\cref{Twall_profile_compare}. In plane \circled{1}, wall temperature on the rib is similar with all considered geometries. Just downstream the rib, i.e. $0<X^+<8$, the mean wall temperature is more important with the SSR shape than with the optimal discontinuous rib shape, because of the smaller recirculation zone. Except just downstream the rib, mean wall temperature is found quite similar to the SSR shape and with the optimal discontinuous rib shape, assessing similar heat transfer. With the LSR shape however, if the wall temperature is similar to the optimal discontinuous rib shape immediately downstream the rib ($X^+<2$), it quickly increases from $X^+=2$ to $X^+=15$, to reach $1250$ K. It increases more slowly until $X^+=23$, reaching a maximum value of $1259$ K, before sharply decreasing just upstream the rib. This is due to the azimuthal blockage ratio, which decreases the heat transfer efficiency in the tube. In plane \circled{2}, both the SSR and the discontinuous rib shapes lead to constant wall temperature. Wall temperature is, however, slightly higher with the SSR shape. With the LSR shape, the wall temperature on the rib top and downstream the rib (from $X^+=0$ to $X^+ \approx 10$) are similar to the one observed with the optimal discontinuous rib. Unlike with the discontinuous rib shape, the swirling motion induces an azimuthal averaging of the flow, and the wall temperature progressively increases from $X^+=10$ to the next rib position ($X^+=28$). Maximal mean wall temperature observed in plane \circled{2} is close to the maximal wall temperature in plane \circled{1} and equal to $1262$ K.
-
-Finally, local Nusselt number representative of the heat transfer efficiency at the wall is displayed in ~\cref{Nusselt_compare}, both in plane \circled{1} and \circled{2}. In plane \circled{1}, heat transfer efficiency is similar with the SSR shape and with the optimal discontinuous rib shape, resulting in a similar Nusselt number everywhere except immediately downstream the rib and on top of the rib. With the SSR shape, maximal Nusselt number is found equal to $527$ on the rib top. It then progressively decreases, and is similar to the Nusselt number in the optimal discontinuously ribbed geometry from $X^+=10$ to the next rib position. As previously stated, heat transfer is less important with the LSR shape, resulting in a lower Nusselt number, except on the top of the rib and in the recirculation zone. In plane \circled{2}, the local Nusselt number is found constant at every axial position with the SSR shape because of constant wall temperature. It can be noted that the heat transfer efficiency in plane \circled{2} is also slightly lower than with the discontinuous rib shape, a shift of about 20 being found. Compared to the discontinuous rib shape, the LSR shape leads to lower Nusselt number from $X^+=15$ to the rib top position consistently with what is observed in plane \circled{1}, because of the azimuthal mixing. Integrating the local Nusselt number over the wall surface leads to global Nusselt numbers equal to 354 with the SSR shape, and equal to 332 with the LSR shape. This result assesses a global heat transfer efficiency less important when using smooth rib transitions when compared to abrupt discontinuous rib shape of similar size. This is because of the flow being more smoothly directed around the rib, resulting in smaller recirculation zone and less important radial mixing, resulting in hotter flow downstream the rib. Moreover, it appears clearly from this study that the swirling motion induced by some rib shape such as the LSR shape is detrimental to the heat transfer efficiency, due to the more important azimuthal blockage ratio leading to a hotter flow in the near-wall region, in particular upstream the rib. Thanks to important recirculation zones and to the flow bypassing almost symmetrically the rib, inducing no swirling motion, the discontinuous rib shape gives the best heat transfer efficiency.
-
-It can be noted that, if the optimal discontinuous rib shape given by the optimization process leads to higher heat transfer efficiency, looking for an optimization of the objective function $F_{cost}$, which also takes into account the pressure losses, leads to a different conclusion. Indeed, thanks to much lower pressure loss than the discontinuous rib shape, and despite slightly lower heat transfer efficiency, the SSR shape leads to a final result of $F_{cost} = 1.51$, i.e. slightly higher than the optimal discontinuous rib shape ($F_{cost} = 1.496$). If an almost similar global efficiency is obtained with both geometries, dimpled tube might constitute an advantage over discontinuously ribbed tube depending on the application, in particular if one wants to decrease the pressure losses. On the other hand, the LSR geometry is a much less promising design ($F_{cost}=1.227$), mostly because of the poor heat transfer efficiency when compared to other roughness geometries.
-
-\begin{figure}[ht]
-\begin{minipage}[c]{1.0\linewidth}
-\centering
-\includegraphics[width=0.55\linewidth]{fig/applications/optim/Twall_profile_compare.pdf}
-\caption{Profiles of mean skin temperature for all considered geometries, in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
-\label{Twall_profile_compare}
-\end{minipage}
-
-\begin{minipage}[c]{1.0\linewidth}
-\centering
-\includegraphics[width=0.55\linewidth]{fig/applications/optim/Nusselt_compare.pdf}
-\caption{Profiles of mean local Nusselt number for all considered geometries, in plane \textcircled{1} (top) and in plane \textcircled{2} (bottom). Dashed line indicates a rib behind the considered plane.}
-\label{Nusselt_compare}
-\end{minipage}
-\end{figure}
+\end{equation}
 
 \section{Conclusion}\label{sec:optim_ccl}
-In this work, a methodology for the simulation and optimization of turbulent flows in heat exchangers has been proposed. It relies on a series of wall resolved LES, using periodic domains. Four geometrical parameters are considered for the optimization, leading to a wide variety of continuous and discontinuous single-started internal roughness geometries. The objective function aims at maximizing the heat transfer efficiency while limiting the pressure loss, as proposed by Webb and Eckert~\cite{webb1972}. To avoid running a high number of LES, a surrogate model is built using Gaussian processes. The optimization leads to a heat exchanger geometry which increases the wall heat transfer efficiency by a factor 2.1 compared to a smooth tube, while increasing the pressure loss only by a factor 2.7 for the considered operating conditions, thanks to a roughness with low azimuthal blockage ratio. The introduction of large discontinuities in the rib is responsible for this important increase of heat transfer, because it suppresses the swirling motion, accelerating the flow in the rib vicinity and preserving important radial mixing. Changing the discontinuous rib shape with smoother edges is found to significantly decrease the pressure loss, but also the heat transfer efficiency in the rib wake, leading to a similar value of the objective function. The investigation of the optimum roughness for heat exchangers might be extended to more geometrical parameters, such as the radius of curvature of the smooth edges for dimpled tubes. The swirling motion being detrimental to the heat transfer efficiency, transverse roughness elements might also be considered instead of helical ones, along with more complex forms.
+In this work, a methodology for the simulation and optimization of turbulent flows in heat exchangers has been proposed. It relies on a series of wall resolved LES, using periodic domains. Four geometrical parameters are considered for the optimization, leading to a wide variety of continuous and discontinuous single-started internal roughness geometries. The objective function aims at maximizing the heat transfer efficiency while limiting the pressure loss, as proposed by Webb and Eckert~\cite{webb1972}. To avoid running a high number of LES, a surrogate model is built using Gaussian processes. The optimization leads to a heat exchanger geometry which increases the wall heat transfer efficiency by a factor 2.1 compared to a smooth tube, while increasing the pressure loss only by a factor 2.7 for the considered operating conditions, thanks to a roughness with low azimuthal blockage ratio. The introduction of large discontinuities in the rib is responsible for this important increase of heat transfer, because it suppresses the swirling motion, accelerating the flow in the rib vicinity and preserving important radial mixing. The investigation of the optimum roughness for heat exchangers might be extended to more geometrical parameters, such as the radius of curvature of the smooth edges for dimpled tubes. The swirling motion being detrimental to the heat transfer efficiency, transverse roughness elements might also be considered instead of helical ones, along with more complex forms.
 
 To summarize, the proposed methodology is found well adapted for geometrical optimization based on few parameters and was successfully applied, leading to innovative geometrical designs for heat exchangers. These heat exchangers may be used for industrial application requiring important heat transfer and limited pressure loss in comparable operating conditions. The optimization methodology may be used in the future with other objective functions for specific industrial applications, such as thermal cracking.
 

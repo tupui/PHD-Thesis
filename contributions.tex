@@ -5,7 +5,7 @@
 On a strict academic point of view, I have produced~\footnote{For an up-to-date list of my contributions, see my \emph{ResearchGate} profile: \href{https://www.researchgate.net/profile/Pamphile\_Roy}{https://www.researchgate.net/profile/Pamphile\_Roy}}:
 
 \begin{enumerate}
-\item[\textbf{7}] accepted and published articles, % TODO update before sending
+\item[\textbf{7}] articles (3 accepted, 4 in reviews), % TODO update before sending
 \item[\textbf{6}] communications in conferences,
 \item[\textbf{3}] reviews in international journals,
 \item[\textbf{2}] implications in European projects.
@@ -87,7 +87,7 @@ Batman is CECILL-B licensed; it is actively developed and maintained by research
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/contributions/batman/workflow.pdf}
-\caption{Workflow to resample the parameter space in an Uncertainty Quantification framework.}
+\caption{General workflow of Batman.}
 \label{fig:batman_workflow}
 \end{figure}
 
@@ -281,41 +281,38 @@ As stated previously, the uniformity of the DoE is paramount to ensure that the 
 
 Looking only at the contestants' methods, their hierarchy is quite stable. OLHS is the best method followed by \emph{Sobol'} sequence and finally LHS. For KDOE, it performs closely to \emph{Sobol'} sequence up to $d \lesssim 20$. For $d \gtrsim 20$, KDOE performs better than the other methods tested. Moving on to the standard deviation at $2\sigma$ ---\thinspace see~\cref{fig:conv-dim-ns_err}\thinspace---, the variation of the $C^2$-discrepancy is contained between LHS’s and OLHS’s.
 
-\newpage
 \begin{figure}[!ht]               
 \centering
 \subfloat[]{
-\includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_2_C.pdf}}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_2_C.pdf}}
  ~       
 \subfloat[]{
-\includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_10_C.pdf}}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_10_C.pdf}}
 
 \subfloat[]{
-\includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_20_C.pdf}}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_20_C.pdf}}
  ~       
 \subfloat[]{
-\includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_30_C.pdf}}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_30_C.pdf}}
 \caption{Adimonsionalized $C^2$-discrepancy function of the number of dimensions $d$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
 \label{fig:conv-dim-ns}
 \end{figure}
 \begin{figure}[!ht]               
 \centering
 \subfloat[]{
-\includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_2_C.pdf}}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_2_C.pdf}}
  ~       
 \subfloat[]{
-\includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_10_C.pdf}}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_10_C.pdf}}
 
 \subfloat[]{
-\includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_20_C.pdf}}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_20_C.pdf}}
  ~       
 \subfloat[]{
-\includegraphics[width=0.35\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_30_C.pdf}}
+\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_30_C.pdf}}
 \caption{Adimonsionalized $2\sigma$ deviation on the $C^2$-discrepancy function of the number of dimensions $d$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
 \label{fig:conv-dim-ns_err}
 \end{figure}
-
-\newpage
 
 
 \Cref{fig:conv-dim-100} presents the convergence analysis of the $C^2$-discrepancy as function of the number of dimensions for $N_s = 100$. When the dimensionality increases, the gain with both LHS and \emph{Sobol'} sequences is close to zero. On the contrary, OLHS seems to stabilize around a 30\% improvement. Regarding KDOE, it performs equally with other methods up to $d \lesssim 20$, while for $d \gtrsim 20$ it becomes more performant. It can be seen that the method has yet to converge at $d = 40$.
@@ -846,7 +843,7 @@ The specific case of a 2D input space is treated with a \emph{Tree plot} solutio
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.6\linewidth,keepaspectratio]{fig/contributions/visu/mascaret_tree.pdf}
+\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/contributions/visu/mascaret_tree.pdf}
 \caption{Tree plot for the hydrodynamics dataset considering the most significant parameters $Ks3$ and $Q$. Here the response variable (water level at Marmande) is represented by stacked and coloured segments and HDR metric is represented by the azimutal component.}
 \label{fig:tree}
 \end{figure}

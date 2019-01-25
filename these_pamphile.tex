@@ -21,7 +21,7 @@
 
 %\setmathrm{SFText-Regular}
 %\setboldmathrm{SFText-Semibold}
-%\usepackage[babel=true,tracking=true]{microtype}
+\usepackage[babel=true,tracking=true]{microtype}
 %\usepackage[babel,french=guillemets*]{csquotes} 
 %\MakeOuterQuote{"}	   
 \usepackage{layout}          		 %change page layout
@@ -99,6 +99,7 @@
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
             \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
 
+\usepackage{geometry}
 \usepackage{fancyhdr}  % Header and footer
  
 
@@ -186,7 +187,7 @@
 
 % -------------------- Begin ---------------------------
 
-\setlength{\headheight}{15pt}
+%\setlength{\headheight}{15pt}
 
 \begin{document}
 
@@ -225,6 +226,8 @@
 \renewcommand{\footrulewidth}{1pt}
 \fancyfoot[LE,LO]{Page \thepage}
 \fancyfoot[RE,RO]{PhD Thesis, Pamphile Tupui ROY}
+
+\setlength{\headheight}{20pt}
 
 
 \part{Introduction}\label{part:intro}

@@ -30,12 +30,12 @@ f(X_1, X_2, X_3, X_4) = \prod_{i=1}^4 \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i
 \textit{g-function (i)} 11-D & $[0, 1]^{11}$ & 
 $\begin{multlined}[t][0.6\linewidth]
 f(X_1, ..., X_{11}) = \prod_{i=1}^{11} \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i},\\[-1ex]
-\hspace{50pt} \mathbf{a} = [1, 2, 5, 10, 20, 50, 100, 500, 1000, 1000, 1000]\hfill
+\hspace{0pt} \mathbf{a} = [1, 2, 5, 10, 20, 50, 100, 500, 10^3, 10^3, 10^3]\hfill
 \end{multlined}$\\
 \textit{g-function (ii)} 11-D & $[0, 1]^{11}$ &
 $\begin{multlined}[t][0.6\linewidth]
 f(X_1, ..., X_{11}) = \prod_{i=1}^{11} \frac{\lvert 4X_i - 2\rvert + a_i}{1 + a_i},\\[-1ex]
-\hspace{51pt} \mathbf{a} = [1, 2, 2, 3, 3, 10, 50, 50, 50, 100, 100]\hfill
+\hspace{0pt} \mathbf{a} = [1, 2, 2, 3, 3, 10, 50, 50, 50, 100, 100]\hfill
 \end{multlined}$\\
 \bottomrule
 \end{tabular}
@@ -105,7 +105,7 @@ Using the surrogate, the prediction is expressed as a random process with $Y\sim
    
 \subfloat[EGO]{
 \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{fig/applications/optim/branin_forrester_ego.pdf}}
-\caption{Visualization of EGO on the Branin function---see~\cref{sec:functions}. \emph{Left} is the response surface of the current surrogate model constructed using samples represented by \emph{black dots}. \emph{Center} is the variance of the GP surrogate. \emph{Right} is the expected improvement. The \emph{red triangle} represents the global optimum of the function.}
+\caption{Visualization of EGO on the Branin function---see~\cref{sec:functions}. \emph{Bottom-left} is the response surface of the current surrogate model constructed using samples represented by \emph{black dots}. \emph{Bottom-center} is the variance of the GP surrogate. \emph{Bottom-right} is the expected improvement. The \emph{red triangle} represents the global optimum of the function.}
 \label{fig:branin_ego}
 \end{figure}
 

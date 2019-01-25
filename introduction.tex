@@ -17,7 +17,7 @@ Ideally, our model should only contain aleatoric uncertainties as it represents 
 
 Each question is answered using specific tools and special care has to be taken if on wants to conduce different analysis. For instance, some formulations to compute sensitivity indices require a particular dataset which is not conforme with both Uncertainty Propagation and Risk Assessment.
 
-Classical UQ methods, based on the \emph{Monte-Carlo} approach, require a large number of simulations~\cite{Saltelli2007}, which quickly go beyond the limits of available resources (such as CPU, financial costs). This is especially true when it comes to large-dimensional problems, both with respect to the domain discretization and to the number of uncertain input parameters. The cost of the UQ study can, however, be significantly reduced when the experiment is replaced by a proxy, or surrogate model, which is formulated in a parameter space and which is fast to evaluate for any set of uncertain variables~\cite{martin2005}. The construction of the surrogate model requires a set of experiments, Design of Experiments (DoE), to learn from. To correctly emulate the real experiment, the definition of the DoE is paramount.
+Classical UQ methods, based on the \emph{Monte-Carlo} approach, require a large number of simulations~\cite{Saltelli2007}, which quickly go beyond the limits of available resources (such as CPU, financial costs). This is especially true when it comes to large-dimensional problems, both with respect to the domain discretization and to the number of uncertain input parameters. The cost of the UQ study can, however, be significantly reduced when the experiment is replaced by a proxy, or surrogate model, which is formulated in a parameter space and which is fast to evaluate for any set of uncertain variables~\cite{martin2005}. The construction of the surrogate model requires a set of experiments, Design of Experiments (DoE), to learn from. To correctly emulate the real experiment, the definition of the DoE is paramount.\bigskip
 
 %\begin{quotation}
 %
@@ -97,7 +97,14 @@ C^2(\mathbf{X}^{N_s}_d) =& \left( \frac{13}{12} \right)^d - \frac{2}{N_s}\displa
 & + \frac{1}{N_s^2}\sum_{i,j=1}^{N_s}\prod_{k=1}^d \left( 1 + \frac{1}{2} \mid  x_k^{(i)} - 0.5\mid + \frac{1}{2} \mid  x_k^{(j)} - 0.5\mid - \frac{1}{2} \mid  x_k^{(i)} - x_k^{(j)}\mid \right). \label{eq:c2}
 \end{align}
 
-There are three main methodologies for defining a DoE: \emph{(i)} MC, \emph{(ii)} \emph{Latin Hypercube Sampling} (LHS) and \emph{(ii)} Quasi-\emph{Monte Carlo} (QMC) methods~\citep{Cavazzuti2013,Garud2017}. Kucherenko \emph{et al.}~\citep{Kucherenko2015} have recently compared MC and LHS against the well-established low discrepancy sequence of \emph{Sobol'}, which is one of the most renown and used QMC method. They concluded that LHS and QMC both offer superior integration performance over MC.
+There are three main methodologies for defining a DoE: \emph{(i)} MC, \emph{(ii)} \emph{Latin Hypercube Sampling} (LHS) and \emph{(ii)} Quasi-\emph{Monte Carlo} (QMC) methods~\citep{Cavazzuti2013,Garud2017}. Kucherenko \emph{et al.}~\citep{Kucherenko2015} have recently compared MC and LHS against the low discrepancy sequence of \emph{Sobol'}, which is a well-established QMC method. They concluded that both LHS and QMC offer superior integration performance over MC. Integrating a complexe function requires a good space coverage and this performance is assimilable to a discrepancy measure. \Cref{fig:ex_doe} is an example of these three methods to construct samples of size $N_s = 256$ in dimension $d = 2$. In this low dimensional space, the superiority in terms of space coverage of both LHS and \emph{Sobol'} over MC is clear. MC exhibits lots of clustered regions and it translates in a two orders difference in terms of discrepancy compared to the other methods.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{fig/literature/doe_examples.pdf}
+\caption{Example of DoE constructed with MC, LHS and the low discrepancy sequence of \emph{Sobol'}  with $N_s=256$.}
+\label{fig:ex_doe}
+\end{figure}
 
 On the one hand, LHS-based sampling methods are one-shot design strategies~\citep{Mckay1979,Fang2006}. The principle is simple: considering $N_s$ samples, in each 1-dimensional subprojection of the parameter space there should be $N_s$ samples. It means that samples are not sharing coordinates with each other. Orthogonal arrays are a slight evolution of this principle. Each 1-dimensional subprojection is spitted into $N_s$ to form an orthogonal grid of size $N_s^d$ and only one sample is allowed per cell. \Cref{fig:lhs} shows two different orthogonal LHS with $N_s=10$. Although both valid, they do not cover the parameter space equally. In~\cref{fig:lhs}(b) lots of points are aligned preventing some regions to be explored. Constructing such design is numerically easy and it is possible to optimize the space-filling properties by swapping elements for instance~\cite{Fang2006,Damblin2013}. A basin-hopping algorithm~\cite{wales1997} is commonly used to resolve this global optimization problem.
 
@@ -220,7 +227,7 @@ Y(\mathbf{x}) = \sin x_1 + 7 \sin^2 x_2 + 0.1 x_3^4 \sin x_1,
 
 Looking at \cref{fig:sobol}(b), it can be noted that the convergence of these indices requires a large sampling size. The required sampling size is case dependant as it depends on the number of input parameters and on the complexity of the function of interest.
 
-\Cref{fig:scatter_sobol} gives a visual explanation of \emph{Sobol'} indices. It shows scatter plots of the output with respect to each parameter. By conditioning the output value by given values of the parameter (\emph{black lines}), the conditional output mean is computed. It corresponds to the term $\mathbb{E}(Y|x_i)]$. Taking the variance of this term gives the numerator of the \emph{Sobol'} indices. Looking at $x_3$, the variance of the mean is close to zero leading to $S_{x_3} = 0$. But we can further observe that the variance of the output is not constant along the parameter values of $x_3$. This heteroscedasticity is explained by higher order interactions. Moreover, an heteroscedasticity is also noticeable on $x_1$ leading to an interaction between $x_3$ and $x_1$. On $x_2$, the variance seems to be constant and thus null interaction with this parameter can be supposed. This case is fairly simple to analyse visually---although it is only a qualitative analysis. Nevertheless, when the number of input parameters increases such analysis becomes unrealistic as it would be difficult to conclude on high-order terms.
+\Cref{fig:scatter_sobol} gives a visual explanation of \emph{Sobol'} indices. It shows scatter plots of the output with respect to each parameter. By conditioning the output value by given values of the parameter (\emph{black lines}), the conditional output mean is computed. It corresponds to the term $\mathbb{E}(Y|x_i)$. Taking the variance of this term gives the numerator of the \emph{Sobol'} indices. Looking at $x_3$, the variance of the mean is zero leading to $S_{x_3} = 0$. But we can further observe that the variance of the output is not constant along the parameter values of $x_3$. This heteroscedasticity is explained by higher order interactions. Moreover, an heteroscedasticity is also noticeable on $x_1$ leading to an interaction between $x_3$ and $x_1$. On $x_2$, the variance seems to be constant and thus null interaction with this parameter can be supposed. This case is fairly simple to analyse visually---although it is only a qualitative analysis. Nevertheless, when the number of input parameters increases such analysis becomes unrealistic as it would be difficult to conclude on high-order terms.
 
 \begin{figure}[!ht]               
 \centering
@@ -298,6 +305,7 @@ Another visual approach is found with the Cumulative Sums Of NOrmalized Reordere
 \label{fig:cusunoro}
 \end{figure}
 
+\newpage
 
 \section{Surrogate Models}\label{sec:surrogate}
 
@@ -311,7 +319,7 @@ GP that is strongly related to Kriging in geostatistics also is of increasing in
 
 PC and GP surrogate models have recently been compared for UQ and SA studies~\citep{legratiet2017,owen2015,schoebi2015}. \citet{owen2015} evaluated the performance of each type of surrogate in terms of output mean, variance and PDF estimation. \citet{legratiet2017} compared \emph{Sobol'} indices with applications in structural mechanics; for a given size of the training set, PC and GP surrogate models were found to feature a similar predictive quality---with respect to the predictive coefficient $Q_2$, also called Nash-Sutcliffe model efficiency coefficient, which is equivalent to the coefficient of determination $R^2$ for residuals's prediction~\citep{krause2005} (see~\cref{sec:validation}). \citet{legratiet2017} also emphasized that the ranking between PC and GP approaches remains problem-dependent.
 
-Before going further, let us clarify the nature of the forward model. The ensemble $\mathcal{Y}$ constitute a set of observed QoI. Each element can either be a scalar or a vectorial---or functional---QoI. When considering scalar QoI, a global physical parameter such as the mean temperature for instance, a single surrogate model mapping $Y^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$ can be constructed. In case of a multidimensional output the mapping comes to $\mathbf{Y}^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$. One can consider independent surrogate for each element but the computational cost can rapidly become intractable. Moreover, the elements of the vectorial QoI can be correlated. A classical solution is found through the use of a Proper Orthogonal Decomposition (POD)~\cite{AnindyaChatterjee2000}. By performing a POD on the QoI, each mode being orthogonal, they can be treated as independent and then a surrogate can be built on a reduced space. In~\cite{braconnier2011,margheri2016}, this method was used to reduce the computational cost and conserve the spatial/temporal correlation of the QoI.
+Before going further, let us clarify the nature of the forward model. The ensemble $\mathcal{Y}$ constitute a set of observed QoI. Each element can either be a scalar or a vectorial---or functional---QoI. When considering scalar QoI, a global physical parameter such as the mean temperature for instance, a single surrogate model mapping $Y^{(i)} := \mathcal{M}(\mathbf{x}^{(i)})$ can be constructed. In case of a multidimensional output, one can consider independent surrogate for each element but the computational cost can rapidly become intractable. Moreover, the elements of the vectorial QoI can be correlated. A classical solution is found through the use of a Proper Orthogonal Decomposition (POD)~\cite{AnindyaChatterjee2000}. By performing a POD on the QoI, each mode being orthogonal, they can be treated as independent and then a surrogate can be built on a reduced space. In~\cite{braconnier2011,margheri2016}, this method was used to reduce the computational cost and conserve the spatial/temporal correlation of the QoI.
 
 Considering the general case of a functional QoI, the common idea of PC and GP approaches is to design for each element (with or without considering a POD) $a \in \{a_1, \cdots, a_M\}$ a surrogate with a weighted finite sum of basis functions:
 \begin{align}
@@ -450,7 +458,7 @@ p(y|x) = \int p(y|\mathbf{f}, x)p(\mathbf{f}|x)d\mathbf{f}.
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.9\linewidth,keepaspectratio]{fig/literature/rasmussenGP.png}
+\includegraphics[width=\linewidth,keepaspectratio]{fig/literature/rasmussenGP.png}
 \caption{Visualization of 4 Gaussian processes: \textbf{a} represents a sampling of the GP while in \textbf{b} these functions have been conditioned on two points. Shaded regions represent twice the standard deviation of the GPs. Source: \cite{rasmussen2006}.}
 \label{fig:gp_prior-post}
 \end{figure}
@@ -463,7 +471,7 @@ An important step after having constructed a surrogate model is to access its va
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.6\linewidth,keepaspectratio]{fig/literature/validation_set.png}
+\includegraphics[width=0.7\linewidth,keepaspectratio]{fig/literature/validation_set.png}
 \caption{3-dimensional parameter space canonical visualization of training (triangles) and validation (circles) sets.}
 \label{fig:validation}
 \end{figure}
@@ -500,7 +508,7 @@ An easy way to visualize the quality of the model is to plot a joint plot. Its c
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.9\linewidth,keepaspectratio]{fig/literature/qq_plot.png}
+\includegraphics[width=\linewidth,keepaspectratio]{fig/literature/qq_plot.png}
 \caption{Joint plot. QoI function of the predicted QoI given a parameter set. The triangle represents an observed value of 5.}
 \label{fig:qq_plot}
 \end{figure}
@@ -523,7 +531,7 @@ Another method is to keep the same sample set for both training and validation. 
 \lettrine{I}{n spite} of a wide literature on UQ, the community has yet to propose efficient ways to visualize uncertainties. Indeed, to the author's knowledge, there is no chapter dedicated to visualization in UQ reference books~\citep{Saltelli2007,sullivan2015,handbookUQ}. This remains to be investigated, especially for Computational Fluid Dynamics (CFD) applications~\citep{Moreland2016} that involve complex fields of large dimensions. Classical ways of visualizing standard statistics can lead to misinterpretation~\citep{Anscombe1973}. The challenge for state-of-the-art visualization solutions stands in the dimension of the data. Assuming that the dimension of the data is limited (a set of scalars), for instance when dealing with input data, canonical subplots of subspaces are adapted. Parallel coordinate plots~\citep{Inselberg1985} or Kiviat plot (also referred to as the spider plot)~\citep{Hackstadt1994} that are represented in~\Cref{fig:sketch_Kiviat-parallel} offer an interesting alternative and share the same idea of dedicating one input variable (noted $x_i$) per axis; Kiviat (right panel) plot being the equivalent to parallel coordinates (left panel) plot in polar coordinates. 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/parallel-kiviat.pdf}
+\includegraphics[width=0.9\linewidth,keepaspectratio]{fig/literature/parallel-kiviat.pdf}
 \caption{Schematic representation of a parallel coordinate plot (\emph{left}) and a Kiviat plot (\emph{right}).}
 \label{fig:sketch_Kiviat-parallel}
 \end{figure}
@@ -537,7 +545,7 @@ HOPs consists in animating a succession of possible outcomes sampled from the da
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/pattern_hop.pdf}
+\includegraphics[width=0.9\linewidth,keepaspectratio]{fig/literature/pattern_hop.pdf}
 \caption{Schematic representation of the HOPs method for single scalar output (\emph{left}) or multiple scalar outputs (\emph{right}).}
 \label{fig:pattern_hop}
 \end{figure}
@@ -576,9 +584,9 @@ Except if the response variable of the system of interest is chaotic under the p
 \begin{figure*}[!ht]               
 \centering
 \subfloat[]{
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/hdr_scatter.pdf}}
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/hdr_scatter.pdf}}
 \subfloat[]{
-\includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/hdr_curves.pdf}} 
+\includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/hdr_curves.pdf}} 
 \caption{HDR boxplot on the El Ni\~no dataset. \textbf{a} scatter plot of the 2-dimensional reduced space with each dot as a realization. \textbf{b} dataset visualization with each curve as a realization from the database. Shaded areas are confidence intervals, \emph{thick solid black} line is the mean realization and \emph{highlighted-dashed} curves are outliers.}
 \label{fig:elnino}
 \end{figure*}
