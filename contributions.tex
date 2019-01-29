@@ -153,7 +153,7 @@ Moreover, we are actively collaborating with academic and institutional partners
 
 \section{Introduction}
 
-\lettrine{I}{n} the following, I propose a new stochastic, iterative DoE ---\thinspace named KDOE\thinspace--- based on a modified Kernel Density Estimation (KDE). It is a two-step process: \emph{(i)} candidate samples are generated using MCMC based on KDE, and \emph{(ii)} one of them is selected based on some metric. The performance of the method is assessed by means of the $C^2$-discrepancy space-filling criterion. KDOE appears to be as performant as classical one-shot methods in low dimensions, while it presents increased performance for high-dimensional parameter spaces. This work proposes a new  methodology to stochastically sample the input parameter space iteratively allowing, at the same time, to take into account any constrains, such as non-rectangular DoE~\citep{Lekivetz2015}, sensitivity indices or even constrains on the quality on particular subprojections as in~\citep{Joseph2015}. It is a versatile method which offers an alternative to classical methods and, at the same time, is easy to implement and offers customization based on the objective of the DoE.
+\lettrine{I}{n} the following, I propose a new stochastic, iterative DoE ---\thinspace named KDOE\thinspace--- based on a modified Kernel Density Estimation (KDE). It is a two-step process: \emph{(i)} candidate samples are generated using MCMC based on KDE, and \emph{(ii)} one of them is selected based on some metric. The performance of the method is assessed by means of the $C^2$-discrepancy space-filling criterion. KDOE appears to be as performant as classical one-shot methods in low dimensions, while it presents increased performance for high-dimensional parameter spaces. This work proposes a new  methodology to stochastically sample the input parameter space iteratively allowing, at the same time, to take into account any constraint, such as non-rectangular DoE~\citep{Lekivetz2015}, sensitivity indices or even constraint on the quality on particular subprojections as in~\citep{Joseph2015}. It is a versatile method which offers an alternative to classical methods and, at the same time, is easy to implement and offers customization based on the objective of the DoE.
 
 \section{Presentation of the Method}\label{sec:method}
 
@@ -173,7 +173,7 @@ By means of utilizing EF, it becomes possible to generate new samples that are l
     \State $f \gets$ Construction of the Exclusions Field from $\mathbf{X}^{N_s}_d$
     \State $\mathbf{Y}^{n_{gen}}_d \gets$ pick $n_{gen}$ samples using Metropolis-Hasting MCMC
     \State $\mathbf{Y}^{j}_d \gets$ point in $N_{gen}$ which minimize the discrepancy
-	\State $\mathbf{X}^{N_s + 1}_d \gets \left\{\mathbf{X}^{N_s}_d, \mathbf{Y}^{j}_d \right\}$
+    \State $\mathbf{X}^{N_s + 1}_d \gets \left\{\mathbf{X}^{N_s}_d, \mathbf{Y}^{j}_d \right\}$
   \EndWhile
   \end{algorithmic}
 \end{algorithm}
@@ -183,23 +183,21 @@ By means of utilizing EF, it becomes possible to generate new samples that are l
 
 \subsection{Determination of the Exclusion Field}\label{sec:kde}
 
-It is assumed that there are $N_s$ samples that have already been selected. The spatial probability density function used to draw a new sample is given by:
+Assumed that $N_s$ samples have already been selected. The spatial probability density function used to draw a new sample is given by:
 \begin{align}
 f(\mathbf{x}) &= 1 - \sum_{i=1}^{N_{s}} K\left(\mathbf{x},\mathbf{x}^{(i)}\right) \, .
 \end{align}
-It is reminded that the $N_s$ samples that have already been chosen are noted $\mathbf{x}^{(i)}$, with $i$ between 1 and $N_s$. The dimension is noted $d$ and $K$ is a Gaussian kernel---expressed as in~\cref{eq:kde}.
+The $N_s$ samples that have already been chosen are noted $\mathbf{x}^{(i)}$, with $i$ between 1 and $N_s$. The dimension is noted $d$ and $K$ is a kernel expressed by:
+\begin{align}
+K\left(\mathbf{x},\mathbf{x}^{(i)}\right) = \exp\left( - \frac{D\left(\mathbf{x},\mathbf{x}^{(i)}\right)^2}{2h^2} \right),
+\end{align}
+$D$ is a distance function that will be expressed later. The general idea is to lower the probability of selecting a new point close to the samples already drawn. Hence a zone of exclusion is created around each of the already selected points, with a width parametrized by $h$, set here at $h = \sigma / N_s^{1/d}$ with $\sigma=0.3$. This in particular allows to have a width of exclusion that decreases as the number of samples increases. In addition, the probability is set to 0 outside of the unit hypercube in order to prevent sampling outside of the region of interest. We also ensure that the probability is always greater or equal than 0. Note that this probability is not normalized. It will be shown in the next section that normalization is not required for the sampling procedure.
 
-The general idea is to reduce the probability of selecting a new point close to the samples already drawn. Hence a zone of exclusion is created around each of the already selected points, with a width parametrized by $h$. The parameter $h$ has been set to $h = \frac{\sigma}{N_s^{1/d}}$ with $\sigma=0.3$. This allows us to have a width of exclusion that decreases as the number of samples increases.
-
-Moreover, the probability is set to 0 outside of the unit hypercube in order to prevent sampling outside of the region of interest. Note that this probability is not normalized. This is not a problem because the sampling procedure does not requires this property, as it will be shown in the next section.
-
-The expression of the distance function $D$ is used to generate many different shapes. In our case, alignment of samples on each axis should be avoided as done with Latin Hypercube Sampling designs. This is achieved by using a Minkowski distance~\citep{Cha2007} for $D$:
+Various expressions of the distance function $D$ allow to generate many different shapes. In the present case, alignment of samples on each axis should be avoided as done with Latin Hypercube Sampling designs. This is achieved by using a Minkowski distance~\citep{Cha2007} for $D$:
 \begin{align}
 D\left(\mathbf{x},\mathbf{x}^{(i)}\right)=\left(\sum_{j=1}^d |x_{j}-x_{ij}|^p\right)^{1/p},
 \end{align}
-where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star shape}, as shown in~\cref{fig:minkowsky} where one sample has already been selected. In the following, $p=0.5$ is used. In~\cref{fig:3d_kde}, three samples have already been selected. The star shape is present in all dimensions. Moreover, these shapes interact with each other as they cross as shown in \cref{fig:inter_kde}. In this case $\sigma=0.8$ to highlight this property.
-
-\cleardoublepage
+where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star shape} for the PDF $f$, as shown in~\cref{fig:minkowsky} starting from one already selected sample ($N_s = 1$), and using $p=0.5$. In~\cref{fig:3d_kde}, three samples were already selected in a 3-dimensional parameter space. The star shape is visible in all dimensions, its branches interact with each other as shown in~\cref{fig:inter_kde} clearly illustrating the cumulative property of the PDFs. In this last case $\sigma=0.8$ to highlight this property.
 
 \begin{figure}[!ht]               
 \centering
@@ -209,14 +207,14 @@ where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star sh
 %\subfloat[Inverse Mindkowsky distance]{
 \includegraphics[width=0.7\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/inv_minkowsky.pdf}
 %}
-\caption{Probability density in a 2-dimensional parameter space. \emph{Dot} represents the sample already drawn at (0.5, 0.7).}
+\caption{Probability density function of presence in a 2-dimensional parameter space. \emph{Dot} represents the sample already drawn at (0.5, 0.7).}
  \label{fig:minkowsky}
 \end{figure}
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.7\linewidth,keepaspectratio]{fig/contributions/doe/3d_star.png}
-\caption{Scatter plot representation of a 3-dimensional KDE with three points in the parameter space. Points represents an iso contour of probability.}
+\caption{Scatter plot representation of a 3-dimensional PDF with three points already set in the parameter space. Points represents an iso value of probability.}
 \label{fig:3d_kde}
 \end{figure}
 
@@ -224,7 +222,7 @@ where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star sh
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/contributions/doe/kde_inter.pdf}
-\caption{Interaction effects on the probability density in a 2-dimensional parameter space. \emph{Dots} represent 2 existing samples.}
+\caption{Cumulative effects on the probability density function in a 2-dimensional parameter space. \emph{Dots} represent 2 existing samples.}
 \label{fig:inter_kde}
 \end{figure}
 
@@ -233,12 +231,12 @@ where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star sh
 
 %Using the modified version of the KDE, it is possible to generate samples following the posterior distribution.
 
-The classical way to sample from a PDF is to use the inverse transform sampling method. However, finding the inverse cumulative distribution function of a complex PDF can be computationally intensive ---\thinspace the cost increases with dimensionality. The \emph{Metropolis-Hasting}~\citep{Hastings1979} algorithm was selected as an efficient way to sample from $f$. Contrary to methods such as HMC or NUTS~\citep{Hoffman2011}, it does not require the calculation of the gradient of the log-probability density function, which is a costly operation. This algorithm provides a random walk of the parameter space that converges toward the target PDF.
+The classical way to sample from a PDF is to use the inverse transform sampling method. However, finding the inverse cumulative distribution function of a complex PDF can be computationally intensive ---\thinspace the cost increases with dimensionality. The \emph{Metropolis-Hasting}~\citep{Hastings1979} MCMC algorithm was selected as an efficient way to sample from $f$. Contrary to methods such as HMC or NUTS~\citep{Hoffman2011}, it does not require the calculation of the gradient of the log-probability density function, which is a costly operation. This algorithm provides a random walk of the parameter space that converges toward the target PDF.
 
 %Using an arbitrary distribution $g(\mathbf{x}|\mathbf{y})$, a new candidate $\mathbf{x}$ is evaluated based on the previous point $\mathbf{y}$. This property makes it a \emph{Markov Chain} as the current value is only conditioned by the previous one. The distribution $g$ is chosen as a Gaussian PDF so that samples close to the previous one are preferably sampled. This algorithm provides a random walk of the parameter space that converges toward the target PDF.
 
 
-\Cref{fig:sample_kde} shows an example with two initial points already selected in the hypercube $[0, 1]^2$. Based on these two points (\emph{dots}), $f$ is build and new samples are drawn (\emph{squares}).
+\Cref{fig:sample_kde} shows an example with two initial points already selected in the hypercube $[0, 1]^2$. Based on these two points (\emph{dots}), $f$ is built and new samples are drawn (\emph{squares}) using the MCMC method.
 
 \begin{figure}[!ht]
 \centering
@@ -274,13 +272,16 @@ As stated, $n_{gen}$ candidate samples are generated through MCMC. \Cref{fig:con
 % TODO property A, B with star. Do plot
 
 %\newpage
-\section{Results}%\label{sec:results}
+\section{Results}
 
 \subsection{Uniformity of the Design}
-As stated previously, the uniformity of the DoE is paramount to ensure that the physics of interest are well captured. \Cref{fig:conv-dim-ns} presents a convergence study of the KDOE method versus \emph{Sobol'} sequences~\citep{Sobol1967}, classical LHS~\citep{Mckay1979}, and optimized LHS as proposed in~\citep{Baudin2015}. Each point corresponds to a given sample size $N_s$ for a given number of dimensions $d$. Due to the stochastic nature of the LHS algorithms and of the KDOE, confidence intervals are computed based on 100 realizations. To measure the improvement of a method with respect to one another, the $C^2$-discrepancy is used~\citep{Fang2006,Androulakis2016} and values are normalized by crude \emph{Monte Carlo} results. This transformation shows that a uniform improvement factor is obtained in comparison to MC. Looking for instance at $d = 20$, LHS enables a 20\% improvement in terms of $C^2$-discrepancy over MC, \emph{Sobol'} sequence gives 30\% and both OLHS and KDOE roughly give 40\%.
+As stated previously, the uniformity of the DoE is paramount to ensure that the physics of interest are well captured. \Cref{fig:conv-dim-ns} presents a convergence study of the KDOE method versus \emph{Sobol'} sequences~\citep{Sobol1967}, classical LHS~\citep{Mckay1979}, and optimized LHS as proposed in~\citep{Baudin2015}. Each point corresponds to a given sample size $N_s$ for a given number of dimensions $d$. Due to the stochastic nature of the LHS algorithms and of the KDOE, confidence intervals are computed based on 100 realizations. To measure the improvement of a method with respect to the other, the $C^2$-discrepancy is used~\citep{Fang2006,Androulakis2016} and values are normalized by crude \emph{Monte Carlo} (MC) results. This transformation shows that a uniform improvement factor is obtained in comparison to MC. Looking for instance at $d = 20$, LHS enables a 20\% improvement in terms of $C^2$-discrepancy over MC, \emph{Sobol'} sequence gives 30\% and both OLHS and KDOE roughly give 40\%.
 
-Looking only at the contestants' methods, their hierarchy is quite stable. OLHS is the best method followed by \emph{Sobol'} sequence and finally LHS. For KDOE, it performs closely to \emph{Sobol'} sequence up to $d \lesssim 20$. For $d \gtrsim 20$, KDOE performs better than the other methods tested. Moving on to the standard deviation at $2\sigma$ ---\thinspace see~\cref{fig:conv-dim-ns_err}\thinspace---, the variation of the $C^2$-discrepancy is contained between LHS’s and OLHS’s.
+The obtained hierarchy between LHS, OLHS and \emph{Sobol'} is quite stable. OLHS is the best method followed by \emph{Sobol'} sequence and finally LHS. For KDOE, it performs closely to \emph{Sobol'} sequence up to $d \lesssim 20$. For $d \gtrsim 20$, KDOE performs better than all the other methods tested.
 
+Moving on to two standard deviation ($2\sigma$) ---\thinspace see~\cref{fig:conv-dim-ns_err}\thinspace---, the results of KDOE always lies between LHS’s and OLHS’s.
+
+%\newpage
 \begin{figure}[!ht]               
 \centering
 \subfloat[]{
@@ -294,7 +295,7 @@ Looking only at the contestants' methods, their hierarchy is quite stable. OLHS 
  ~       
 \subfloat[]{
 \includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_30_C.pdf}}
-\caption{Adimonsionalized $C^2$-discrepancy function of the number of dimensions $d$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
+\caption{Normalized $C^2$-discrepancy function of the number of dimensions $d$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
 \label{fig:conv-dim-ns}
 \end{figure}
 \begin{figure}[!ht]               
@@ -310,21 +311,23 @@ Looking only at the contestants' methods, their hierarchy is quite stable. OLHS 
  ~       
 \subfloat[]{
 \includegraphics[width=0.45\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_err_30_C.pdf}}
-\caption{Adimonsionalized $2\sigma$ deviation on the $C^2$-discrepancy function of the number of dimensions $d$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
+\caption{Normalized deviation at $2\sigma$ on the $C^2$-discrepancy function of the number of dimensions $d$ of the parameter space and of the size $N_s$ of the design for various DoE methods.}
 \label{fig:conv-dim-ns_err}
 \end{figure}
 
+\newpage
 
-\Cref{fig:conv-dim-100} presents the convergence analysis of the $C^2$-discrepancy as function of the number of dimensions for $N_s = 100$. When the dimensionality increases, the gain with both LHS and \emph{Sobol'} sequences is close to zero. On the contrary, OLHS seems to stabilize around a 30\% improvement. Regarding KDOE, it performs equally with other methods up to $d \lesssim 20$, while for $d \gtrsim 20$ it becomes more performant. It can be seen that the method has yet to converge at $d = 40$.
+
+\Cref{fig:conv-dim-100} presents the convergence analysis of the $C^2$-discrepancy as function of the number of dimensions for $N_s = 100$. When the dimensionality increases, the gain with both LHS and \emph{Sobol'} sequences is close to zero. On the contrary, OLHS seems to stabilize around a 30\% improvement. Regarding KDOE, it performs equally with other methods up to $d \lesssim 20$, while for $d \gtrsim 20$ it becomes more performant. It can be seen that the method has not yet reached its minimum at $d = 40$.
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.9\linewidth,keepaspectratio]{fig/contributions/doe/kde_dim.pdf}
-\caption{Adimonsionalized $C^2$ discrepancy function of the number of dimensions $d$ of the parameter space with a design of size $N_s = 100$ for various DoE methods.}
+\caption{Normalized $C^2$-discrepancy function of the number of dimensions $n_{dim}$ of the parameter space with a design of size $N_s = 100$ for various DoE methods.}
 \label{fig:conv-dim-100}
 \end{figure}
 
-In terms of $C^2$-discrepancy, KDOE appears to perform better with respect to crude \emph{Monte Carlo}, LHS, OLHS and \emph{Sobol'} sequence. \Cref{fig:comp-subspace} shows an example of a sample of size $N_s = 50$ in dimension $d=30$. The subprojection $x_{20}/x_8$ is represented. \Cref{fig:comp-subspace}(d) depicts the principal challenge with classical \emph{Sobol'} sequences. In high dimensional parameter space, clear patterns may appear in some subprojections. This behaviour was not observed with KDOE. In this case, the result of the KDOE may not appear optimized for 2-dimensional subprojections. This is due to the fact that the objective is to optimize the total discrepancy of the parameter space.
+In terms of $C^2$-discrepancy, KDOE appears to perform better with respect to crude \emph{Monte Carlo}, LHS, OLHS and \emph{Sobol'} sequence. \Cref{fig:comp-subspace} shows an example of a sample of size $N_s = 50$ in dimension $n_{dim}=30$. The subprojection $x_{20}/x_8$ is represented. \Cref{fig:comp-subspace}(d) depicts the principal challenge with classical \emph{Sobol'} sequences. In high dimensional parameter space, clear patterns may appear in some subprojections. This behaviour was not observed with KDOE. In this case, the result of the KDOE may not appear optimized for 2-dimensional subprojections. This is due to the fact that the objective is to optimize the total discrepancy of the parameter space.
 
 %C^2\left(\mathbf{X}^{N_s}_{d}
 \begin{figure}[!ht]               
@@ -340,7 +343,7 @@ In terms of $C^2$-discrepancy, KDOE appears to perform better with respect to cr
  ~       
 \subfloat[Sobol'---$C^2=3.76$]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/20_8_sobol.pdf}}
-\caption{Example of a 2-dimensional subprojection of the sample of size $N_s=50$ in dimension $d=30$.}
+\caption{Example of a 2-dimensional subprojection of the sample of size $N_s=50$ in dimension $d=30$ with various DoE methods.}
 \label{fig:comp-subspace}
 \end{figure}
 
@@ -353,7 +356,7 @@ Even if this method is not designed for integral evaluation, its performance is 
 \item[Type B:] Functions with almost equally important variables but with low interactions with each other,
 \item[Type C:] Functions with almost equally important variables and with high interactions with each other.
 \end{description}
-Type C functions represent the most challenging case. In this work, one function per group is considered as detailed in~\cref{tab:conv_int}. The theoretical integral for all these function in the unit hypercube is 1. Quality of the integration is computed using the Root Mean Square Error (RMSE) defined as
+Type C functions represent the most challenging case. In this work, one function per group is considered as detailed in~\cref{tab:conv_int}. The theoretical integral for all these functions in the unit hypercube is 1. Quality of the integration is computed using the Root Mean Square Error (RMSE) defined as
 \begin{align}
 \epsilon = \left( \frac{1}{K} \displaystyle \sum_{k=1}^{K} \left(I[f] - I_{N_s}^k [f]\right)^2 \right)^{1/2},
 \end{align}
@@ -368,7 +371,7 @@ I_{N_s}^k [f] = \frac{1}{N_s} \sum_{i=1}^{N_s} f(\mathbf{X}^{i}_d),
 \caption{Type A, B and C functions used in the convergence analysis.}
 \begin{tabular}{clc}
 \toprule
-Type &  Function $f(x)$ & Dim $n$\\
+Type &  Function $f(x)$ & Dim $d$\\
  &   &  \\
 \midrule % \cmidrule{2-3}
 A & $\displaystyle\prod_{i=1}^d \frac{\mid 4x_i - 2 \mid + a_i}{1 + a_i}$& 30\\
@@ -395,7 +398,7 @@ C & $2^d \displaystyle\prod_{i=1}^d x_i$ & 10\\
 %\label{tab:conv_int}
 %\end{table}
 
-\Cref{fig:conv_int} presents the convergence study. KDOE is not the best method but seems to compare to both LHS and \emph{Sobol'} sequence. The convergence rates are correct for every function type.
+\Cref{fig:conv_int} presents the convergence study. KDOE is not the best method but seems to compare well to both LHS and \emph{Sobol'} sequence. The convergence rates are correct for every function type.
 
 
 \begin{figure}[!ht]               
@@ -408,7 +411,7 @@ C & $2^d \displaystyle\prod_{i=1}^d x_i$ & 10\\
 
 \subfloat[Type C]{
 \includegraphics[width=0.55\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_int_2C.pdf}}
-\caption{RMSE function of the sample size $N_s$ for type A, B and C functions. The trend line corresponds to the RMSE evolution for Monte Carlo's method.}
+\caption{RMSE function of the sample size $N_s$ for type A, B and C functions.}
 \label{fig:conv_int}
 \end{figure}
 
@@ -416,19 +419,21 @@ C & $2^d \displaystyle\prod_{i=1}^d x_i$ & 10\\
 
 \section{Perspectives}
 
-Depending on the property sought, the combination of a Kernel and a metric allows an infinite customization of the method.
+Depending on the property sought, the combination of a Kernel and a metric allows an infinite number of possible customizations of the method.
 
-Using the Minkowsky distance as a metric, the LHS constrain is not strict which can be useful when dealing with discrete parameters. Indeed, strict LHS would prevent having more than one sample per discreet parameter. In~\cref{fig:lhs_const}(a), an additional constrain is added to strongly limit the probability to 0 when the $L_{-\infty}$-norm is inferior to a threshold. This limitation can be restricted to a domain of influence using an additional $L_2$-norm constrain (\cref{fig:lhs_const}(b)). Hence, this method acts as an iterative LHS strategy.
+Using the Minkowsky distance as a metric, the LHS constraint is not strict which can be useful when dealing with discrete parameters. Indeed, strict LHS would prevent having more than one sample per discrete parameter. In~\cref{fig:lhs_const}(a), an additional constraint is added to strongly limit the probability to 0 when the $L_{-\infty}$-norm is inferior to a threshold. This limitation can be restricted to a domain of influence using an additional $L_2$-norm constrain (\cref{fig:lhs_const}(b)). Hence, the presented method acts as an iterative LHS strategy.
+
+
 
 \begin{figure}[!ht]               
 \centering
 \subfloat[Inverse Mindkowsky distance with LHS properties]{
 \includegraphics[width=0.49\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_minkowsky_LHS.pdf}}
 ~
-\subfloat[Inverse Mindkowsky distance with LHS properties and constrain]{
+\subfloat[Inverse Mindkowsky distance with LHS properties and constraint]{
 \includegraphics[width=0.49\linewidth,height=\textheight,keepaspectratio]{fig/contributions/doe/kde_minkowsky_LHS-const.pdf}}
 
-\caption{Probability density in a 2-dimensional parameter space. \emph{Dot} represents the sample used to fit the KDE.}
+\caption{Probability density in a 2-dimensional parameter space. \emph{Dot} represents the sample used to construct the KDE.}
  \label{fig:lhs_const}
 \end{figure}
 
@@ -458,19 +463,22 @@ The ability to change the selection criterion is even more useful. With a prior 
 \label{fig:sensitivity}
 \end{figure}
 
-Last but not least, this method can be used to generate designs by mixing continuous and discrete variables. The star shape of the kernel does not forbid the presence of a new sample along a given axis, it lower its probability of being sampled up to a certain distance. In this case, a Gaussian kernel might be more appropriate in order to relax some constrains on the axes. Another option would be to modify the kernel to limit the point influence along the discrete axis.
+Last but not least, this method can be used to generate designs by mixing continuous and discrete variables. The star shape of the kernel does not forbid the presence of a new sample along a given axis, it lower its probability of being sampled up to a certain distance. In this case, a Gaussian kernel might be more appropriate in order to relax some constraint on the axes. Another option would be to modify the kernel to limit the point influence along the discrete axis.
 
 The ability to play both with the kernel and the selection criteria is really powerful as it allows to manage most of the challenges in constrained optimization problems, use sensitivity information, and sample by means of following individual PDFs for each parameter.
 
-\section{Conclusion}
+%\cleardoublepage
+\section{Conclusion}%\label{sec:conclusion}
+
 % 1. Novelty of the results
 This work proposes a new method to stochastically and iteratively sample a parameter space, referred to as KDOE method. This is a two-step process: \emph{(i)} through a Kernel Density Estimation (KDE) some candidates are generated, then \emph{(ii)} the best candidate is selected based on a criterion. This method does not take into account the physics of the problem of interest as adaptative strategies, but is purely iterative and case independent.
 
 % 2. Local, specific, scientific benefits
-Compared to LHS and low discrepancy sequences, KDOE is totally iterative and stochastic. The space-filling properties of the new designs based on the $C^2$-discrepancy are assessed and show good behaviour in high dimensions with small sample sizes. Moreover, it showed similar capabilities for numerical integration compared to classical methods.The KDOE method is versatile in the sense that it can be easily adapted to take into account constrains in the parameter space, both discrete and continuous parameters can be used and sensitivity indices of the parameters can be incorporated. This ability comes from the two-step process which can be independently tuned.
+Compared to LHS and low discrepancy sequences, KDOE is totally iterative and stochastic. The space-filling properties of the new designs based on the $C^2$-discrepancy are assessed and show good behaviour in high dimensions with small sample sizes. Moreover, it shows similar capabilities for numerical integration compared to classical methods.The KDOE method is versatile in the sense that it can be easily adapted to take into account constraints in the parameter space, both discrete and continuous parameters can be used and sensitivity indices of the parameters can be incorporated. This ability comes from the two-step process which can be independently tuned.
 
 % 3. Global, societal, general benefits
 The quality of the design is of prime importance as it determines the quality of the analysis of the experiments. The proposed method provides an alternative to classical one-shot methods to generate initial designs and to continue existing ones. Its versatility and performance allow the analysis of expensive and high-dimensional cases to be within affordable budgets.
+
 
 
 \chapter{Resampling the Design of Experiments}\label{chap:resample}
