@@ -111,3 +111,58 @@ Using the surrogate, the prediction is expressed as a random process with $Y\sim
 
 Thus, in this work we used the classical expected improvement formulation in order to avoid the definition of an additional constant. Due to the computational cost of the simulations, this parameter was not characterized.
 
+
+\chapter{Computational Fluid Dynamics}
+\label{sec:LES}
+
+\section{Governing Equations of Compressible Flows}
+
+To solve compressible flows, the governing equations are the total mass, the momentum and the energy conservation laws. They respectively write:
+
+\begin{align}
+\frac{\partial \rho}{\partial t} + \frac{\partial (\rho u_i)}{\partial x_i} = 0,\label{eq:mass}\\
+\frac{\partial (\rho u_i)}{\partial t} + \frac{\partial (\rho u_i u_j)}{\partial x_{j}} = - \frac{p}{\partial x_i} + \frac{\partial \tau_{ij}}{\partial x_j} + \rho f_{j},\label{eq:momentum}\\
+\frac{\partial (\rho e_t)}{\partial t} +\frac{\partial (\rho u_i e_t)}{\partial x_i} = - \frac{\partial q_i}{\partial x_i} - \frac{\partial (p u_i)}{\partial x_i} + \frac{\partial(\tau_{i,j} u_i)}{\partial x_j} + \dot{Q} + \rho f_{i}u_i. \label{eq:energy}
+\end{align}
+
+These equations are the Navier-Stokes equations and they are here presented in Cartesian coordinates using the conventional Einstein notation.
+
+In~\cref{eq:mass}, $x_i$ and $u_i$ are the $i$th spatial coordinate, and $\rho$ is the fluid density. 
+
+In the momentum conservation equation (\cref{eq:momentum}), $p$ is the static pressure, $f_{j}$ is the volume force in the direction $j$ and $\tau_{ij}$ is the viscous stress tensor:
+\begin{align}
+\tau_{ij} = - \frac{2}{3}\mu \frac{\partial u_k}{\partial x_k}\delta_{ij} + \mu \left( \frac{\partial u_i}{\partial x_j} + \frac{\partial u_j}{\partial x_i} \right),
+\end{align}
+\noindent where $\mu$ is the dynamic viscosity of the fluid ($\mu = \rho \nu$, with $\nu$ the kinematic viscosity), and $\delta_{ij}$ is the Kronecker symbol ($\delta_{ij} = 1$ if $i = j$, $0$ otherwise).
+
+Finally, \cref{eq:energy} is the energy conservation equation, written with the total energy $e_t$. $\dot{Q}$ is the heat source term and the energy flux $q_i$ is defined as:
+\begin{align}
+q_i = - \lambda \frac{\partial T}{\partial x_i},
+\end{align}
+\noindent where $T$ is the fluid temperature and $\lambda$ is the thermal conductivity of the fluid.
+
+In this work, the Navier-Stokes equations are closed using the perfect gas state equation:
+\begin{align}
+p = \rho R T,
+\end{align}
+\noindent with the perfect gas constant $R = \unit{\numprint{8.314}}{J.mol−1.K−1}$.  
+
+\section{Turbulence Modelling}
+
+Turbulence is a natural regime of viscous flows characterized by an apparent random and chaotic behaviour of the flow structures. Despite turbulence being a complex phenomenon, its mechanism was identified by Kolmogorov~\cite{Kolmogorov1941} who theorized the idea of the energetic cascade of turbulence. \Cref{fig:energy_cascade} presents an illustration of the energetic cascade. The energy of turbulence $E(\kappa)$ is expressed as a function of the wavenumber $\kappa$. The turbulent kinetic energy is produced by the largest turbulent structures which are associated to the small values of $\kappa$. The characteristic size $l_0$ is called the integral scale and is related to the mean flow geometry. The turbulent energy is transmitted to smaller turbulent scales by stretching the largest eddies, leading to the formation of smaller coherent structures. The smallest eddies of the flow are defined by a characteristic size  $\kappa_\eta$ called the Kolmogorov scale. At this point, the eddies dissipate the turbulent energy by viscous effect.
+
+Different approaches may be used to solve the turbulent flow equations. The Direct Numerical Simulation (DNS) approach solves these equation on all fluid scales, which leads to a very good accuracy but also a high computational cost. Large Eddy Simulation (LES) and Reynolds-Averaged Navier-Stokes (RANS) are two approaches that model the turbulence. LES only models the smallest scales while RANS models all scales. It means that the result of a RANS computation correspond to an averaging over time. Turbulence is hence filtered with this approach and only DNS and LES are able to account for such physical phenomena.
+
+%\emph{RANS} is averaging over time whereas \emph{LES} is averaging over space. So the value of the temperature is a spatial approximation but is time dependant. The average of \emph{LES} gives the \emph{RANS} solution. The eyes are averaging. We cannot understand the phenomenun if we cannot see the turbulence. A flamme respond like a low pass filter when an acoustic pulsation is send. This can only be seen with \emph{LES}.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=\linewidth,keepaspectratio]{fig/applications/ls89/energy_cascade.png}
+\caption{Energy spectrum associated to the different fluid scales. Source~\cite{Fransen2013}}
+\label{fig:energy_cascade}
+\end{figure}
+
+
+
+
+
