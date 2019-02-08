@@ -248,7 +248,7 @@ Those are crucial steps for the complementary use of surrogate models within dat
 
 \section{Introduction}
 
-\lettrine{T}{he number} of CFD simulations that is required for the formulation of the surrogate model is defined by the complexity of the physics and the number of input parameters to take into account. This factor is paramount when considering costly numerical simulations. As the accuracy of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present study aims at improving its construction by using the two new strategies for resampling the parameter space (see~\cref{chap:resample}). An industrial application is targeted: the aerothermal analysis around the \textit{LS89} vane~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented. LES are high-fidelity full 3D unsteady simulations. This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
+\lettrine{T}{he number} of CFD simulations that is required for the formulation of the surrogate model is defined by the complexity of the physics and the number of input parameters to take into account. This factor is paramount when considering costly numerical simulations. As the accuracy of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present study aims at improving its construction by using the two new strategies for resampling the parameter space (see~\cref{chap:resample}). An industrial application is targeted: the aerothermal analysis around the \textit{LS89} vane~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented. LES are high-fidelity full 3D unsteady simulations (see~\cref{sec:LES} for more details). This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
 
 The chapter is tailored as follows; \cref{sec:ls89_case} presents the experimental setup while \cref{sec:ls89_num} presents its numerical simulation configuration. Finally, \cref{sec:ls89_results}  presents the results of the UQ.
 
@@ -427,13 +427,13 @@ The response surfaces of the models are plotted in \cref{fig:ls89-RS}. The heat 
 \begin{figure*}[!ht]
 \centering
 \subfloat[\textit{Sobol'} sequence]{
-\includegraphics[width=0.4\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12a_2column_color-online-only_response_ls89_sobol.pdf}}
-~
+\includegraphics[width=0.449\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12a_2column_color-online-only_response_ls89_sobol.pdf}}
+
 \subfloat[$\sigma$ method]{
-\includegraphics[width=0.4\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12b_2column_color-online-only_response_ls89_sigma.pdf}}
+\includegraphics[width=0.449\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12b_2column_color-online-only_response_ls89_sigma.pdf}}
 
 \subfloat[LOO-\textit{Sobol'} method]{
-\includegraphics[width=0.4\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12c_2column_color-online-only_response_ls89_loo-sobol.pdf}}
+\includegraphics[width=0.449\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12c_2column_color-online-only_response_ls89_loo-sobol.pdf}}
 \caption{Heat Transfer coefficient response surface. DoE is initially composed of 16 simulations sampled with \textit{Sobol'} sequence. Dots represent the initial LES simulations and diamonds represent the resampled points.}
 \label{fig:ls89-RS}
 \end{figure*}

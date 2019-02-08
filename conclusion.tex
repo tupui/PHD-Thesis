@@ -18,5 +18,24 @@ The following part seeks to answer these questions. It begins with \cref{chap:di
 % Third part: cases
 These methods are applied on various complex configurations in the last part. First of all, \cref{chap:mascaret} compares GP and PC in a hydraulic context with the 1-dimensional code: MASCARET. Both surrogate showed their ability to correctly substitute the simulator with a low number of numerical simulations. \Cref{chap:ls89} illustrates the benefits of the novel resampling methods on a configuration known in the literature to be difficult to reproduce: the aerothermal flow around the LS89 blade cascade. It is reminded that this is the first uncertainty quantification study performed using Large Eddy Simulation (LES). The code AVBP was used. The difficulty to correctly predict the flow features even for such a high-fidelity simulation, points towards the uncertainty of the boundary conditions. The turbulence intensity and the angle of attack are known to affect the aerothermal flow. This quantity is of great interest for industrial partners to determine the life-cycle of the turbine components. The study allowed to find a spatial sensitivity of the flow to the input parameters. Following, \cref{chap:swirler} presents the use of HDR in order to reduce the dimensionality of the input parameter space for a complex case: a swirler geometry. Using LES and Adaptative Mesh Refinements (AMR) the physic is captured with precision allowing assessing manufacturing dispersion coming from Additive Manufacturing (AM). This study allowed to find that the manufacturing tolerances could be reduced as the impact of additive manufacturing on the QoI was controlled. In~\cref{chap:optim}, the whole toolchain is used to perform a global optimization of the geometry of a heat exchanger---consisting in a ribbed tube. The Efficient Global Optimization (EGO) method was used to lower the computational cost of the study. The obtained surrogate model was then used to perform a UQ analysis. One of the main conclusions from this analysis is that the interaction effect between the pitch of the ribs and the emptiness ratio between the ribs was important. Finally, \cref{chap:psaap} briefly introduces a work in progress where the new sampling method is being used.
 
+% Perspectives
+
+The perspectives of this work are numerous. As outlined, lots of work has already been devoted to the definition of surrogate models and (re)sampling strategies. The cost of this construction of a surrogate can be address using multifidelity approach. Although an extensive litterature exists, novel approaches using deep learning appeared in~\cite{raissi2016}. A keep step of deep learning algorithms is the optimization of weights. During the past year, there has been an incentive toward Bayesian optimization to solve this problem. Thus, a novel interest in Bayesian model is foreseen.
+
+Another challenge is to take into account bifurcations in the physics. A bifurcation is a qualitative change of the behaviour of a system resulting from a small smooth change (contrary to an impulsion or Dirac) made to the parameter values. The identification of classes in the input space that lead to bifurcations in the output space can be achieved by expert knowledge or with a machine learning algorithm as proposed in~\cite{Dupuis2018}.
+
+% TODO finish
+But the visualization of uncertainties, and more generally the way to convey it in a useful way, is still an open question.
+
+
 % Impact and futur work
-This work has proven the feasibility of UQ in a LES context and more generally in a high computational environment. Distributing Batman openly, and thus all the novelty of this thesis work, has allowed a multitude of international collaborations with both institutional and industrial partners. On a methodological aspect, this work proposes new directions to explore. Lots of work has already been devoted to the definition of surrogate models and (re)sampling strategies. But the visualization of uncertainties, and more generally the way to convey it in a useful way, is still an open question. The treatment of uncertainties has become an important engineering and societal preoccupation. There are a wide range of mature solutions available and the challenge is toward educating people to use them. This thesis paves the way, not to a less uncertain world, but to a population more aware and empowered with uncertainty.
+
+This work has proven the feasibility of UQ in a LES context and more generally in a high computational environment. Distributing Batman openly, and thus all the novelty of this thesis work, has allowed a multitude of international collaborations with both institutional and industrial partners. On a methodological aspect, this work proposes new directions to explore. The treatment of uncertainties has become an important engineering and societal preoccupation. There are a wide range of mature solutions available and the challenge is toward educating people to use them---as outlined in~\cite{Saltelli2019}. This thesis paves the way, not to a less uncertain world, but to a population more aware and empowered with uncertainty.
+
+
+
+
+
+
+
+

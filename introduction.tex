@@ -328,7 +328,7 @@ Considering the general case of a functional QoI, the common idea of PC and GP a
 \end{align}
 where the coefficients $\gamma_{a,i}$ and the basis functions $\Psi_i$ are calibrated by the training set $\mathbf{X}^{N_s}$. The main difference between PC (Sect.~\ref{sec:PC}) and GP (Sect.~\ref{sec:GP}) approaches stands in the nature of these models: GP interpolates the training points and captures local variations, while PC is a regression method focusing on the global behaviour of the model. Basis functions and calibration methods also differ between these two approaches.
 
-\Cref{sec:POD} present the POD while \cref{sec:PC} and \cref{sec:GP} respectively defines the PC and the GP surrogate methods.
+\Cref{sec:POD} present the POD while \cref{sec:PC} and \cref{sec:GP} respectively defines the PC and the GP surrogate methods. An overview of methods combining several level of fidelity is done in~\cref{sec:evofusion}. Finally, in~\cref{sec:validation} we present quality metrics associated with surrogate models.
 
 %For PC expansion, the maximum order of the decomposition and the basis functions are first chosen, then a spectral projection strategy is implemented to compute the decomposition coefficients in the polynomial basis. The GP strategy is two-fold: the first step consists in transforming the sampled output space to an orthogonal one, eventually reducing its dimension; the second step consists in interpolating with a GP approach the principal components of this new space to express water level in the basis for any friction and discharge values. It should be noted that the GP model could be replaced by any other interpolator. 
 
@@ -455,7 +455,7 @@ As said beforehand, the hyperparameters are chosen as to maximize the marginal l
 p(y|x) = \int p(y|\mathbf{f}, x)p(\mathbf{f}|x)d\mathbf{f}.
 \end{align}
 \noindent In other words, maximizing this quantity will tend to reduce the confidence interval between each point. It is to be noted that along each direction of the parameters space, having different set of hyperparameters  is possible so that anisotropy can be taken into account.
-
+~
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth,keepaspectratio]{fig/literature/rasmussenGP.png}
@@ -463,7 +463,42 @@ p(y|x) = \int p(y|\mathbf{f}, x)p(\mathbf{f}|x)d\mathbf{f}.
 \label{fig:gp_prior-post}
 \end{figure}
 
+\bigskip
+\subsection{Multifidelity}\label{sec:evofusion}
 
+It is possible to combine several level of fidelity in order to lower the computational cost of the surrogate building process. The fidelity can be either expressed as a mesh difference, a convergence difference, or even a different set of solvers. Starting from~\cite{kennedy2000,kennedy2001}, there has been numerous studies on this topic---see these reviews~\cite{legratiet2013,peherstorfer2016,Fernandez2017}. All in all, multifidelity approaches are commonly used~\cite{padron2014,Wang2015,ahlfeld2016}.
+
+In~\cite{courrier2016}, an extensive review of the principal methods is presented. They concluded that the approach proposed by \cite{forrester2006} was robust and performant. Their method uses a low fidelity model and corrects it using a model of the error:
+\begin{align}
+\mathcal{M}(x) = \mathcal{M}_c(x) + \mathcal{M}_{\epsilon}(Y_e(x), Y_c(x)),
+\end{align}
+\noindent with $\mathcal{M}_{\epsilon}$ the surrogate model representing the error between the two fidelity levels. For this method to perform optimally, nested design of experiments are required for the error model to be computed.
+
+The process is explained in~\cref{fig:evofusion}. In this example, we seek to represent the model $\mathcal{M}_e$. We have at our disposal a limited number of evaluations $y_e$ of this model. Only using these sample produce a model which fails to predict the QoI for high values of the input parameter. On top of that, we have access to a model $Y_c$ with lots of samples due to its lower cost. Hence, we are able to predict with fidelity this model. Hence, the multifidelity approach allow to fix this low fidelity model with the few evaluations of the high fidelity model. This produces a surrogate model which exhibit the correct behaviour of the expensive model.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/literature/evofusion_forrester.pdf}
+\caption{Visualization of the multifidelity procedure on the analytical function of Forrester.}
+\label{fig:evofusion}
+\end{figure}
+
+Considering two levels of fidelity $Y_e$ and $Y_c$, respectively an expensive and a cheap function expressed as a computational cost. A cost ratio $\alpha$ between the two can be defined as:
+\begin{align}
+\alpha = \frac{Y_e}{Y_c}.
+\end{align}
+
+Using this cost relationship an setting a computational budget $C$, it is possible to get a relation between the number of cheap and expensive realizations:
+\begin{align}
+C Y_e &= N_e Y_e + N_c Y_c,\\
+C Y_e &= N_e Y_e + N_c\frac{\alpha}{Y_e},\\
+C &= N_e + N_c\alpha, \\
+N_c &= \frac{C - N_e}{\alpha}.
+\end{align}
+
+As the design being nested, the number of cheap experiments must be strictly superior to the number or expensive ones. Indeed, the opposite would result in no additional information to the system.
+
+Multifidelity approaches have not been used in this thesis work as the focus was set on other aspects.
 
 \subsection{Model Validation}\label{sec:validation}
 

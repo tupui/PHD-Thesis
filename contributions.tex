@@ -75,11 +75,11 @@ This online course has been run twice, and I have been presenting the live sessi
 
 \section{Description}
 
-\lettrine{D}{ue to} the increasing interest in UQ over the last decade, a significant number of UQ-dedicated tools/libraries are now available for the scientific community. OpenTURNS is an open-source (GNU LGPL) scientific library developed since 2005 by EDF, Airbus, Phimeca and IMACS and usable as a Python module dedicated to uncertainty treatment and reliability analysis in a structured industrial approach~\citep{Baudin2015}. OpenTURNS offers a wide catalogue of features for UQ (e.g.~PC expansion, \citeauthor{dutka2009}~\citeyear{dutka2009}) and benefits from a well-organized developers' and users' community (forum, training, user guides). It can either be used as a Python module or as a component within a coupling platform. For further information on the OpenTURNS library, the reader is referred to the online reference and use case guides. OpenTURNS is a powerful and complete statistical library but as being used operationally, it was not envisageable to directly implement new methodologies. Moreover, as coded in C++, the development time is known to be one order slower than with Python. Thus it has been decided that this thesis would rely on an in-house library.
+\lettrine{D}{ue to} the increasing interest in UQ over the last decade, a significant number of UQ-dedicated tools/libraries are now available for the scientific community. For example, OpenTURNS is a famous open-source (GNU LGPL) scientific library developed since 2005 by EDF, Airbus, Phimeca and IMACS and usable as a Python module dedicated to uncertainty treatment and reliability analysis in a structured industrial approach~\citep{Baudin2015}.
 
-Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) is an open source Python package dedicated to statistical analysis based on non-intrusive ensemble experiment~\cite{Roy2018b}. Batman library provides a convenient, modular and efficient framework for design of experiments, surrogate model and uncertainty quantification---see~\cref{fig:batman_workflow}. Batman relies on open source python packages dedicated to statistics (OpenTURNS and Scikit-Learn~\citep{pedregosa2011}). Batman handles the workflow for statistical analysis. It makes the most of HPC resources by managing asynchronous parallel tasks. The internal parallelism of each task does not conflict with batman's parallel environment. Batman analysis is launched from a \emph{command line interface} and a setting file. Batman functionalities can also be accessed through an API.
+OpenTURNS offers a wide catalogue of features for UQ (e.g.~PC expansion \cite{dutka2009}, \emph{Sobol'} indices, DoE) and benefits from a well-organized developers' and users' community (forum, training, user guides). It can either be used as a Python module or as a component within a coupling platform. For further information on the OpenTURNS library, the reader is referred to the online reference and use case guides. OpenTURNS is a powerful and complete statistical library but as being used operationally, it was not envisageable to directly implement new methodologies. Moreover, as coded in C++, the development time is known to be one order slower than with Python. Thus it has been decided that this thesis would rely on an available in-house library.
 
-Batman is CECILL-B licensed; it is actively developed and maintained by researchers at CERFACS through the GitLab platform:
+Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) is an open source Python package dedicated to statistical analysis based on non-intrusive ensemble experiment~\cite{Roy2018b} developed at CERFACS. Batman library provides a convenient, modular and efficient framework for design of experiments, surrogate model and uncertainty quantification---see~\cref{fig:batman_workflow}. Batman relies on open source python packages dedicated to statistics (OpenTURNS and Scikit-Learn~\citep{pedregosa2011}). Batman handles the workflow for statistical analysis. It makes the most of HPC resources by managing asynchronous parallel tasks. The internal parallelism of each task does not conflict with batman's parallel environment. Batman analysis is launched from a \emph{command line interface} and a setting file. Batman functionalities can also be accessed through an API. Batman is CECILL-B licensed; it is actively developed and maintained by researchers at CERFACS through the GitLab platform:
 \begin{align}
 \text{\href{https://gitlab.com/cerfacs/batman}{https://gitlab.com/cerfacs/batman}}	\nonumber
 \end{align}
@@ -115,14 +115,14 @@ The code is developed using a Test Driven Development (TDD) approach. Thus every
 
 Git versioning system is used through the web interface of Gitlab. It allows to manage the project with issues and milestones. The git branching model follows the \emph{gitflow} initiative. A \emph{master} branch is used for releases while a \emph{develop} branch incorporate the latest stable changes. For each new code, \emph{feature} branches are created. In order to synchronize to these branches, the code must have been reviewed by at least two trusted developers. Along with every synchronization of the branches on the server, Continuous Integration (CI) tools are used. All this process ensure that both \emph{master} and \emph{develop} branches are bug free, tested and documented.
 
-There is no fixed release cycle. When a new release is made on \emph{master}, builds are created for easy installation with both \emph{conda} and \emph{pip}.
-
-The implementation details are not further discussed and the reader may refer to the online documentation: 
-
+There is no fixed release cycle. When a new release is made on \emph{master}, builds are created for easy installation with both \emph{conda} and \emph{pip}. The reader may refer to the online documentation: 
 \begin{align}
 \text{\href{http://batman.readthedocs.io}{http://batman.readthedocs.io}}	\nonumber
 \end{align}
-    
+
+\section{Functionalities}
+
+% TODO batman functions
 
 \section{Dissemination}
 
@@ -197,7 +197,9 @@ Various expressions of the distance function $D$ allow to generate many differen
 \begin{align}
 D\left(\mathbf{x},\mathbf{x}^{(i)}\right)=\left(\sum_{j=1}^d |x_{j}-x_{ij}|^p\right)^{1/p},
 \end{align}
-where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star shape} for the PDF $f$, as shown in~\cref{fig:minkowsky} starting from one already selected sample ($N_s = 1$), and using $p=0.5$. In~\cref{fig:3d_kde}, three samples were already selected in a 3-dimensional parameter space. The star shape is visible in all dimensions, its branches interact with each other as shown in~\cref{fig:inter_kde} clearly illustrating the cumulative property of the PDFs. In this last case $\sigma=0.8$ to highlight this property.
+\noindent where $p$ is the order of the distance. Setting $p < 1$ leads to a \emph{star shape} for the PDF $f$, as shown in~\cref{fig:minkowsky} starting from one already selected sample ($N_s = 1$), and using $p=0.5$.
+
+In~\cref{fig:3d_kde}, three samples were already selected in a 3-dimensional parameter space. The star shape is visible in all dimensions, its branches interact with each other as shown in~\cref{fig:inter_kde} clearly illustrating the cumulative property of the PDFs. In this last case $\sigma=0.8$ to highlight this property.
 
 \begin{figure}[!ht]               
 \centering
@@ -268,8 +270,6 @@ As stated, $n_{gen}$ candidate samples are generated through MCMC. \Cref{fig:con
 
 % TODO also good for multifidelity designs
 
-
-% TODO property A, B with star. Do plot
 
 %\newpage
 \section{Results}
@@ -417,7 +417,7 @@ C & $2^d \displaystyle\prod_{i=1}^d x_i$ & 10\\
 
 %\cleardoublepage
 
-\section{Perspectives}
+\section{Advantages}
 
 Depending on the property sought, the combination of a Kernel and a metric allows an infinite number of possible customizations of the method.
 
@@ -484,13 +484,17 @@ The quality of the design is of prime importance as it determines the quality of
 \chapter{Resampling the Design of Experiments}\label{chap:resample}
 \section{Introduction}
 
-\lettrine{T}{he accuracy} of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space. The presented techniques show an improvement of the predictive quality of the model with high dimensional analytical input functions. An industrial application is targeted, the aerothermal flow around the \textit{LS89}~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented (see~\cref{chap:ls89}). LES are high-fidelity full 3D unsteady simulations. This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
+\lettrine{T}{he accuracy} of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space.
+
+Among the possibilities to refine a DoE, are the methods taking advantage of the QoI~\cite{Garud2017}. The methods presented are based on this principle, while constraining the hypercube to consider for refinement. Hence only a fraction of the original volume of the DoE is used in the optimization process to add a new sample. This technique is called LOO-$\sigma$. This technique can be further constrained using sensitivity information. It leads to the LOO-\textit{Sobol'} technique.
+
+The presented techniques show an improvement of the predictive quality of the model with high dimensional analytical input functions.
 
 \section{Presentation of the Methods}
 
-Aside from sequence designs that are intrinsically iterative, all designs can be increased step-by-step through several techniques. A natural way is to optimize the discrepancy or some other criteria such as the entropy or the distance between points~\cite{Fang2006}. These kinds of methods only take advantage of the position of the points in the parameter space. The expected quality of such method is, as expected (and from our testing, not presented in this work), at best close to a low discrepancy sequence. A complementary strategy consists in exploring the space using as few points as possible and then refine the exploration around interesting zones. In the work of~\cite{scheidt2006,braconnier2011}, they used detection of optima, nul gradients and also information about the Gaussian processes variance. This method is denoted hereafter $\sigma$ method. One caveat with crude $\sigma$ method is that points are preferentially added at boundaries of the parameter space. This is further described in~\cref{sec:delta-space}. This behaviour motivates the research of new refinement methods that would use this information without being constrained to boundaries.
+Aside from sequence designs that are intrinsically iterative, all designs can be increased step-by-step through several techniques. A natural way is to optimize the discrepancy or some other criteria such as the entropy or the distance between points~\cite{Fang2006}. These kinds of methods only take advantage of the position of the points in the parameter space. The expected quality of such method is, as expected (and from our testing, not presented in this work), at best close to a low discrepancy sequence.
 
-Aside from this baseline, two novel strategies---LOO-$\sigma$ and LOO-\textit{Sobol'}---have been developed and are presented in this work. The common strategy is detailed in~\cref{alg:refine}.
+A complementary strategy consists in exploring the space using as few points as possible and then refine the exploration around interesting zones. In the work of~\cite{scheidt2006,braconnier2011}, they used detection of optima, nul gradients and also information about the Gaussian processes variance. This method is denoted hereafter $\sigma$ method. One caveat with crude $\sigma$ method is that points are preferentially added at boundaries of the parameter space. This is further described in~\cref{sec:delta-space}. This behaviour motivates the research of new refinement methods that would use this information without being constrained to boundaries. Aside from this baseline, two novel strategies---LOO-$\sigma$ and LOO-\textit{Sobol'}---have been developed and are presented in this work. The common strategy is detailed in~\cref{alg:refine}.
 
 \begin{algorithm}
   \caption{Refinement strategy}
@@ -524,10 +528,10 @@ Global optimization of this indicator gives the new point to simulate~\cite{wale
 A LOO is performed on the model and highlights the point where the model is the most sensitive. The strategy here is to add a new point around it. The creation of the hypercube is described in \cref{sec:hypercube}. Within this hypercube, a global optimization over $\sigma$ is conduced giving the new point.
 
 \item  LOO-\textit{Sobol'}, \hfill\\
-Using the same steps as with the LOO-$\sigma$ method, the hypercube around the point is here truncated using prior information about \textit{Sobol'} total indices---see \cref{sec:uq}. For instance, in a 2-dimensional case if $S_{T_{x_1}} = 0.8, S_{T_{x_2}} = 0.2$, the hypercube will be shrunk by 80\% along $x_1$'s axis and by 20\% along $x_2$'s axis. The algorithm ensures indices to be bounded between 0.1 and 1. This prevents some dimensions to be squashed prematurely. The method requires that indices be close to convergence not to bias the result. However, the bias can be intentional depending on the insight we have about the case. 
+Using the same steps as with the LOO-$\sigma$ method, the hypercube around the point is here truncated using prior information about \textit{Sobol'} total indices---see \cref{sec:uq}. For instance, in a 2-dimensional case if $S_{T_{x_1}} = 0.8, S_{T_{x_2}} = 0.2$, the hypercube will be shrunk by 80\% along $x_1$'s axis and by 20\% along $x_2$'s axis. The algorithm ensures indices to be bounded between 0.1 and 1. This prevents some dimensions from being squashed prematurely. The method requires that indices be close to convergence not to bias the result. However, the bias can be intentional depending on the insight we have about the case. 
 
 \item  Hybrid.\hfill\\
-This last method consists of a navigator composed by any combination of the previous methods.
+This last method consists in a navigator composed by any combination of the previous methods.
 \end{itemize}
 
 The evaluation of the latter composite method is not presented in this work. Although the computation of the LOO metric is merely an attempt to characterize the model's global quality, this mainly serves to assess the surrogate model's stability. If the model's response surface is not affected by the removal of a particular point, it is interpreted as stability---or a non-sensitivity---of the model to this action. This technique aims at stabilizing the model.
@@ -544,18 +548,18 @@ To resample locally the parameter space, a hypercube is constructed around point
 \label{fig:hypercube}
 \end{figure}
 
-The hypercube is defined by the cartesian product of the intervals of the ${d}$ parameters \textit{i.e.} $[a_i, b_i]^{d}$. The constrained optimization problem consists in finding the coordinates of the hypercube, hence the problem writes
+The hypercube is defined by the cartesian product of the intervals of the ${d}$ parameters \textit{i.e.} $[a_i, b_i]^{d}$. The constrained optimization problem consists in finding the coordinates of the hypercube, hence the problem writes:
 \begin{align}
 \left\{\begin{array}{rc} \max  &\parallel (\mathbf{b} - \mathbf{a}) \parallel_{2} \\\mathcal{P} &\notin [a_i, b_i]^{d} \\ p &\in [a_i, b_i]^{d} \end{array}\right. .
 \end{align}
-A maximum cube-volume aspect ratio~\cite{smith1998} is also defined in order to preserve the locality. This gives the new constrain
+A maximum cube-volume aspect ratio~\cite{smith1998} is also defined in order to preserve the locality. This gives the new constrain:
 \begin{align}
 C : \sqrt[n]{\frac{\max (\mathbf{b} - \mathbf{a})}{\displaystyle\prod_{i = 1}^{d} \max (b_i - a_i)}} < \epsilon ,
 \end{align}
 with $\epsilon = 1.5$, set arbitrarily to prevent too elongated hypercubes. The global optimum is found using a two-step strategy: first, a discrete optimization using $\mathcal{P}$ gives an initial solution; second a basin-hopping algorithm~\cite{wales1997} finds the optimum coordinates of the hypercube.
 
 
-\section{Results}
+\section{Evaluation of the Methods}
 %\label{sec:results}
 
 The benefits and mechanisms of the methods are first evaluated on complex analytical functions. The chosen functions are defined in~\cref{sec:functions}. Then, the treatment of the parameter space's boundary is presented in~\cref{sec:delta-space}. Taking into account this issue, the analytical functions are tested in~\cref{sec:res-functions}.
@@ -601,7 +605,7 @@ The possibility to widen the space by a delta space has been evaluated to addres
 N_i\sim\mathcal{U} (20, 80) \quad \Delta_{space}\sim\mathcal{U} (0, 20\%),
 \end{align}
 
-with $N_i$ the number of initial snapshots and $\Delta_{space}$ the widening factor, the outer delta space. For each case $N_{i}$, it is only the proportion of the initial sample over the number of resample point that varies (see~\cref{fig:jpod-delta}). A fixed budget of $N_b = 80$ snapshots was considered. Then, the number of resampling points is equal to $N_{rs} = N_b - N_i$. The strategy used here was the $\sigma$ model (see~\cref{sec:doe}). After the resampling phase has been completed, the quality $Q_2$ of the model is computed. Applied to the \textit{Ishigami} function, $N_s$ simulations each performing $N_{b}$ evaluations have been used to construct the response surface. These results were compared to a case without resampling: $N_i = N_S = 80$. The resulting predictivity quality being $Q_2\simeq0.8$.
+\noindent with $N_i$ the number of initial snapshots and $\Delta_{space}$ the widening factor, the outer delta space. For each case $N_{i}$, it is only the proportion of the initial sample over the number of resample point that varies (see~\cref{fig:jpod-delta}). A fixed budget of $N_b = 80$ snapshots was considered. Then, the number of resampling points is equal to $N_{rs} = N_b - N_i$. The strategy used here was the $\sigma$ model (see~\cref{sec:doe}). After the resampling phase has been completed, the quality $Q_2$ of the model is computed. Applied to the \textit{Ishigami} function, $N_s$ simulations each performing $N_{b}$ evaluations have been used to construct the response surface. These results were compared to a case without resampling: $N_i = N_S = 80$. The resulting predictivity quality being $Q_2\simeq0.8$.
 
 \begin{figure}[!ht]
 \centering
@@ -710,7 +714,9 @@ Results are shown in~\cref{fig:methods-cv}. The $\sigma$ method appears to be on
 \end{figure*}
 
 The other two methods share the $\sigma$ strategy, but the variability is conditioned by the LOO point. Indeed, the former only uses inference about the predictive variance whereas LOO's methods take into account the observed quality of the model.
+
 LOO-\textit{Sobol'} is even more stable especially when the contribution of the parameters to the QoI is not even. The quality evolves quasi-linearly with the initial sample size. This is due to the initial guess on the indices. The closer the indices are converged, the better the sizing of the hypercube used by the $\sigma$ strategy. Indeed, some dimension of the hypercube could be neglected due to the indices. In the \textit{Rosenbrock} case the method behaves like LOO-$\sigma$, the importance factors are close enough so that this collapse of dimension does not occur. On the other hand, with the \textit{g-function} 4-D and \textit{g-function (i)} 11-D, the total order \textit{Sobol'} indices of the last input parameters are so small that the algorithm tends not to take into account these dimensions. Finally, for the \textit{g-function (ii)} 11-D case, more input parameters are active---meaning that their total order \textit{Sobol'} indices are greater than 0.1---, so that the improvement is not as important as with the \textit{g-function (i)} 11-D case. Still, better results are found compared to the $\sigma$ strategy. These results are comparable to the \textit{Rosenbrock} case where LOO-\textit{Sobol'} perform similarly to LOO-$\sigma$. Indeed, as the number of active parameters grows, improving the $Q_2$ would imply a better coverage of the parameter space. Thus, as the number of active dimension increases, it is expected that the optimal $Q_2$, for a given number of samples, would converge to the $Q_2$ given by the use of a low discrepancy sampling. At worst the low discrepancy sampling's $Q_2$ will be a lower bound for these methods. In realistic engineering applications, the importance of the relative contributions of the input parameters being most of the time unknown, these methods seem promising.
+
 For each function, as the initial sample gets close to the budget, the expected improvement is reduced. This is clear with the \textit{Ishigami} function. When the initial sample is too small, the model is so poor that the points are not added efficiently. On the contrary, if we add an insufficient number of points, the impact is close to none but still there is an improvement. From the other cases, the effect of the ratio of the initial learning sample size over the total budget is not so clear. In 2-D the impact is null and after that, a ratio $>0.5$ seems appropriate.
 
 Thus, setting aside the possible non-fitting of the data, improving the quality of the surrogate model by resampling the parameter space appears to be guaranteed in high dimensional cases and using no more than half of the budget.
@@ -826,18 +832,31 @@ While the \emph{Sobol'} indices quantify the importance of each parameter on the
 
 It appears that 3D-Kiviat plot becomes difficult to manipulate when the dimension of the input parameter increases ($>10$). To overcome this caveat, I have designed a method to generate a surface mesh of the Kiviat plot as shown in~\cref{fig:mesh}. This allows the use of regular CAD viewers and thus facilitates the manipulation of the 3D object as well as the comprehension of the data structure. The construction is based on a vertex-vertex representation using quadrilateral elements. %An animated version of~\cref{fig:mesh} is provided in~\cref{S3} with stacking with respect to the response variable value, colouring with respect to the HDR metric, then colouring with respect to the input parameters in~\cref{S4}. 
 
-\begin{figure}[!ht]
-\centering
-\includegraphics[width=0.6\linewidth,keepaspectratio]{fig/contributions/visu/mascaret_mesh_points.pdf}
-\caption{3-dimensional Kiviat in point representation stacking with respect to the response variable and colouring with respect to the input parameter.}%An animated version of this figure is available with stacking with respect to the response variable and colouring with respect to the HDR metric in~\hyperref[S3]{S3} and with respect to the input parameter in ~\hyperref[S4]{S4}.}
-\label{fig:mesh}
-\end{figure}
-
 The analysis from 3D-Kiviat is similar to that drawn from the parallel coordinates plot in~\Cref{fig:cobweb-Kiviat}. The latter consists of $n+1$ parallel axes, with $n=4$ the number of input parameters for the hydrodynamics dataset. The last axis is dedicated to the output value, here water level at Marmande. Each grey line corresponds to one realization in the dataset; the red lines are discriminated for high-water level values resulting from high $Q$ and small $Ks3$, independently of $Ks1$ and $Ks2$. It should be noted that parallel coordinate plot is not adapted to simultaneous representation of response variable and HDR metrics contrary to 3D-Kiviat. Finally, the linear relationship between water level and $Q$ that was clear on the 3D-Kiviat in not readable on the parallel coordinate plot that is more adapted to clustering with the possibility of advanced strategies proposed by~\citep{Claessen2011,Raidou2016}.
 
+%\begin{figure}[!ht]
+%\centering
+%\includegraphics[width=0.6\linewidth,keepaspectratio]{fig/contributions/visu/mascaret_mesh_points.pdf}
+%\caption{3-dimensional Kiviat in point representation stacking with respect to the response variable and colouring with respect to the input parameter.}%An animated version of this figure is available with stacking with respect to the response variable and colouring with respect to the HDR metric in~\hyperref[S3]{S3} and with respect to the input parameter in ~\hyperref[S4]{S4}.}
+%\label{fig:mesh}
+%\end{figure}
+
+\begin{figure}[!ht]               
+\centering
+\subfloat[]{
+\includegraphics[width=0.5\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/mascaret_mesh_points.pdf}}
+       
+\subfloat[]{
+\includegraphics[width=0.75\linewidth,height=\textheight,keepaspectratio]{fig/contributions/visu/mascaret_mesh_points-2.pdf}}
+\caption{3-dimensional Kiviat in point representation stacking with respect to the response variable and colouring with respect to the input parameter.}
+ \label{fig:mesh}
+\end{figure}
+
+
+
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/contributions/visu/mascaret_cobweb.pdf}
+\includegraphics[width=\linewidth,keepaspectratio]{fig/contributions/visu/mascaret_cobweb.pdf}
 \caption{Parallel coordinates plot for the hydrodynamics dataset with 80\% of the lowest values of response variable filtered out (in grey) and high values in red.}
 \label{fig:cobweb-Kiviat}
 \end{figure}
@@ -851,7 +870,7 @@ The specific case of a 2D input space is treated with a \emph{Tree plot} solutio
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=0.8\linewidth,keepaspectratio]{fig/contributions/visu/mascaret_tree.pdf}
+\includegraphics[width=0.9\linewidth,keepaspectratio]{fig/contributions/visu/mascaret_tree.pdf}
 \caption{Tree plot for the hydrodynamics dataset considering the most significant parameters $Ks3$ and $Q$. Here the response variable (water level at Marmande) is represented by stacked and coloured segments and HDR metric is represented by the azimutal component.}
 \label{fig:tree}
 \end{figure}
