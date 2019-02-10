@@ -20,17 +20,25 @@ These methods are applied on various complex configurations in the last part. Fi
 
 % Perspectives
 
-The perspectives of this work are numerous. As outlined, lots of work has already been devoted to the definition of surrogate models and (re)sampling strategies. The cost of this construction of a surrogate can be address using multifidelity approach. Although an extensive litterature exists, novel approaches using deep learning appeared in~\cite{raissi2016}. A keep step of deep learning algorithms is the optimization of weights. During the past year, there has been an incentive toward Bayesian optimization to solve this problem. Thus, a novel interest in Bayesian model is foreseen.
+% Models
+The perspectives of this work are numerous. I am presenting them under three subsections: \emph{(i)} surrogate models, \emph{(ii)} uncertainty tools and \emph{(iii)} visualization.
 
-Another challenge is to take into account bifurcations in the physics. A bifurcation is a qualitative change of the behaviour of a system resulting from a small smooth change (contrary to an impulsion or Dirac) made to the parameter values. The identification of classes in the input space that lead to bifurcations in the output space can be achieved by expert knowledge or with a machine learning algorithm as proposed in~\cite{Dupuis2018}.
+\begin{itemize}
+\item \emph{Surrogate models,}\hfill\\
+As outlined, lots of work has already been devoted to the definition of surrogate models and (re)sampling strategies. The cost of this construction of a surrogate can be address using multifidelity approach. Although an extensive litterature exists, novel approaches using deep learning appeared in~\cite{raissi2016}. The optimization of weights is a key step in deep learning algorithms. During the past years, there has been an incentive toward Bayesian optimization to solve this problem. But deep learning make use of large dataset which is a concern with Gaussian Process. Some effort are being done to improve the scalability~\cite{Wilson2015}. A novel interest in Bayesian model is foreseen, not only on an applicative point-of-view but also on more theoretical aspects. Another challenge is to take into account bifurcations in the physics. A bifurcation is a qualitative change of the behaviour of a system resulting from a small smooth change (contrary to an impulsion or Dirac) made to the parameter values. The identification of classes in the input space that lead to bifurcations in the output space can be achieved by expert knowledge or with  machine learning algorithms as proposed in~\cite{Dupuis2018}.
 
-% TODO finish
-But the visualization of uncertainties, and more generally the way to convey it in a useful way, is still an open question.
+\item \emph{Uncertainty tools,}\hfill\\
+Concerning the statistical tools to assess uncertainties, from the literature review it was shown that variance based methods have become a standard. Some improvements are still possible---as shown by~\cite{Saltelli2017} where the algorithm requires less samples to converge. More work is expected concerning moment-based indices. There are a lot of metrics that can be used to discriminate the conditional and unconditional density functions. There is a wide range of mature solutions available and the challenge, as outlined in~\cite{Saltelli2019}, is toward educating people to use them. Going further, the whole community would benefit from common and updated guidelines on how to handle uncertainties. This is one of the goal of the \emph{COST action} proposal: \emph{Model Auditing and Sensitivity Analysis}.
+
+\item \emph{Visualization,}\hfill\\
+As for the visualization of uncertainty, and more generally the way to convey it in a useful way, it is still an open question. The uncertainty community is lacking interest on the matter as opposed to the \emph{data visualization} community. Interesting work around uncertainty are being published but a link between the two community is still required. Linking uncertainty visualization with deep learning is even more challenging due to the curse-of-dimensionality.
+
+\end{itemize}
 
 
-% Impact and futur work
+% Impact
 
-This work has proven the feasibility of UQ in a LES context and more generally in a high computational environment. Distributing Batman openly, and thus all the novelty of this thesis work, has allowed a multitude of international collaborations with both institutional and industrial partners. On a methodological aspect, this work proposes new directions to explore. The treatment of uncertainties has become an important engineering and societal preoccupation. There are a wide range of mature solutions available and the challenge is toward educating people to use them---as outlined in~\cite{Saltelli2019}. This thesis paves the way, not to a less uncertain world, but to a population more aware and empowered with uncertainty.
+This work has proven the feasibility of UQ in a LES context and more generally in a high computational environment. Distributing Batman openly, and thus all the novelty of this thesis work, has allowed a multitude of international collaborations with both institutional and industrial partners. On a methodological aspect, this work proposes new directions to explore. The treatment of uncertainties has become an important engineering and societal preoccupation. This thesis paves the way, not to a less uncertain world, but to a population more aware and empowered with uncertainty.
 
 
 
