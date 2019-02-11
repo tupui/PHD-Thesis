@@ -54,7 +54,13 @@
 %\makeindex
 
 %\usepackage{diagbox}        % barre oblique table: \diagbox{en bas}{en haut}
+
+% Colors
 \definecolor{bleu}{rgb}{0.5,0.7,0.94}
+\definecolor{gray75}{gray}{0.75}
+%\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{Maroon}{cmyk}{0, 0.87, 0.68, 0.32}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
 
 \usepackage{algorithm,algorithmicx,algpseudocode}
 %\usepackage{listings}                % \begin{lstlisting}      
@@ -103,34 +109,29 @@
  
 
 % -------------------- Chapters/Parts ---------------------------
-\definecolor{gray75}{gray}{0.75}
-%\definecolor{webbrown}{rgb}{.6,0,0}
-\definecolor{Maroon}{cmyk}{0, 0.87, 0.68, 0.32}
-\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
 \usepackage{lettrine}
 \renewcommand{\LettrineFontHook}{\fontfamily{yfrak}\color[gray]{0.75}}
+%\usepackage{epigraph}
+
+\newenvironment{chapquote}{
+\selectlanguage{french}
+\begin{quotation} \itshape
+%\begin{flushright} - #2, \textit{#3}\end{flushright}
+}{\end{quotation} \selectlanguage{english}}
+
 
 \usepackage{titletoc,titlesec, blindtext}     % add table, changer look chapter etc.
 \newcommand{\hsp}{\hspace{20pt}}
 \titlespacing*{\chapter}{0pt}{0pt}{30pt}
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
  
- 
-%\titleformat{\chapter}[display]
-%  {\normalfont\sffamily\bfseries\LARGE}
-%  {\renewcommand{\thechapter}{\Roman{chapter}}\hspace*{0.5em}\colorbox{black}{%
-%    \parbox[c][1.2cm][c]{1cm}{%
-%      \centering\textcolor{white}  {\Huge\thechapter}}}}
-%  {-1ex}
-%  {\titlerule\vspace{.7ex}\filleft\MakeUppercase{#1}}
-%  [\vspace{.2ex}\titlerule] 
+
  
  
 \titleclass{\part}{top}
 %\titleformat{\part}{\centering\normalfont\Huge\bfseries}{\partname~\thepart -}{0pt}{}
 
 %\titleformat{\part}{\flushright \normalfont\Huge\bfseries}{\partname~\thepart \hsp}{0pt}{}
-
 
 \titleformat{\part}[display]
   {\flushright \normalfont\sffamily\bfseries\LARGE}
@@ -140,12 +141,8 @@
   {0pt}
   {\textcolor{Maroon}}
 
-%\renewcommand{\thechapter}{\Roman{chapter}}\hspace*{0.5em}}
-
-%\titlespacing*{\part}{0pt}{40pt}{40pt}
 
 \setcounter{secnumdepth}{5}	
-
 %\setcounter{tocdepth}{2}
 %\setcounter{secnumdepth}{3} %  3 <-> subsubsection
 
