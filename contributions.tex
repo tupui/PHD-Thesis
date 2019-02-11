@@ -151,6 +151,10 @@ Moreover, we are actively collaborating with academic and institutional partners
 
 \chapter{Constructing a Design of Experiments}\label{chap:doe}
 
+\begin{chapquote}
+Dans ce qui suit, je propose une nouvelle méthode de construction d'un DoE stochastique et itératif ---\thinspace nommé KDOE\thinspace--- basé sur une estimation de densité de noyau (KDE). Il s'agit d'un processus en deux étapes : \emph{(i)} les échantillons candidats sont générés en utilisant une chaîne de Markov basé sur un KDE, et \emph{(ii)} l'un d'eux est sélectionné en fonction de certaines métriques. La performance de la méthode est évaluée au moyen du critère de remplissage de l'espace à savoir une discrépance $C^2$. KDOE semble être aussi performant que les méthodes classiques non itératives en faible dimension, alors qu'il présente des performances accrues pour les espaces de paramètres à haute dimension. Ce travail propose une nouvelle méthodologie d'échantillonnage stochastique de l'espace des paramètres d'entrée permettant, de manière itérative, de prendre en compte toute contrainte, telle que des DoE non rectangulaires, des indices de sensibilité ou même des contraintes de qualité sur des sous-projections particulières comme dans~\citep{Joseph2015}. C'est une méthode polyvalente qui offre une alternative aux méthodes classiques et, en même temps, est facile à mettre en \oe uvre et offre une personnalisation basée sur l'objectif du DoE.
+\end{chapquote}
+
 \section{Introduction}
 
 \lettrine{I}{n} the following, I propose a new stochastic, iterative DoE ---\thinspace named KDOE\thinspace--- based on a modified Kernel Density Estimation (KDE). It is a two-step process: \emph{(i)} candidate samples are generated using MCMC based on KDE, and \emph{(ii)} one of them is selected based on some metric. The performance of the method is assessed by means of the $C^2$-discrepancy space-filling criterion. KDOE appears to be as performant as classical one-shot methods in low dimensions, while it presents increased performance for high-dimensional parameter spaces. This work proposes a new  methodology to stochastically sample the input parameter space iteratively allowing, at the same time, to take into account any constraint, such as non-rectangular DoE~\citep{Lekivetz2015}, sensitivity indices or even constraint on the quality on particular subprojections as in~\citep{Joseph2015}. It is a versatile method which offers an alternative to classical methods and, at the same time, is easy to implement and offers customization based on the objective of the DoE.
@@ -482,11 +486,20 @@ The quality of the design is of prime importance as it determines the quality of
 
 
 \chapter{Resampling the Design of Experiments}\label{chap:resample}
+
+\begin{chapquote}
+La précision d'une quantification d'incertitude étant directement corrélée à la qualité du modèle de substitution~\cite{iooss2010}, le présent travail vise à améliorer sa construction en utilisant deux nouvelles stratégies pour rééchantillonner l'espace des paramètres.
+
+Parmi les possibilités permettant de raffiner un DoE, on peut citer les méthodes tirant parti de la QoI~\cite{Garud2017}. Les méthodes présentées sont basées sur ce principe, tout en contraignant l'hypercube permettant le raffinement. Par conséquent, seule une fraction du volume original du DoE est utilisée dans le processus d'optimisation pour ajouter un nouvel échantillon. Cet hypercube réduit est construit en utilisant le résultat d'une procédure de LOO. Seule la zone entourant le point le plus critique est prise en compte. Cette technique s'appelle LOO-$\sigma$. Cette technique peut être encore plus limitée à l'aide d'informations sur la sensibilité. Ça mène à la technique LOO-\textit{Sobol'}.
+
+Les techniques présentées montrent une amélioration de la qualité prédictive du modèle avec des fonctions d'entrée analytiques de grande dimension.
+\end{chapquote}
+
 \section{Introduction}
 
-\lettrine{T}{he accuracy} of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space.
+\lettrine{T}{he accuracy} of an uncertainty quantification being directly correlated to the quality of the surrogate model~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space.
 
-Among the possibilities to refine a DoE, are the methods taking advantage of the QoI~\cite{Garud2017}. The methods presented are based on this principle, while constraining the hypercube to consider for refinement. Hence only a fraction of the original volume of the DoE is used in the optimization process to add a new sample. This technique is called LOO-$\sigma$. This technique can be further constrained using sensitivity information. It leads to the LOO-\textit{Sobol'} technique.
+Among the possibilities to refine a DoE, are the methods taking advantage of the QoI~\cite{Garud2017}. The methods presented are based on this principle, while constraining the hypercube to consider for refinement. Hence only a fraction of the original volume of the DoE is used in the optimization process to add a new sample. This reduced hypercube is build using the result of a LOO procedure. Only the area surrounding the most critical point is considered. This technique is called LOO-$\sigma$. This technique can be further constrained using sensitivity information. It leads to the LOO-\textit{Sobol'} technique.
 
 The presented techniques show an improvement of the predictive quality of the model with high dimensional analytical input functions.
 
@@ -730,12 +743,18 @@ By taking into account the physics in this process, the proposed methods will he
 
 \chapter{Uncertainty Visualization}\label{chap:visu}
 
+\begin{chapquote}
+Ce chapitre propose une solution pour visualiser des dimensions d'entrée et de sortie élevées. Cette solution s'appuie sur les HOPs appliqués à une surface de réponse fonctionnelle, les métriques HDR, et une version tridimensionnelle du Kiviat. Pour le 3D-Kiviat, chaque couche représente un résultat hypothétique (une réalisation) colorée par une valeur scalaire liée à une grandeur d'intérêt. Cette grandeur est soit la QoI à un point et à un instant donnés, soit une distance calculée à l'aide des mesures du RDH. Cette solution peut être complétée par une sonification des données pour tracer les métriques HDR.
+
+Le chapitre est rédigé comme suit : \cref{sec:uqvisu} présente une technique innovante pour visualiser les incertitudes de production basées sur f-HOPS avec sonification à partir de la métrique HDR. \Cref{sec:input} étend cette solution avancée à la visualisation des incertitudes d'entrée et de sortie en s'appuyant sur la représentation 3D-Kiviat augmentée de mesures HDR et de sonification. La~\cref{sec:visu_ccl} apporte des éléments de discussion et conclu sur ces travaux.
+\end{chapquote}
+
 \section{Introduction}
 
 \lettrine{T}{his chapter} proposes a solution to visualize high input and output dimensions. This solution relies on HOPs applied to functional response surface, HDR metrics,  and a 3-dimensional version of Kiviat plot. For the 3D-Kiviat, each layer stands for a hypothetical outcome (a realization) coloured by a scalar value related to the response variable. This value is either the response variable at a given point and time or some distance computed with the HDR metrics. This solution can be augmented with data sonification to traduce the HDR metrics.
 
 % Content
-The chapter is tailored as follows: \cref{sec:uqvisu} presents an innovative technique to visualize output uncertainties based on f-HOPS with sonification for HDR metrics. \Cref{sec:input} extends this advanced solution to both input and output uncertainties visualization building on 3D-Kiviat representation augmented with HDR metrics and sonification. Conclusion and discussion are finally given in~\cref{sec:visu_ccl}.
+The chapter is tailored as follows: \cref{sec:uqvisu} presents an innovative technique to visualize output uncertainties based on f-HOPS with sonification from HDR metrics. \Cref{sec:input} extends this advanced solution to both input and output uncertainties visualization building on 3D-Kiviat representation augmented with HDR metrics and sonification. Conclusion and discussion are finally given in~\cref{sec:visu_ccl}.
 
 
 \section{Uncertainty Visualization of Functional Output Data}

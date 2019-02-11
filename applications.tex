@@ -248,7 +248,13 @@ Those are crucial steps for the complementary use of surrogate models within dat
 
 \section{Introduction}
 
-\lettrine{T}{he number} of CFD simulations that is required for the formulation of the surrogate model is defined by the complexity of the physics and the number of input parameters to take into account. This factor is paramount when considering costly numerical simulations. As the accuracy of an uncertainty quantification being directly correlated to the quality of the surrogate~\cite{iooss2010}, the present study aims at improving its construction by using the two new strategies for resampling the parameter space (see~\cref{chap:resample}). An industrial application is targeted: the aerothermal analysis around the \textit{LS89} vane~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented. LES are high-fidelity full 3D unsteady simulations (see~\cref{sec:LES} for more details). This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
+\begin{chapquote}
+Le nombre de simulations CFD nécessaires à la formulation du modèle de substitution est défini par la complexité de la physique et le nombre de paramètres d'entrée à prendre en compte. La présente étude vise à améliorer sa construction en utilisant les deux nouvelles stratégies de rééchantillonnage de l'espace de paramètres présentées dans~\cref{chap:resample}. Une application industrielle est visée : l'analyse aérothermique autour de la pale \textit{LS89}. Une étude de quantification de l'incertitude a déjà été réalisée à l'aide de simulations RANS (\emph{Reynolds Averaged Navier-Stokes})~\cite{Gourdain2010,emory2016} mais la première analyse UQ utilisant la Simulation aux Grandes Échelles (SGE) est présentée ici. Les SGE sont des simulations instationnaires 3D haute fidélité (voir~\cref{sec:SGE} pour plus de détails). Cette approche entraîne un coût CPU élevé qui nécessite l'utilisation de ressources HPC (\emph{High Performance Computing}).
+
+Le chapitre est rédigé comme suit : \cref{sec:ls89_case} présente le montage expérimental tandis que \cref{sec:ls89_num} présente la configuration de la simulation numérique. Enfin, \cref{sec:ls89_results} présente les résultats de l'analyse UQ.
+\end{chapquote}
+
+\lettrine{T}{he number} of CFD simulations that is required for the formulation of the surrogate model is defined by the complexity of the physics and the number of input parameters to take into account. The present study aims at improving its construction by using the two new strategies for resampling the parameter space presented in~\cref{chap:resample}. An industrial application is targeted: the aerothermal analysis around the \textit{LS89} vane~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented. LES are high-fidelity full 3D unsteady simulations (see~\cref{sec:LES} for more details). This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
 
 The chapter is tailored as follows; \cref{sec:ls89_case} presents the experimental setup while \cref{sec:ls89_num} presents its numerical simulation configuration. Finally, \cref{sec:ls89_results}  presents the results of the UQ.
 
@@ -427,13 +433,13 @@ The response surfaces of the models are plotted in \cref{fig:ls89-RS}. The heat 
 \begin{figure*}[!ht]
 \centering
 \subfloat[\textit{Sobol'} sequence]{
-\includegraphics[width=0.449\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12a_2column_color-online-only_response_ls89_sobol.pdf}}
+\includegraphics[width=0.55\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12a_2column_color-online-only_response_ls89_sobol.pdf}}
 
 \subfloat[$\sigma$ method]{
-\includegraphics[width=0.449\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12b_2column_color-online-only_response_ls89_sigma.pdf}}
+\includegraphics[width=0.55\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12b_2column_color-online-only_response_ls89_sigma.pdf}}
 
 \subfloat[LOO-\textit{Sobol'} method]{
-\includegraphics[width=0.449\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12c_2column_color-online-only_response_ls89_loo-sobol.pdf}}
+\includegraphics[width=0.55\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12c_2column_color-online-only_response_ls89_loo-sobol.pdf}}
 \caption{Heat Transfer coefficient response surface. DoE is initially composed of 16 simulations sampled with \textit{Sobol'} sequence. Dots represent the initial LES simulations and diamonds represent the resampled points.}
 \label{fig:ls89-RS}
 \end{figure*}
@@ -491,12 +497,12 @@ A first Uncertainty Quantification LES study of the \textit{LS89} is presented. 
 \label{fig:sketch-swirler}
 \end{figure}
 
-To help in the development of future engines, numerical simulations---and here Computational Fluid Dynamics (CFD) simulations---, have undoubtedly become reliable and essential design tools~\cite{Sacks1989,forrester2009}. Recently, the use of Large Eddy Simulations (LES) coupled with a mesh adaptation strategy has demonstrated its capacity to identify the relevant physics of swirling flows \cite{Daviller2017}. 
-From expert knowledge, the design of a swirler proceeds in three steps: (\emph{i})~an exploratory phase is first performed using Reynolds-averaged Navier-Stokes (RANS) computations; (\emph{ii})~the resulting possible geometries installed in the combustion chamber are simulated using LES of turbulent combustion; (\emph{iii}) prototypes are manufactured and tests are performed. The first step allows exploring a large range of possibilities in terms of geometrical modifications (angles, number of channels, etc.) to meet requirements such as the swirl number, effective surface and permeability. The second step is performed to assess the combustion stability and the combustor performances in various operating conditions. Finally, experiments are conducted to finalize the design.
+To help in the development of future engines, numerical simulations---and here CFD simulations---, have undoubtedly become reliable and essential design tools~\cite{Sacks1989,forrester2009}. Recently, the use of LES coupled with a mesh adaptation strategy has demonstrated its capacity to identify the relevant physics of swirling flows \cite{Daviller2017}. 
+From expert knowledge, the design of a swirler proceeds in three steps: (\emph{i})~an exploratory phase is first performed using RANS computations; (\emph{ii})~the resulting possible geometries installed in the combustion chamber are simulated using LES of turbulent combustion; (\emph{iii}) prototypes are manufactured and tests are performed. The first step allows exploring a large range of possibilities in terms of geometrical modifications (angles, number of channels, etc.) to meet requirements such as the swirl number, effective surface and permeability. The second step is performed to assess the combustion stability and the combustor performances in various operating conditions. Finally, experiments are conducted to finalize the design.
 
 For this last step, metal Additive Manufacturing (AM)~\cite{Frazier2014,Sames2016} is now in use. The AM technology has gained a lot of attention as it does not impose any constraint from the design point of view without sacrificing mechanical properties~\cite{Lewandowski2016}. However, AM induces some uncertainties regarding the structural composition of the produced metallic systems, making this an active topic of research. In particular, geometrical uncertainties may result from the deposition method, the scanning method or even the powder size. Moreover, due to the complexity of some designs, it might not be possible to polish surfaces using standard mills. This may leave some defects which size depends on the quality of the whole process.
 
-The present study aims to measure the effect of AM on the fluid motion. This is achieved through Uncertainty Quantification (UQ)~\cite{iooss2016} based on LES with varying geometry. A Principal Component Analysis (POD) is first performed to build a reduced parameter space allowing taking into account all design variables. Then, uncertainties on the design variables are propagated in a series of 30 LES, providing summary statistics.
+The present study aims to measure the effect of AM on the fluid motion. This is achieved through UQ~\cite{iooss2016} based on LES with varying geometry. A POD is first performed to build a reduced parameter space allowing taking into account all design variables. Then, uncertainties on the design variables are propagated in a series of 30 LES, providing summary statistics.
 
 The chapter is organized as follows: \cref{sec:swirler} presents the studied configuration as well as the LES numerical setup. \Cref{sec:dim} details the methodology used to reduce the parameter space. Results of the UQ study are then presented and analysed in  \cref{sec:res} and \cref{sec:disc}, respectively.
 
