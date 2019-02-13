@@ -76,7 +76,7 @@ This online course has been run twice, and I have been presenting the live sessi
 \begin{chapquote}
 En raison de l'intérêt croissant pour la UQ au cours de la dernière décennie, un nombre important d'outils/bibliothèques dédiés à la UQ sont maintenant disponibles pour la communauté scientifique. Par exemple, OpenTURNS est une importante bibliothèque scientifique open-source (GNU LGPL) développée par EDF, Airbus, Phimeca et IMACS et utilisable comme module Python dédié au traitement des incertitudes et aux analyses de fiabilité dans une approche industrielle~\citep{Baudin2015}.
 
-Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) est un paquet Python open source dédié à l'analyse statistique basée sur une approche non intrusive~\cite{Roy2018b} développé au CERFACS. La bibliothèque Batman fournit un cadre pratique, modulaire et efficace pour la conception de DoE, de modèle de substitution et pour la quantification de l'incertitude -- voir~\cref{fig:batman_workflow}. Batman s'appuie sur des paquets python open source dédiés aux statistiques (OpenTURNS et Scikit-Learn~\citep{pedregosa2011}). Batman est sous licence CECILL-B ; il est activement développé et maintenu par les chercheurs du CERFACS via la plateforme GitLab. 
+Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) est un paquet Python open source dédié à l'analyse statistique basée sur une approche non intrusive~\cite{Roy2018b} développé au CERFACS. La bibliothèque Batman fournit un cadre pratique, modulaire et efficace pour la conception de DoE, de modèle de substitution et pour la quantification de l'incertitude -- voir~\cref{fig:batman_workflow}. Batman s'appuie sur des paquets python open sources dédiés aux statistiques (OpenTURNS et Scikit-Learn~\citep{pedregosa2011}). Batman est sous licence CECILL-B ; il est activement développé et maintenu par les chercheurs du CERFACS via la plateforme GitLab. 
 
 Ce chapitre présente Batman, de sa genèse à son utilisation ainsi que quelques fonctionnalités clés.
 \end{chapquote}
@@ -85,7 +85,7 @@ Ce chapitre présente Batman, de sa genèse à son utilisation ainsi que quelque
 
 \lettrine{D}{ue to} the increasing interest in UQ over the last decade, a significant number of UQ-dedicated tools/libraries are now available for the scientific community. For example, OpenTURNS is a famous open-source (GNU LGPL) scientific library developed since 2005 by EDF, Airbus, Phimeca and IMACS and usable as a Python module dedicated to uncertainty treatment and reliability analysis in a structured industrial approach~\citep{Baudin2015}.
 
-OpenTURNS offers a wide catalogue of features for UQ (e.g.~PC expansion \cite{dutka2009}, \emph{Sobol'} indices, DoE) and benefits from a well-organized developers' and users' community (forum, training, user guides). It can either be used as a Python module or as a component within a coupling platform. For further information on the OpenTURNS library, the reader is referred to the online reference and use case guides. OpenTURNS is a powerful and complete statistical library but as being used operationally, it was not envisageable to directly implement new methodologies. Moreover, as coded in C++, the development time is known to be one order slower than with Python. Thus it has been decided that this thesis would rely on an available in-house library.
+OpenTURNS offers a wide catalogue of features for UQ (e.g.~PC expansion \cite{dutka2009}, \emph{Sobol'} indices, DoE) and benefits from a well-organized developers' and users' community (forum, training, user guides). It can either be used as a Python module or as a component within a coupling platform. For further information on the OpenTURNS library, the reader is referred to the \href{http://openturns.github.io/openturns/master/contents.html}{online reference} and use case guides. OpenTURNS is a powerful and complete statistical library but as being used operationally, and being in a research mode thus inheritating from existing developments at CERFACS, it was not envisageable to directly implement new methodologies. Moreover, as coded in C++, the development time is known to be one order slower than with Python. Thus it has been decided that this thesis would rely on an available in-house library.
 
 Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) is an open source Python package dedicated to statistical analysis based on non-intrusive ensemble experiment~\cite{Roy2018b} developed at CERFACS. Batman library provides a convenient, modular and efficient framework for design of experiments, surrogate model and uncertainty quantification---see~\cref{fig:batman_workflow}. Batman relies on open source python packages dedicated to statistics (OpenTURNS and Scikit-Learn~\citep{pedregosa2011}). Batman handles the workflow for statistical analysis. It makes the most of HPC resources by managing asynchronous parallel tasks. The internal parallelism of each task does not conflict with batman's parallel environment. Batman analysis is launched from a \emph{command line interface} and a setting file. Batman functionalities can also be accessed through an API. Batman is CECILL-B licensed; it is actively developed and maintained by researchers at CERFACS through the GitLab platform:
 \begin{align}
@@ -99,7 +99,9 @@ Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) is 
 \label{fig:batman_workflow}
 \end{figure}
 
-This project, and the code related, were started in 2007 at CERFACS under the name JPOD (Jack Proper Orthogonal Decomposition) by T. Braconnier and M. Ferrier, which were supervised by J-C. Jouhaud and J-F. Boussuge. During 5 years, the code has been successfully tested and validated on industrial configurations during the European SimSAC and ALEF (FP7) projects. Then, the project has been dormant until 2015 when Romain Dupuis (PhD student supervised by J-C. Jouhaud) started to be interested in Surrogate Models for aerothermal predictions. After that, in 2016, Uncertainty Quantification capabilities were added by me leading to the new name: Batman. On November, 23th 2017 the UQ team of CERFACS have decided to release the code on GitLab as open-source under the CECILL-B free software license agreement.
+This project, and the code related, was initiated in 2007 at CERFACS under the name JPOD (Jack Proper Orthogonal Decomposition) by T. Braconnier and M. Ferrier, which were supervised by J-C. Jouhaud and J-F. Boussuge. During 5 years, the code has been successfully tested and validated on industrial configurations during the European SimSAC and ALEF (FP7) projects.
+
+The project has been dormant until 2015 when Romain Dupuis (PhD student supervised by J-C. Jouhaud) started to be interested in surrogate models for aerothermal predictions. Around the same time, an UQ axis was started at CERFACS. After that, in 2016, Uncertainty Quantification capabilities were added by me leading to the new name: Batman. On November, 23th 2017 the UQ team of CERFACS have decided to release the code on GitLab as open-source under the CECILL-B free software license agreement.
 
 The following people have been core contributors to batman's development and maintenance:
 
@@ -117,11 +119,11 @@ The following people have been core contributors to batman's development and mai
 
 \section{Implementation}
 
-The library is developed in Python 3.x and the code is compatibility with legacy Python (2.7.x). The code is structured by an object oriented approach by using class. This allows to connect Batman with all Python's ecosystem.
+The library is developed in Python 3.x and the code is compatibility with legacy Python (2.7.x). The code is structured by an object oriented approach by using classes. This allows to connect Batman with all Python's ecosystem.
 
 The code is developed using a Test Driven Development (TDD) approach. Thus every function and class is tested by unit-tests, system tests and integration tests. Moreover, programming style standards are respected meaning that the code is completely documented and should be maintainable with low effort.
 
-Git versioning system is used through the web interface of Gitlab. It allows to manage the project with issues and milestones. The git branching model follows the \emph{gitflow} initiative. A \emph{master} branch is used for releases while a \emph{develop} branch incorporate the latest stable changes. For each new code, \emph{feature} branches are created. In order to synchronize to these branches, the code must have been reviewed by at least two trusted developers. Along with every synchronization of the branches on the server, Continuous Integration (CI) tools are used. All this process ensure that both \emph{master} and \emph{develop} branches are bug free, tested and documented.
+Git versioning system is used through the web interface of Gitlab. It allows to manage the project with issues and milestones. The git branching model follows the \emph{gitflow} initiative. A \emph{master} branch is used for releases while a \emph{develop} branch incorporates the latest stable changes. For each new code, \emph{feature} branches are created. In order to synchronize to these branches, the code must have been reviewed by at least two trusted developers. Along with every synchronization of the branches on the server, Continuous Integration (CI) tools are used. All these processes ensure that both \emph{master} and \emph{develop} branches are bug free, tested and documented.
 
 There is no fixed release cycle. When a new release is made on \emph{master}, builds are created for easy installation with both \emph{conda} and \emph{pip}. The reader may refer to the online documentation: 
 \begin{align}
@@ -198,7 +200,7 @@ Since batman was publicly made available in 2017, we have been using it with ind
 \item Total.
 \end{itemize}
 
-Moreover, we are actively collaborating with academic and institutional partners:
+Moreover, we are collaborating with academic and institutional partners:
 
 \begin{itemize}
 \item Stanford University,
@@ -215,20 +217,26 @@ Moreover, we are actively collaborating with academic and institutional partners
 \chapter{Constructing a Design of Experiments}\label{chap:doe}
 
 \begin{chapquote}
-Dans ce qui suit, je propose une nouvelle méthode de construction d'un DoE stochastique et itératif ---\thinspace nommé KDOE\thinspace--- basé sur une estimation de densité de noyau (KDE). Il s'agit d'un processus en deux étapes : \emph{(i)} les échantillons candidats sont générés en utilisant une chaîne de Markov basé sur un KDE, et \emph{(ii)} l'un d'eux est sélectionné en fonction de certaines métriques. La performance de la méthode est évaluée au moyen du critère de remplissage de l'espace à savoir une discrépance $C^2$. KDOE semble être aussi performant que les méthodes classiques non itératives en faible dimension, alors qu'il présente des performances accrues pour les espaces de paramètres à haute dimension. Ce travail propose une nouvelle méthodologie d'échantillonnage stochastique de l'espace des paramètres d'entrée permettant, de manière itérative, de prendre en compte toute contrainte, telle que des DoE non rectangulaires, des indices de sensibilité ou même des contraintes de qualité sur des sous-projections particulières comme dans~\citep{Joseph2015}. C'est une méthode polyvalente qui offre une alternative aux méthodes classiques et, en même temps, est facile à mettre en \oe uvre et offre une personnalisation basée sur l'objectif du DoE.
+Dans ce qui suit, je propose une nouvelle méthode de construction d'un DoE stochastique et itératif ---\thinspace nommé KDOE\thinspace--- basé sur une estimation de densité de noyau (KDE). Il s'agit d'un processus en deux étapes : \emph{(i)} les échantillons candidats sont générés en utilisant une chaîne de Markov basé sur un KDE, et \emph{(ii)} l'un d'eux est sélectionné en fonction de certaines métriques. La performance de la méthode est évaluée au moyen du critère de remplissage de l'espace à savoir une discrépance $C^2$.
+
+KDOE semble être aussi performant que les méthodes classiques non itératives en faible dimension, alors qu'il présente des performances accrues pour les espaces de paramètres à haute dimension.
+
+Ce travail propose une nouvelle méthodologie d'échantillonnage stochastique de l'espace des paramètres d'entrée permettant, de manière itérative, de prendre en compte toute contrainte, telle que des DoE non rectangulaires, des indices de sensibilité ou même des contraintes de qualité sur des sous-projections particulières comme dans~\citep{Joseph2015}.
+
+C'est une méthode polyvalente qui offre une alternative aux méthodes classiques et, en même temps, est facile à mettre en \oe uvre et offre une personnalisation basée sur l'objectif du DoE.
 \end{chapquote}
 
 \section{Introduction}
 
-\lettrine{I}{n} the following, I propose a new stochastic, iterative DoE ---\thinspace named KDOE\thinspace--- based on a modified Kernel Density Estimation (KDE). It is a two-step process: \emph{(i)} candidate samples are generated using MCMC based on KDE, and \emph{(ii)} one of them is selected based on some metric. The performance of the method is assessed by means of the $C^2$-discrepancy space-filling criterion. KDOE appears to be as performant as classical one-shot methods in low dimensions, while it presents increased performance for high-dimensional parameter spaces. This work proposes a new  methodology to stochastically sample the input parameter space iteratively allowing, at the same time, to take into account any constraint, such as non-rectangular DoE~\citep{Lekivetz2015}, sensitivity indices or even constraint on the quality on particular subprojections as in~\citep{Joseph2015}. It is a versatile method which offers an alternative to classical methods and, at the same time, is easy to implement and offers customization based on the objective of the DoE.
+\lettrine{I}{n} the following, a new stochastic, iterative DoE ---\thinspace named KDOE\thinspace--- based on a modified Kernel Density Estimation (KDE) is presented. It is a two-step process: \emph{(i)} candidate samples are generated using MCMC based on KDE, and \emph{(ii)} one of them is selected based on some metric. The performance of the method is assessed by means of the $C^2$-discrepancy space-filling criterion. KDOE appears to be as performant as classical one-shot methods in low dimensions, while it presents increased performance for high-dimensional parameter spaces. This work proposes a new  methodology to stochastically sample the input parameter space iteratively allowing, at the same time, to take into account any constraint, such as non-rectangular DoE~\citep{Lekivetz2015}, sensitivity indices or even constraint on the quality on particular subprojections as in~\citep{Joseph2015}. It is a versatile method which offers an alternative to classical methods and, at the same time, is easy to implement and offers customization based on the objective of the DoE.
 
 \section{Presentation of the Method}\label{sec:method}
 
 In its basis form, the adaptive sampling strategy consists in adding a point far from the existing points in the parameter space. The notion of distance corresponds to a measure of discrepancy. However, instead of considering the whole hypercube, the technique proposed only focuses on empty regions defined using an Exclusion Field (EF). This exclusion field describes the probability of selecting a new point depending on its position.
 
-By means of utilizing EF, it becomes possible to generate new samples that are located preferentially in these empty regions. Then, out of the $n_{gen}$ generated samples from the EF, the one that leads to the best value of some criterion is selected. It is to be noted that there is no optimization process in the sense that it is just a selection process based on probable samples of the EF. The whole process ensures randomness in the generation of the parameter space. Its algorithm is shown in~\cref{alg:doe}. %Hereafter, this method is referred to as the KDOE method.
+By means of utilizing EF, it becomes possible to generate new samples that are located preferentially in these empty regions. Then, out of the $n_{gen}$ generated samples from the EF, the one that leads to the best value of some criterion is selected. It is to be noted that there is no optimization process in the sense that it is just a selection process based on probable samples of the EF. The whole process ensures randomness in the generation of the parameter space.
 
-\Cref{sec:kde} introduces the EF, and \cref{sec:sample} describes the sampling procedure from the EF. Agorithm \ref{alg:doe} gives an overview of the method. In the following, it is referred to as the Kernel-DoE (KDOE) method. 
+\Cref{sec:kde} introduces the EF, and \cref{sec:sample} describes the sampling procedure from the EF. In the following, the method is referred to as the Kernel-DoE (KDOE) method and is presented in~\cref{alg:doe}.
 
 \begin{algorithm}
   \caption{Sampling Strategy: Kernel-DoE}
@@ -283,7 +291,7 @@ In~\cref{fig:3d_kde}, three samples were already selected in a 3-dimensional par
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.7\linewidth,keepaspectratio]{fig/contributions/doe/3d_star.png}
-\caption{Scatter plot representation of a 3-dimensional PDF with three points already set in the parameter space. Points represents an iso value of probability.}
+\caption{Scatter plot representation of a 3-dimensional PDF with three points already set in the parameter space. Points represent an iso value of probability.}
 \label{fig:3d_kde}
 \end{figure}
 
@@ -291,7 +299,7 @@ In~\cref{fig:3d_kde}, three samples were already selected in a 3-dimensional par
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.8\linewidth,keepaspectratio]{fig/contributions/doe/kde_inter.pdf}
-\caption{Cumulative effects on the probability density function in a 2-dimensional parameter space. \emph{Dots} represent 2 existing samples.}
+\caption{Cumulative effects on the probability density function in a 2-dimensional parameter space. The \emph{dots} represent 2 existing samples.}
 \label{fig:inter_kde}
 \end{figure}
 
@@ -300,10 +308,9 @@ In~\cref{fig:3d_kde}, three samples were already selected in a 3-dimensional par
 
 %Using the modified version of the KDE, it is possible to generate samples following the posterior distribution.
 
-The classical way to sample from a PDF is to use the inverse transform sampling method. However, finding the inverse cumulative distribution function of a complex PDF can be computationally intensive ---\thinspace the cost increases with dimensionality. The \emph{Metropolis-Hasting}~\citep{Hastings1979} MCMC algorithm was selected as an efficient way to sample from $f$. Contrary to methods such as HMC or NUTS~\citep{Hoffman2011}, it does not require the calculation of the gradient of the log-probability density function, which is a costly operation. This algorithm provides a random walk of the parameter space that converges toward the target PDF.
+The classical way to sample from a PDF is to use the inverse transform sampling method. However, finding the inverse cumulative distribution function of a complex PDF can be computationally intensive ---\thinspace the cost increases with dimensionality. The \emph{Metropolis-Hasting}~\citep{Hastings1979} MCMC algorithm was selected as an efficient way to sample from $f$. Contrary to methods such as HMC or NUTS~\citep{Hoffman2011}, it does not require the calculation of the gradient of the log-probability density function, which is a costly operation. This algorithm provides a random walk of the parameter space that converges toward the targetted PDF.
 
-%Using an arbitrary distribution $g(\mathbf{x}|\mathbf{y})$, a new candidate $\mathbf{x}$ is evaluated based on the previous point $\mathbf{y}$. This property makes it a \emph{Markov Chain} as the current value is only conditioned by the previous one. The distribution $g$ is chosen as a Gaussian PDF so that samples close to the previous one are preferably sampled. This algorithm provides a random walk of the parameter space that converges toward the target PDF.
-
+Using an arbitrary distribution $g(\mathbf{x}|\mathbf{y})$, a new candidate $\mathbf{x}$ is evaluated based on the previous point $\mathbf{y}$. This property makes it a \emph{Markov Chain} as the current value is only conditioned by the previous one. The distribution $g$ is chosen as a Gaussian PDF so that samples close to the previous one are preferably sampled. This algorithm provides a random walk of the parameter space that converges toward the target PDF.
 
 \Cref{fig:sample_kde} shows an example with two initial points already selected in the hypercube $[0, 1]^2$. Based on these two points (\emph{dots}), $f$ is built and new samples are drawn (\emph{squares}) using the MCMC method.
 
@@ -382,7 +389,7 @@ Moving on to two standard deviation ($2\sigma$) ---\thinspace see~\cref{fig:conv
 \newpage
 
 
-\Cref{fig:conv-dim-100} presents the convergence analysis of the $C^2$-discrepancy as function of the number of dimensions for $N_s = 100$. When the dimensionality increases, the gain with both LHS and \emph{Sobol'} sequences is close to zero. On the contrary, OLHS seems to stabilize around a 30\% improvement. Regarding KDOE, it performs equally with other methods up to $d \lesssim 20$, while for $d \gtrsim 20$ it becomes more performant. It can be seen that the method has not yet reached its minimum at $d = 40$.
+\Cref{fig:conv-dim-100} presents the convergence analysis of the $C^2$-discrepancy as a function of the number of dimensions for $N_s = 100$. When the dimensionality increases, the gain with both LHS and \emph{Sobol'} sequences is close to zero. On the contrary, OLHS seems to stabilize around a 30\% improvement. Regarding KDOE, it performs equally with other methods up to $d \lesssim 20$, while for $d \gtrsim 20$ it becomes more performant. It can be seen that the method has not yet reached its minimum at $d = 40$.
 
 \begin{figure}[!ht]
 \centering
@@ -413,6 +420,8 @@ In terms of $C^2$-discrepancy, KDOE appears to perform better with respect to cr
 
 
 \subsection{Integration Convergence}
+
+As stated previously in~\cref{sec:doe}, integrating a multidimensional function require the use of a performant DoE. It can be assimilated to a discrepancy criterion.
 
 Even if this method is not designed for integral evaluation, its performance is evaluated on small numbers of samples up to 512. The number of evaluations has been restricted as the purpose of the method is to generate a small design in high dimensions. Also, the use of an iterative method to generate such sample can be questioned due to the resulting computational cost. Moreover, although this method can be used to continue an existing design created using another technique, such possibility was not evaluated in the following. In~\citep{Kucherenko2015}, convergence plots are presented in order to assess the performance of \emph{Sobol'} sequence versus LHS and \emph{Monte-Carlo} sampling. The functions used are categorized into types A, B and C. These categories state how the variables are important with respect to the function output:
 \begin{description}
@@ -483,9 +492,9 @@ C & $2^d \displaystyle\prod_{i=1}^d x_i$ & 10\\
 
 \section{Advantages}
 
-Depending on the property sought, the combination of a Kernel and a metric allows an infinite number of possible customizations of the method.
+Depending on the property sought, the combination of a Kernel and a metric allows for an infinite number of possible customizations of the method.
 
-Using the Minkowsky distance as a metric, the LHS constraint is not strict which can be useful when dealing with discrete parameters. Indeed, strict LHS would prevent having more than one sample per discrete parameter. In~\cref{fig:lhs_const}(a), an additional constraint is added to strongly limit the probability to 0 when the $L_{-\infty}$-norm is inferior to a threshold. This limitation can be restricted to a domain of influence using an additional $L_2$-norm constrain (\cref{fig:lhs_const}(b)). Hence, the presented method acts as an iterative LHS strategy.
+Using the Minkowsky distance as a metric, the LHS constraint is not strict which can be useful when dealing with discrete parameters. Indeed, strict LHS would prevent from having more than one sample per discrete parameter. In~\cref{fig:lhs_const}(a), an additional constraint is added to strongly limit the probability to 0 when the $L_{-\infty}$-norm is inferior to a threshold. This limitation can be restricted to a domain of influence using an additional $L_2$-norm constrain (\cref{fig:lhs_const}(b)). Hence, the presented method acts as an iterative LHS strategy.
 
 
 
@@ -527,9 +536,9 @@ The ability to change the selection criterion is even more useful. With a prior 
 \label{fig:sensitivity}
 \end{figure}
 
-Last but not least, this method can be used to generate designs by mixing continuous and discrete variables. The star shape of the kernel does not forbid the presence of a new sample along a given axis, it lower its probability of being sampled up to a certain distance. In this case, a Gaussian kernel might be more appropriate in order to relax some constraint on the axes. Another option would be to modify the kernel to limit the point influence along the discrete axis.
+Last but not least, this method can be used to generate designs by mixing continuous and discrete variables. The star shape of the kernel does not forbid from the presence of a new sample along a given axis, it lower its probability of being sampled up to a certain distance. In this case, a Gaussian kernel might be more appropriate in order to relax some constraint on the axes. Another option would be to modify the kernel to limit the point influence along the discrete axis.
 
-The ability to play both with the kernel and the selection criteria is really powerful as it allows to manage most of the challenges in constrained optimization problems, use sensitivity information, and sample by means of following individual PDFs for each parameter.
+The ability to change both with the kernel and the selection criteria is really powerful as it allows to manage most of the challenges in constrained optimization problems, use sensitivity information, and sample by means of following individual PDFs for each parameter.
 
 %\cleardoublepage
 \section{Summary}%\label{sec:conclusion}
@@ -538,7 +547,7 @@ The ability to play both with the kernel and the selection criteria is really po
 This work proposes a new method to stochastically and iteratively sample a parameter space, referred to as KDOE method. This is a two-step process: \emph{(i)} through a Kernel Density Estimation (KDE) some candidates are generated, then \emph{(ii)} the best candidate is selected based on a criterion. This method does not take into account the physics of the problem of interest as adaptative strategies, but is purely iterative and case independent.
 
 % 2. Local, specific, scientific benefits
-Compared to LHS and low discrepancy sequences, KDOE is totally iterative and stochastic. The space-filling properties of the new designs based on the $C^2$-discrepancy are assessed and show good behaviour in high dimensions with small sample sizes. Moreover, it shows similar capabilities for numerical integration compared to classical methods.The KDOE method is versatile in the sense that it can be easily adapted to take into account constraints in the parameter space, both discrete and continuous parameters can be used and sensitivity indices of the parameters can be incorporated. This ability comes from the two-step process which can be independently tuned.
+Compared to LHS and low discrepancy sequences, KDOE is totally iterative and stochastic. The space-filling properties of the new designs based on the $C^2$-discrepancy are assessed and show good behaviour in high dimensions with small sample sizes. Moreover, it shows similar capabilities for numerical integration compared to classical methods.The KDOE method is versatile in the sense that it can be easily adapted to take into account constraints in the parameter space. Both discrete and continuous parameters can be used and sensitivity indices with respect to the parameters can be incorporated. This ability comes from the two-step process which can be independently tuned.
 
 % 3. Global, societal, general benefits
 The quality of the design is of prime importance as it determines the quality of the analysis of the experiments. The proposed method provides an alternative to classical one-shot methods to generate initial designs and to continue existing ones. Its versatility and performance allow the analysis of expensive and high-dimensional cases to be within affordable budgets.
@@ -806,12 +815,11 @@ By taking into account the physics in this process, the proposed methods will he
 \chapter{Uncertainty Visualization}\label{chap:visu}
 
 \begin{chapquote}
-
 Ce chapitre présente de nouvelles stratégies de visualisation pour visualiser l'incertitude. Les méthodes sont conçues pour aider les praticiens de UQ en permettant la visualisation de l'espace des paramètres d'entrée et de la quantité d'intérêt (QoI) sur le même canevas.
 
-Cette solution s'appuie sur les HOPs appliqués à une surface de réponse fonctionnelle, les métriques HDR, et une version tridimensionnelle du Kiviat. Pour le 3D-Kiviat, chaque couche représente un résultat hypothétique (une réalisation) colorée par une valeur scalaire liée à une grandeur d'intérêt. Cette grandeur est soit la QoI à un point et à un instant donnés, soit une distance calculée à l'aide des mesures du RDH. Cette solution peut être complétée par une sonification des données pour tracer les métriques HDR.
+Cette solution s'appuie sur les HOPs appliqués à une surface de réponse fonctionnelle, les métriques HDR, et une version tridimensionnelle du Kiviat. Pour le 3D-Kiviat, chaque couche représente un résultat hypothétique (une réalisation) coloré par une valeur scalaire liée à une grandeur d'intérêt. Cette grandeur est soit la QoI à un point et à un instant donnés, soit une distance calculée à l'aide des mesures du RDH. Cette solution peut être complétée par une sonification des données pour tracer les métriques HDR.
 
-Le chapitre est rédigé comme suit : \cref{sec:uqvisu} présente une technique innovante pour visualiser les incertitudes de production basées sur f-HOPS avec sonification à partir de la métrique HDR. \Cref{sec:input} étend cette solution avancée à la visualisation des incertitudes d'entrée et de sortie en s'appuyant sur la représentation 3D-Kiviat augmentée de mesures HDR et de sonification. La~\cref{sec:visu_ccl} apporte des éléments de discussion et conclu sur ces travaux.
+Le chapitre est rédigé comme suit : \cref{sec:uqvisu} présente une technique innovante pour visualiser les incertitudes de la sortie basées sur f-HOPS avec sonification à partir de la métrique HDR. \Cref{sec:input} étend cette solution avancée à la visualisation des incertitudes d'entrée et de sortie en s'appuyant sur la représentation 3D-Kiviat augmentée de mesures HDR et de sonification. La~\cref{sec:visu_ccl} apporte des éléments de discussion et conclus sur ces travaux.
 \end{chapquote}
 
 \section{Introduction}

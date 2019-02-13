@@ -2,12 +2,11 @@
 %\chaptermark{Comparison of PC and GP surrogates for UQ and correlation estimation of spatially distributed open-channel steady flows}
 
 \begin{chapquote}
-L'objectif de ce chapitre est d'évaluer la performance des models de substitutions PC et GP imitant le comportement des écoulement en canal ouvert 1-D pour réaliser une UQ et SA. La quantité d'intérêt est le niveau d'eau 1-D discrétisé le long de 50~km de la Garonne (Sud-Ouest de la France). Dans un premier temps, on se concentre sur des écoulements stationnaires tout en restant fluvial. Les principales sources d'incertitude sont le débit en amont qui est constant en régime permanent et le coefficient de frottement qui est une fonction constante par morceaux. Sous ces hypothèses, ce travail présente des entrées scalaires et des sorties spatialement variables en raison de l'hétérogénéité bathymétrique de la Garonne. Une étude de convergence est d'abord effectuée pour déterminer la taille de l'ensemble d'apprentissage $N$ qui est nécessaire pour construire un substitut valide en utilisant soit des PC ou des GP. Les substituts PC et GP sont ensuite comparés lorsqu'un budget de calcul est établi, i.e.~pour le même nombre de simulations $N$ utilisés pour construire chaque substituts. La comparaison est effectuée par rapport au regard des trois mesures suivantes : PDF ; indices de \emph{Sobol'} spatiaux et matrice de corrélation.
+L'objectif de ce chapitre est d'évaluer la performance des modèles de substitutions PC et GP imitant le comportement des écoulements en canal ouvert 1-D pour réaliser une UQ et SA. La quantité d'intérêt est le niveau d'eau 1-D discrétisé le long de 50~km de la Garonne (Sud-Ouest de la France). Dans un premier temps, on se concentre sur des écoulements stationnaires tout en restant fluvial. Les principales sources d'incertitude sont le débit en amont qui est constant en régime permanent et le coefficient de frottement qui est une fonction constante par morceaux. Sous ces hypothèses, ce travail présente des entrées scalaires et des sorties spatialement variables en raison de l'hétérogénéité bathymétrique de la Garonne. Une étude de convergence est d'abord effectuée pour déterminer la taille de l'ensemble d'apprentissages $N$ qui est nécessaire pour construire un substitut valide en utilisant soit des PC ou des GP. Les substituts PC et GP sont ensuite comparés lorsqu'un budget de calcul est établi, i.e.~pour le même nombre de simulations $N$ utilisés pour construire chaque substituts. La comparaison est effectuée par rapport au regard des trois mesures suivantes : PDF ; indices de \emph{Sobol'} spatiaux et matrice de corrélation.
 
 Les deux substituts ont démontré leur capacité à remplacer correctement le simulateur par un faible nombre de simulations numériques. Dans un contexte opérationnel, le remplacement d'un simulateur numérique par un modèle de substitution est intéressant même si le modèle original n'est pas coûteux à évaluer. Il permet de produire plus fréquemment et avec plus de précision des prédictions à l'aide de matériel moins coûteux.
 
 La structure du chapitre est la suivante. \Cref{sec:hydrau} présente les équation qui sont résolus avec le code MASCARET et l'étude de cas de la Garonne. \Cref{sec:UQresults} présente les résultats de l'étude comparative entre PC et GP par rapport à une référence MC. Les conclusions et les perspectives sont présentées~\cref{sec:ccl}.
-
 \end{chapquote}
 
 
@@ -27,14 +26,14 @@ Both PF and EnKF algorithms usually rely on Monte Carlo (MC) random sampling tec
 
 %---How to go beyond Monte Carlo random sampling
 To overcome the issue of crude MC techniques, there is a need to develop efficient and robust uncertainty quantification (UQ) methods in the context of DA for hydraulics to limit (1)~the number of significant sources of uncertainties and (2)~the computational cost of quantifying uncertainties on the river state, e.g.~moments (mean, covariance) and PDF, while preserving the accuracy of the mapping $\mathcal{M}$ between the uncertain inputs $\mathbf{x}$ and the vector of $M$ river water heights $\mathbf{h}$:
-\begin{equation}
+\begin{align}
 \mathbf{x} \in \mathbb{R}^d \quad \rightarrow \quad \mathbf{h} = \mathcal{M}(\mathbf{x})\in\mathbb{R}^M.
-\end{equation}
+\end{align}
 The key idea of non-intrusive UQ methods is to build a cost-effective surrogate to perform UQ and SA steps~\citep{iooss2010,iooss2016,lamboni2011,lemaitreknio2010,Saltelli2007,storlie2009} (see~\cref{sec:surrogate}).
 
 The objective is to evaluate the performance of PC and GP surrogates mimicking the behaviour of 1-D open-channel flows for UQ and SA steps that are important in the design of EnKF and PF algorithms. The quantity of interest is the 1-D water level discretized along 50~km of the Garonne River (South-West France). As a preliminary step, the focus is made on steady flows and the flow remains fluvial. The treatment of strong non-linearity and discontinuity induce by fluvial/supercritical transitions is beyond the scope of this study. The main sources of uncertainties are the upstream discharge that is constant in steady state conditions and the friction coefficient that is a piecewise constant function. Under these hypotheses, the present work features scalar inputs and spatially varying outputs due to the heterogeneous bathymetry of the Garonne River. A convergence study is first carried out to determine the size of the training set $N$ that is required to build a valid surrogate using either PC expansion or GP model. GP and PC surrogates are then compared when a computational budget is set, i.e.~for the same number of snapshots (also called simulations here) $N$ used to construct each surrogate. The comparison is carried out with respect to the following metrics on $\mathbf{h}$: PDF that is of interest for Bayesian inference and PF algorithms; spatially varying \emph{Sobol'} indices (associated with the correlation between each uncertain input and the spatially distributed output) and correlation matrix (associated with the spatial correlation of the output) that are of interest for variational and EnKF algorithms.
 
-The structure of the chapter is as follows. \Cref{sec:hydrau} introduces the 1-D SWE solved using MASCARET and the Garonne River case study. \Cref{sec:UQresults} presents the results of the comparative study between PC and GP with respect to a MC reference. Conclusions and perspectives are given in~\cref{sec:ccl}.
+The structure of the chapter is as follows. \Cref{sec:hydrau} introduces the 1-D SWE solved using MASCARET and the Garonne River case study. \Cref{sec:UQresults} presents the results of the comparative study between PC and GP with respect to a MC reference. Conclusions and perspectives for the study are given in~\cref{sec:ccl}.
 
 \section{Hydraulic Modelling}\label{sec:hydrau}
 
@@ -43,8 +42,8 @@ The SWE represent the dynamics of open-channel flows, typically in rivers with s
 %------> Equations
 \subsection{1-D Shallow Water Equations (SWE)}
 
-We consider a 1-D hydraulic model commonly used in hydraulic engineering and flood forecasting. The stream channel is described by a hydraulic axis corresponding to the main flow direction, implying that the river channel is represented by a series of cross-sections (or profiles) identified by a curvilinear abscissa $a$ ranging from $a_{\text{in}}$ upstream of the river to $a_{\text{out}}$ downstream. 1-D SWE are derived from mass conservation and momentum conservation. The equations are written in terms of discharge (or flow rate) $Q$~(m$^3$\,s$^{-1}$) and hydraulic section $A$~(m$^2$) that relates to water level (or water height) $h$~(m) such that $A \equiv A(h)$. The non-conservative form of the 1-D SWE for non-stationary flow reads~\citep{thual2010} 
-\begin{eqnarray}
+We consider a 1-D hydraulic model commonly used in hydraulic engineering and flood forecasting. The main channel is described by a hydraulic axis corresponding to the main flow direction, implying that the river channel is represented by a series of cross-sections (or profiles) identified by a curvilinear abscissa $a$ ranging from $a_{\text{in}}$ upstream of the river to $a_{\text{out}}$ downstream. 1-D SWE are derived from mass conservation and momentum conservation. The equations are written in terms of discharge (or flow rate) $Q$~(m$^3$\,s$^{-1}$) and hydraulic section $A$~(m$^2$) that relates to water level (or water height) $h$~(m) such that $A \equiv A(h)$. The non-conservative form of the 1-D SWE for non-stationary flow reads~\citep{thual2010} 
+\begin{align}
 \left\{
 \begin{array}{l}
 \displaystyle{\partial_t A(h) + \partial_a Q=0} \\
@@ -52,14 +51,14 @@ We consider a 1-D hydraulic model commonly used in hydraulic engineering and flo
 \end{array}
 \right.
 \label{eq:SWE}
-\end{eqnarray}
+\end{align}
 with $g$ the gravity, $S_0$ the channel slope and $S_f$ the friction slope. In the present study, the SWE are combined with the Manning-Strickler formula to parameterize the friction slope $S_f$ such as:
 \begin{equation}
 S_f = \frac{Q^2}{K_s^2\,A(h)^{2}\,R(h)^{4/3}},   
 \label{eq:friction}
 \end{equation}
 where $R(h) =A(h)/P(h)$~(m) is the hydraulic radius written as a function of the wet perimeter $P(h)$, and where $K_s$~(m$^{1/3}$\,s$^{-1})$ is the Strickler friction coefficient. The pair $(h,Q)$ forms the hydraulic state varying in time and space. For steady flows in case of smooth solutions, \cref{eq:SWE} simplifies to: 
-\begin{eqnarray}
+\begin{align}
 \left\{
 \begin{array}{l}
 \displaystyle{\partial_a Q=0} \\ \\
@@ -67,14 +66,14 @@ where $R(h) =A(h)/P(h)$~(m) is the hydraulic radius written as a function of the
 \end{array}
 \right.
 \label{eq:backwater}
-\end{eqnarray}
+\end{align}
 where $Fr$ is the dimensionless Froude number 
-\begin{equation}
+\begin{align}
 Fr^2 = \frac{Q^2}{gA^3} \frac{\partial{A}}{\partial{h}}.
 \label{eq:froude}
-\end{equation}
+\end{align}
 
-The solutions for~\cref{eq:backwater} are called {\it backwater curves} when the downstream boundary condition is prescribed in a deterministic way for subcritical flow. To solve~\cref{eq:backwater}, the following input data is required: bathymetry, upstream or downstream boundary conditions, lateral inflows and roughness coefficients. It should be noted that the evolution in time of the bathymetry or the roughness coefficient is not taken into account in this study. The imperfect description of this data translates into errors in the simulated hydraulic state $h$. To understand the structure of these errors, it is of prime importance to determine which input variables contribute, and to what extent, to the variability in the hydraulic state at different curvilinear abscissas $a$ along the river channel, for instance via a SA study.
+The solutions for~\cref{eq:backwater} are called {\it backwater curves} when the downstream boundary condition is prescribed in a deterministic way for subcritical flow. To solve~\cref{eq:backwater}, the following input data is required: bathymetry, upstream or downstream boundary conditions, lateral inflows and roughness coefficients. It should be noted that the evolution in time of the bathymetry or the roughness coefficients are not taken into account in this study. The imperfect description of this data translates into errors in the simulated hydraulic state $h$. To understand the structure of these errors, it is of prime importance to determine which input variables contribute, and to what extent, to the variability in the hydraulic state at different curvilinear abscissas $a$ along the river channel, for instance via a SA study.
 
 We use the MASCARET software to simulate the 1-D SWE in~\cref{eq:SWE} and predict $(h, Q)$ along the discretized curvilinear abscissa of the hydraulic network $a \in [a_{\text{in}}, a_{\text{out}}]$. The SWE are solved here with the steady kernel of MASCARET based on a finite difference scheme~\citep{goutal2002,goutal2012}, meaning that $(h,Q)$ only varies in space. MASCARET is part of the TELEMAC-MASCARET open-source modelling package developed at EDF (\textit{Électricité de France} R\&D) in collaboration with CEREMA (\textit{Centre d'Étude et d'expertise sur les Risques, l'Environnement, la Mobilité et l'Aménagement}); it is commonly used for dam-break wave simulation, reservoirs flushing and flooding. 
 
@@ -100,13 +99,13 @@ The upstream steady boundary condition is prescribed by $Q(a_{\text{in}}) = Q_{\
 
 \subsection{Sources of Uncertainties and Quantity of Interest}\label{sec:database}
 
-UQ and DA for flood forecasting are essential to ensure the predictive capability of the surrogate model at the observing stations such as Marmande. Previous work~\citep{elmocaydEMA} has shown that in steady state conditions and given some assumptions on the statistics of the input uncertain variables, the sensitivity of the hydraulic state at Marmande to $K_{s_3}$ is predominant; the sensitivity at Marmande to $K_{s_1}$ and $K_{s_2}$ is null because of the steady state assumption and given the present hydraulic model. Hence, the main sources of uncertainties taken into account here are the upstream mass flow rate $Q$ and the Strickler coefficient $K_{s_3}$. We denote by $\mathbf{x} = (Q, K_{s_3})$ the random vector of size $d = 2$. From expert knowledge, $Q$ and $K_{s_3}$ are considered as independent random variables. $Q$~(m$^3$\,s$^{-1}$) follows the normal distribution $\mathcal{N}(4031,400)$: the mean is set to the average flow in the Garonne River; the standard deviation (STD) is chosen in order to remain in subcritical flow. $K_{s_3}$~(m$^{1/3}$\,s$^{-1}$) follows the uniform distribution $\mathcal{U}(15,60)$: the range of the uniform distribution is chosen following calibration results. This range for the variables $Q$ and $K_{s_3}$ allows testing how the surrogates are affected by non-linearities. 
+UQ and DA for flood forecasting are essential to ensure the predictive capability of the surrogate model at the observing stations such as Marmande. Previous work~\citep{elmocaydEMA} has shown that in steady state conditions and given some assumptions on the statistics of the input uncertain variables, the sensitivity of the hydraulic state at Marmande to $K_{s_3}$ is predominant; the sensitivity at Marmande to $K_{s_1}$ and $K_{s_2}$ is null because of the steady state assumption and given the present hydraulic model. Hence, the main sources of uncertainties taken into account here are the upstream mass flow rate $Q$ and the Strickler coefficient $K_{s_3}$. We denote by $\mathbf{x} = (Q, K_{s_3})$ the random vector of size $d = 2$. From expert knowledge, $Q$ and $K_{s_3}$ are considered as independent random variables---even-though this hypothesis is limiting as $K_s$ may decrease when $Q$ increases. $Q$~(m$^3$\,s$^{-1}$) follows the normal distribution $\mathcal{N}(4031,400)$: the mean is set to the average flow in the Garonne River; the standard deviation (STD) is chosen in order to remain in subcritical flow. $K_{s_3}$~(m$^{1/3}$\,s$^{-1}$) follows the uniform distribution $\mathcal{U}(15,60)$: the range of the uniform distribution is chosen following calibration results. This range for the variables $Q$ and $K_{s_3}$ allows testing how the surrogates are affected by non-linearities. 
 
 MASCARET provides as output the water height over 463 cross-sections for the Garonne case. In this work, we focus on the water height at $M = 14$ stations evenly distributed along the 50 km reach, among which Marmande at $a = 36$~km. Even though the surrogate models are formulated with respect to the predominant uncertain variables for water level at Marmande and downstream, the surrogates are computed over the entire network. On this hydraulic network, in-situ observations are only available at Marmande and the improvement of the water level at Marmande and downstream of Marmande
 relies on the improvement of $Q$ and $K_{s_3}$ only. Yet, the correlation function between the water-level error at Marmande and the other locations is needed in the DA algorithm. We denote by $\mathbf{h}$ the vector of $M$ observed water levels for one realization of MASCARET.
 
 A database noted $\mathcal{D}_{N_{\text{ref}}}$ and containing $N_{\text{ref}} = \numprint{100,000}$ MASCARET simulations was compiled as a reference for the study. Each simulation corresponds to a different pair of inputs ($Q, K_{s_3}$) resulting from a MC random sampling following $Q\sim\mathcal{N}(4031,400)$ and $K_{s_3} \sim \mathcal{U}(15,60)$. In the present study, $D_{N_{\text{ref}}}$ is partly used to build the PC and GP surrogates via the training set 
-$\mathcal{D}_N = (\mathcal{X}$, $\mathcal{Y})\subset \mathcal{D}_{N_{\text{ref}}}$ of size $N$; it is fully used to validate them a posteriori over a large ensemble (\cref{sec:validation}).
+$\mathcal{D}_N = (\mathcal{X}$, $\mathcal{Y})\subset \mathcal{D}_{N_{\text{ref}}}$ of size $N$; it is fully used to validate them a posteriori over a large ensemble (\cref{sec:validation}). As outlined in~\cref{sec:sa}, the analysis is highly dependant of the nature of the prescribed PDFs.
 
 
 \section{Comparison of PC and pGP Surrogates}\label{sec:UQresults}
@@ -143,22 +142,22 @@ The \emph{Sobol'} indices for the water level $S_Q$ and $S_{K_{s_3}}$ computed f
 
 \subsection{Convergence Analysis for Surrogates}
 
-We now use the same metrics as for the MC random sampling approach in~\cref{sec:UQresults_ref} to evaluate the accuracy of both PC and pGP surrogates. The surrogate models are built using a training set $(\mathcal{X}, \mathcal{Y})$ of size $N$ that is much smaller than that of the reference sample $N_{\text{ref}}$; they are then validated with respect to the reference MC results. The PC surrogate is built using a Gaussian quadrature rule with $N = (P+1)^2$ particles in the training set ($P$ is the total polynomial degree to be determined). The pGP approach is built using an approximate low-discrepancy Halton's sequence of the same budget as for the PC approach. This is approximate in the sense that we consider the closest values to the standard Halton's sequence that are part of the data set $\mathcal{D}_{N_{\text{ref}}}$. The sensitivity to the value of $P$ and thus to the size of the training set $N$ is investigated.
+We now use the metrics defined in~\cref{sec:validation} to evaluate the accuracy of both PC and pGP surrogates with respect to the MC solution. The surrogate models are built using a training set $(\mathcal{X}, \mathcal{Y})$ of size $N$ that is much smaller than that of the reference sample $N_{\text{ref}}$; they are then validated with respect to the reference MC results. The PC surrogate is built using a Gaussian quadrature rule with $N = (P+1)^2$ particles in the training set ($P$ is the total polynomial degree to be determined). The pGP approach is built using an approximate low-discrepancy Halton's sequence of the same budget as for the PC approach. This is approximate in the sense that we consider the closest values to the standard Halton's sequence that are part of the data set $\mathcal{D}_{N_{\text{ref}}}$. The sensitivity to the value of $P$ and thus to the size of the training set $N$ is investigated.
 
 Both surrogates are computed with a fixed budget $N$ of 49, 121 and 256 MASCARET evaluations. For PC, this value of $N$ corresponds respectively to $P = 6$, $P = 10$ and $P = 15$. The pGP and PC response surfaces at Marmande are presented in~\cref{fig:response-surface-pgp-pc} for $N = 49$ and $N = 121$. The design of experiment is represented by black dots. The colour map is evaluated by sampling each surrogate over the full data set $\mathcal{D}_{N_{\text{ref}}}$ made of $N_{\text{ref}} = 100,000$ particles. It is found that the water level increases with increasing discharge $Q$ and decreasing Strickler coefficient $K_{s_3}$, consistently with MASCARET behaviour. Due to the quadrature rule, increasing the number of snapshots (from $P = 6$ in~\cref{fig:response-surface-pgp-pc}c to $P = 10$ in~\cref{fig:response-surface-pgp-pc}d) allows building a higher order PC surrogate valid on a wider input range for $Q$ that is described by a Gaussian PDF. For $P = 10$, some of the quadrature roots are outside of the MC sample and require additional MASCARET evaluations to build the PC surrogate $\mathcal{M}_{\text{pc}}$. Looking at the pGP design of experiments, the input space interval for $Q$ has been arbitrarily fixed to optimally represent the PDF. Since we consider a Gaussian distribution, its range has been bounded to $[3000;5000~\unit{m^3\,s^{-1}}]$. Following Chebyshev's theorem, this leads to a~90~\% confidence interval.
 
-The distribution of the particles in the design of experiments used by PC and pGP differ. This is done on purpose based on previous performance tests carried out with respect to the training set size $N$ and evaluating the surrogate accuracy, see~\cite{elmocaydEMA} and~\cite{roy2016}, respectively. On the one hand, the design of experiments for the PC surrogate is constrained by the PDF of the uncertain inputs. We use here a quadrature-based PC since it was found to be more cost-effective than regression-based PC for a small dimensional problem ($d = 2$) on the Garonne case~\citep{elmocaydEMA}. On the other hand, using the approximate Halton's sequence is known to be accurate for pGP surrogate~\citep{Damblin2013}. This is indeed useful to cover the uncertain space without any bias and to have low discrepancy, meaning that most of the quantity of interest variance is captured and that a good $Q_2$ criterion is achieved. The choice of the design of experiments will be driven in future work according to the study objectives. For instance, DA usually relies on the assumption of Gaussian PDF for the input parameters, so the design of experiments can use this prior information. For risk analysis, threshold values are paramount and a design of experiment accounting for parameter space extrema is required.
+The distribution of the particles in the design of experiments used by PC and pGP differ. On the one hand, the design of experiments for the PC surrogate is constrained by the PDF of the uncertain inputs. We use here a quadrature-based PC since it was found to be more cost-effective than regression-based PC for a small dimensional problem ($d = 2$) on the Garonne case~\citep{elmocaydEMA}. On the other hand, using the approximate Halton's sequence is known to be accurate for pGP surrogate~\citep{Damblin2013}. This is indeed useful to cover the uncertain space without any bias and to have low discrepancy, meaning that most of the quantity of interest variance is captured and that a good $Q_2$ criterion is achieved. The choice of the design of experiments will be driven in future work according to the study objectives. For instance, DA usually relies on the assumption of Gaussian PDF for the input parameters, so the design of experiments can use this prior information. For risk analysis, threshold values are paramount and a design of experiment accounting for parameter space extrema is required.
 
 \begin{figure}[!ht]               
 \centering
-\subfloat[pGP - 49 snapshots.]{
+\subfloat[pGP - 49 snapshots]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig4a.pdf}}          
-\subfloat[pGP - 121 snapshots.]{
+\subfloat[pGP - 121 snapshots]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig4b.pdf}}
 
-\subfloat[PC - 49 snapshots.]{
+\subfloat[PC - 49 snapshots]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig4c.pdf}}           
-\subfloat[PC - 121 snapshots.]{
+\subfloat[PC - 121 snapshots]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/applications/mascaret/Fig4d.pdf}}
 \caption{Water level response surface at Marmande computed at $\mathcal{D}_{N_{\text{ref}}}$. Top: pGP using (a)~$N = 49$ snapshots and (b)~$N = 121$ snapshots. Bottom~: PC using (c)~$N=49$ snapshots and (d)~$N=121$ snapshots. Black dots represent the design of experiments used to construct the surrogate models. The colour map corresponds to the evaluation of the surrogate over the full data set $\mathcal{D}_{N_{\text{ref}}}$.}
 \label{fig:response-surface-pgp-pc}
@@ -259,14 +258,13 @@ Those are crucial steps for the complementary use of surrogate models within dat
 \section{Introduction}
 
 \begin{chapquote}
-Le nombre de simulations CFD nécessaires à la formulation du modèle de substitution est défini par la complexité de la physique et le nombre de paramètres d'entrée à prendre en compte. La présente étude vise à améliorer sa construction en utilisant les deux nouvelles stratégies de rééchantillonnage de l'espace de paramètres présentées dans~\cref{chap:resample}.
+Le nombre de simulations CFD nécessaires à la formulation du modèle de substitution est défini par la complexité de la physique et le nombre de paramètres d'entrée à prendre en compte. La présente étude vise à améliorer sa construction en utilisant les deux nouvelles stratégies de rééchantillonnage de l'espace de paramètres présentées~\cref{chap:resample}.
 
 Une application industrielle est visée : l'analyse aérothermique autour de la pale \textit{LS89}. Une étude de quantification de l'incertitude a déjà été réalisée à l'aide de simulations RANS (\emph{Reynolds Averaged Navier-Stokes})~\cite{Gourdain2010,emory2016} mais la première analyse UQ utilisant la Simulation aux Grandes Échelles (SGE) de cette configuration est ici présentée. Les SGE sont des simulations instationnaires 3D haute fidélité (voir~\cref{sec:LES} pour plus de détails). Cette approche entraîne un coût CPU élevé qui nécessite l'utilisation de ressources HPC (\emph{High Performance Computing}). Le code AVBP a été utilisé.
 
-La difficulté de prédire correctement les caractéristiques d'écoulement, même pour une telle simulation haute fidélité, est révélatrice de l'incertitude des conditions aux limites. L'intensité de la turbulence et l'angle d'attaque sont connus pour affecter le flux aérothermique. Cette quantité est d'un grand intérêt pour les partenaires industriels afin de déterminer le cycle de vie des composants de la turbine. L'étude a permis de trouver une sensibilité spatiale du fluide aux paramètres d'entrée.
+La difficulté de prédire correctement les caractéristiques d'écoulements, même pour une telle simulation haute fidélité, est révélatrice de l'incertitude des conditions aux limites. L'intensité de la turbulence et l'angle d'attaque sont connus pour affecter le flux aérothermique. Cette quantité est d'un grand intérêt pour les partenaires industriels afin de déterminer le cycle de vie des composants de la turbine. L'étude a permis de trouver une sensibilité spatiale du fluide aux paramètres d'entrée.
 
 Le chapitre est rédigé comme suit : \cref{sec:ls89_case} présente le montage expérimental tandis que \cref{sec:ls89_num} présente la configuration de la simulation numérique. Enfin, \cref{sec:ls89_results} présente les résultats de l'analyse UQ.
-
 \end{chapquote}
 
 \lettrine{T}{he number} of CFD simulations that is required for the formulation of the surrogate model is defined by the complexity of the physics and the number of input parameters to take into account. The present study aims at improving its construction by using the two new strategies for resampling the parameter space presented in~\cref{chap:resample}. An industrial application is targeted: the aerothermal analysis around the \textit{LS89} vane~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but its first UQ analysis using Large Eddy Simulation (LES) is presented. LES are high-fidelity full 3D unsteady simulations (see~\cref{sec:LES} for more details). This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
@@ -489,19 +487,16 @@ A first Uncertainty Quantification LES study of the \textit{LS89} is presented. 
 
 \chapter{UQ-Driven Robust Design Assessment of a Swirler Geometry}\label{chap:swirler}
 
-
 \begin{chapquote}
-
-Pour accompagner le développement de futurs moteurs, les simulations numériques sont devenues des outils de conception fiables et essentiels~\cite{Sacks1989,forrester2009}. Récemment, l'utilisation de SGE couplées à une stratégie d'adaptation du maillage a démontré sa capacité à identifier la physique adéquate des écoulements tourbillonnaires~\cite{Daviller2017}. 
+Pour accompagner le développement de futurs moteurs, les simulations numériques sont devenues des outils de conception fiables et essentiels~\cite{Sacks1989,forrester2009}. Récemment, l'utilisation de SGE couplée à une stratégie d'adaptation du maillage a démontré sa capacité à identifier la physique adéquate des écoulements tourbillonnaires~\cite{Daviller2017}. 
 
 La conception d'un tourbillonneur se déroule en trois étapes : (\emph{i})~une phase exploratoire est d'abord réalisée à l'aide de calculs RANS ; (\emph{ii})~les géométries résultantes sont installées dans la chambre de combustion et simulées en utilisant des SGE de combustion turbulente ; (\emph{iii}) des prototypes sont fabriqués et des essais sont effectués.
 
-Pour cette dernière étape, la fabrication d'additifs métalliques (AM)~\cite{Frazier2014,Sames2016} est maintenant utilisée. La technologie AM a gagné beaucoup d'attention car elle n'impose aucune contrainte du point de vue de la conception sans sacrifier les propriétés mécaniques~\cite{Lewandowski2016}. Cependant, l'AM induit certaines incertitudes quant à la composition structurelle des systèmes métalliques produits, ce qui en fait un sujet de recherche actif.
+Pour cette dernière étape, la fabrication d'additifs métalliques (AM)~\cite{Frazier2014,Sames2016} est maintenant utilisée. La technologie AM a gagné beaucoup d'attention, car elle n'impose aucune contrainte du point de vue de la conception sans sacrifier les propriétés mécaniques~\cite{Lewandowski2016}. Cependant, l'AM induit certaines incertitudes quant à la composition structurelle des systèmes métalliques produits, ce qui en fait un sujet de recherche actif.
 
 La présente étude vise à mesurer l'effet de l'AM sur l'écoulement du fluide. Ceci est réalisé par une UQ~\cite{iooss2016} basée sur des SGE en considérant une géométrie variable. Un POD est d'abord effectué pour construire un espace de paramètres réduit permettant de prendre en compte toutes les variables de conception. Ensuite, ces incertitudes sont propagées au travers de 30 SGE, fournissant des statistiques de synthèse. Cette étude a montré que les tolérances de fabrication pouvaient être réduites à mesure que l'impact de l'AM sur la QoI était comprise. D'un point de vue industriel, une telle analyse peut aider à réduire les coûts si la précision peut être réduite.
 
 Le chapitre est organisé comme suit : \cref{sec:swirler} présente la configuration étudiée ainsi que la configuration numérique LES. \Cref{sec:dim} détaille la méthodologie utilisée pour réduire l'espace des paramètres. Les résultats de l'étude de l'UQ sont ensuite présentés et analysés respectivement danscref{sec:res} et \cref{sec:disc}.
-
 \end{chapquote}
 
 
@@ -655,13 +650,7 @@ The dataset is then represented as a matrix, each line containing the curve $d_{
 \label{fig:variance}
 \end{figure}
 
-Within the reduced space of POD components noted $\mathbf{x_r}$, the Highest Density Region (HDR) boxplot method~\cite{Hyndman2009} is used to summarize the data statistics and infer new swirler geometries. To determine the HDR, the PDF $f(\mathbf{x_r})$ is built with a multivariate KDE (see~\cref{sec:up}). From this PDF estimator, the HDR reads:
-\begin{align}
-R_\alpha = \left\{ \mathbf{x_r}: \hat{f}(\mathbf{x_r}) \geq f_{\alpha} \right\}
-\end{align}
-\noindent with $f_{\alpha}$ such that $\int_{R_\alpha} \hat{f}(\mathbf{x_r}) d x_r = 1 - \alpha$. With this definition, the HDR corresponds to the region of highest PDF with a cumulative probability of $1-\alpha$. The 50\% and 90\% HDR are computed, corresponding respectively to $\alpha=0.5$ and $\alpha=0.1$. By construction  a HDR develops around the maximum PDF $\max \{\hat{f}(\mathbf{x_r})\}$ which identifies the most probable mode. Transposed using the inverse transform from the reduced space to the original space, this most probable mode corresponds to the "central curve"---also referred to as the median curve. To summarize, in the original space the median curve corresponds to the most probable set of values that defines a swirler geometry manufactured with AM, while the 50\% and 90\% HDR express the data dispersion.
-
-The PDF estimator and the HDR allow inferring new realizations that are statistically relevant to the original dataset and can be used for the UQ analysis. This is done in the next section. 
+Within the reduced space of POD components noted $\mathbf{x_r}$, the Highest Density Region (HDR) boxplot method is used to summarize the data statistics and infer new swirler geometries---see~\cref{sec:HDR}. In the original space the median curve corresponds to the most probable set of values that defines a swirler geometry manufactured with AM, while the 50\% and 90\% HDR express the data dispersion. The PDF estimator and the HDR allow inferring new realizations that are statistically relevant to the original dataset and can be used for the UQ analysis. This is done in the next section. 
 
 \section{Generation of Datasets }\label{sec:res}
 

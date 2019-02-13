@@ -1,7 +1,7 @@
 \chapter{Context}
 
 \begin{chapquote}
-Ce chapitre présente le context dans lequel ce travail de thèse s'inscrit.
+Ce chapitre présente le contexte dans lequel ce travail de thèse s'inscrit.
 
 L'optimisation robuste et le processus de conception lui-même sont des objectifs majeurs des travaux d'ingénierie réalisés en simulation numérique, notamment dans l'industrie aéronautique~\cite{duchaine2009}. Afin de réduire le nombre d'itérations entre la conception et les essais, les outils de simulation numérique des fluides (CFD) sont de plus en plus utilisés. Aujourd'hui, des simulations complexes sur des grilles à haute résolution sont possibles grâce aux développements continus des modèles numériques et des ressources de calculs (HPC). Or, les simulations déterministes ne fournissent qu'une connaissance limitée d'un système. Les incertitudes dans le modèle numérique et dans la formulation du problème se traduisent inévitablement par des incertitudes sur les résultats~\cite{Sacks1989}. 
 
@@ -11,7 +11,7 @@ Les méthodes classiques en quantification des incertitudes (UQ), basées sur l'
 Le but de cette thèse est de proposer des pistes d'amélioration sur divers aspects méthodologiques en UQ appliqués à des environnements numériques coûteux. Les méthodes développées peuvent être utilisées dans divers domaines et sont démontrées par de multiples applications. De plus, ces méthodes ne se limitent pas à l'utilisation d'expériences numériques et peuvent également être utilisées pour des expériences in vivo.    	
 }
 
-Ce manuscrit est divisé en quatre parties : \cref{part:intro} passe en revue la littérature sur les concepts et méthodes de UQ ; \cref{part:contributions} présente mes contributions méthodologiques ; \cref{part:applications}] propose quelques applications des nouvelles méthodes---dans un environnement numérique coûteux---; \cref{part:conclusion} fait le point sur ces travaux et donne des perspectives pour des futurs travaux de recherche.
+Ce manuscrit est divisé en quatre parties : \cref{part:intro} passe en revue la littérature sur les concepts et méthodes de UQ ; \cref{part:contributions} présente mes contributions méthodologiques ; \cref{part:applications}] propose quelques applications des nouvelles méthodes---dans un environnement numérique coûteux---; \cref{part:conclusion} fait le point sur ces travaux et donne des perspectives pour de futurs travaux de recherche.
 \end{chapquote}
 
 
@@ -76,7 +76,7 @@ Ce chapitre présente une revue de la littérature sur les concepts et les méth
 
 Les avancées et les limites actuelles du DoE sont présentées~\cref{sec:doe}. Les séquences OLHS et \emph{Sobol'} sont toutes deux considérées comme des pratiques de référence bien qu'elles présentent certaines limites telles que les propriétés itératives et la randomisation, respectivement.
 
-En utilisant cet échantillon, on peut effectuer une analyse UQ avec des méthodes détaillées~\cref{sec:uq}. L'analyse de sensibilité globale (GSA) est recommandée par rapport à une analyse locale de sensibilité. Concernant les méthodes à proprement dit, une SA basée sur la variance reste prédominante, mais les méthodes basées sur les moments semblent être un bon complément dans une étude. Dans un environnement numérique coûteux, il n'est pas possible d'effectuer directement une UQ et l'utilisation d'un modèle de substitution offre une solution. \Cref{sec:surrogate} expose deux des méthodes les plus utilisées : Processus Gaussien (GP) et Chaos polynomial (PC). Enfin, \cref{sec:visu} introduit le problème de la visualisation des incertitudes. Il s'agit d'un domaine relativement nouveau avec un corpus d'études limité. Il n'y a actuellement aucune recommandation claire sur la façon de visualiser les incertitudes. À partir de cette revue, \cref{chap:questions} détaille les trois questions auxquelles cette thèse vise à répondre :
+En utilisant cet échantillon, on peut effectuer une analyse UQ avec des méthodes détaillées~\cref{sec:uq}. L'analyse de sensibilité globale (GSA) est recommandée par rapport à une analyse locale de sensibilité. Concernant les méthodes à proprement dit, une SA basée sur la variance reste prédominante, mais les méthodes basées sur les moments semblent être un bon complément dans une étude. Dans un environnement numérique coûteux, il n'est pas possible d'effectuer directement une UQ et l'utilisation d'un modèle de substitution offre une solution. \Cref{sec:surrogate} expose deux des méthodes les plus utilisées : Processus gaussien (GP) et Chaos polynomial (PC). Enfin, \cref{sec:visu} introduit le problème de la visualisation des incertitudes. Il s'agit d'un domaine relativement nouveau avec un corpus d'études limité. Il n'y a actuellement aucune recommandation claire sur la façon de visualiser les incertitudes. À partir de cette revue, \cref{chap:questions} détaille les trois questions auxquelles cette thèse vise à répondre :
 \begin{itemize}
 \item Comment construire un DoE dans un espace de paramètres à haute dimension ?
 \item Comment rééchantillonner un DoE en considérant la QoI d'expériences déjà évaluées ?
@@ -664,7 +664,7 @@ A multivariate KDE (see~\cref{sec:up}) technique is used to estimate the PDF $\h
 \begin{align}
 R_\alpha = {x_r: \hat{f}(\mathbf{x_r}) \geq f_{\alpha}},
 \end{align}
-\noindent with $f_{\alpha}$ such that $\int_{R_\alpha} \hat{f}(\mathbf{x_r}) d x_r = 1 - \alpha$. The region has a probability of containing $1-\alpha$ points that verify the highest density estimate. Thus the median curve is defined as the inverse transform---from the reduced space into the original space---of $\arg \sup \hat{f}(\mathbf{x_r})$. Also 50\% and 90\% highest density regions are computed---with respectively $\alpha=0.5$ and $\alpha=0.1$.
+\noindent with $f_{\alpha}$ such that $\int_{R_\alpha} \hat{f}(\mathbf{x_r}) d x_r = 1 - \alpha$. With this definition, the HDR corresponds to the region of highest PDF with a cumulative probability of $1-\alpha$. The 50\% and 90\% HDR are computed, corresponding respectively to $\alpha=0.5$ and $\alpha=0.1$. By construction  a HDR develops around the maximum PDF $\max \{\hat{f}(\mathbf{x_r})\}$ which identifies the most probable mode. Transposed using the inverse transform from the reduced space to the original space, this most probable mode corresponds to the "central curve"---also referred to as the median curve. 
 
 Except if the response variable of the system of interest is chaotic under the perturbation of its input parameters, the POD is expected to drastically reduce the dimensionality of the problem. Furthermore, as the system's response variable is also expected to oscillate around some modes, the points in the reduced space are likely to be relatively clustered around the modes. This mitigates the difficulty of the density estimation procedure.
 
@@ -678,7 +678,7 @@ Except if the response variable of the system of interest is chaotic under the p
 \label{fig:elnino}
 \end{figure*}
 
-\cref{fig:elnino} illustrates the HDR boxplot for the El Ni\~no dataset in the reduced space (left panel) when only two modes are retained ensuring that at least 80\% of the response variable variance is conserved and in the output space (right) panel. Each realization is characterized with respect to the HDR metric. In the modal space, each dot represents a realization within the dataset and the contouring represents the 50\% and 90\% quantiles. In the response variable physical space, cyan curves represent the realizations from the dataset, the outliers are coloured-dashed curves, the thick black curve is the median and the grey shaded areas represent 50\% and 90\% quantiles envelopes. It should be noted that additional realizations with chosen characteristics on the outputs could be drawn by sampling the input for specific HDR criteria.
+\cref{fig:elnino} illustrates the HDR boxplot for the El Ni\~no dataset in the reduced space \emph{(left)} when only two modes are retained ensuring that at least 80\% of the response variable variance is conserved. Each realization is characterized with respect to the HDR metric. In the modal space, each dot represents a realization within the dataset and the contouring represents the 50\% and 90\% quantiles. In the response variable physical space (\emph{right}), \emph{cyan curves} represent the realizations from the dataset, the outliers are \emph{coloured-dashed curves}, the \emph{thick black curve} is the median and the \emph{grey shaded areas} represent 50\% and 90\% quantiles envelopes. It should be noted that additional realizations with chosen characteristics on the outputs could be drawn by sampling the input for specific HDR criteria.
 
 
 %\section{Software}\label{sec:software}
