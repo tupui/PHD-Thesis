@@ -130,7 +130,62 @@ There is no fixed release cycle. When a new release is made on \emph{master}, bu
 
 \section{Functionalities}
 
-% TODO batman functions
+The Batman package includes three folders:
+
+\begin{description}
+\item[doc] contains the documentation,
+\item[batman] contains the module implementation,
+\item[test\_cases] contains some example.
+\end{description}
+
+\subsection{General functionment}
+
+The package is composed of several python modules which are self contained within the directory \emph{batman}. Following is a quick reference---see~\cref{sec:api_ref} for more details---:
+
+\begin{description}
+\item[ui] command line interface,
+\item[space] defines the (re)sampling space,
+\item[surrogate] constructs the surrogate model,
+\item[uq] uncertainty quantification,
+\item[visualization] uncertainty visualization,
+\item[pod] constructs the POD,
+\item[driver] contains the main functions,
+\item[tasks] defines the context to compute each snapshot from,
+\item[functions] defines useful test functions,
+\item[misc] defines the logging configuration and the settings schema.
+\end{description}
+
+\subsection{Using it}
+
+After Batman has been installed, \emph{batman} is available as a command line tool or it can be imported in python. Thus Batman is launched using:
+
+\begin{quotation}
+batman settings.json
+\end{quotation}
+
+The definition of the case is to be filled in \emph{settings.json}. An \emph{output} directory is created and it contains the results of the computation splitted across the following folders: 
+
+\begin{itemize}
+\item \emph{snapshots},
+\item \emph{surrogate},
+\item \emph{predictions},
+\item \emph{uq}.
+\end{itemize}
+
+\subsection{Content of \emph{test\_cases}}
+
+This folder contains ready to launch examples: 
+
+\begin{description}
+\item[Basic\_function] is a simple 1-input parameter function,
+\item[Michalewicz] is a 2-input parameters non-linear function,
+\item[Ishigami] is a 3-input parameters,
+\item[G\_Function] is a 4-input parameters,
+\item[Channel\_Flow] is a 2-input parameters with a functionnal output,
+\item[Mascaret] make use of MASCARET open source software (not included).
+\end{description}
+
+In every case folder, there is \emph{README.rst} file that summarizes and explains the case.
 
 \section{Dissemination}
 
@@ -278,9 +333,6 @@ As stated, $n_{gen}$ candidate samples are generated through MCMC. \Cref{fig:con
 \caption{Convergence of the $C^2$-discrepancy function of $n_{gen}$ the size of sample using Metropolis-Hasting for $X_2^{40}$.}
 \label{fig:conv-ngen}
 \end{figure}
-
-
-% TODO also good for multifidelity designs
 
 
 %\newpage
