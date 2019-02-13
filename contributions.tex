@@ -73,6 +73,14 @@ This online course has been run twice, and I have been presenting the live sessi
 
 \chapter{Batman}\label{chap:batman}
 
+\begin{chapquote}
+En raison de l'intérêt croissant pour la UQ au cours de la dernière décennie, un nombre important d'outils/bibliothèques dédiés à la UQ sont maintenant disponibles pour la communauté scientifique. Par exemple, OpenTURNS est une importante bibliothèque scientifique open-source (GNU LGPL) développée par EDF, Airbus, Phimeca et IMACS et utilisable comme module Python dédié au traitement des incertitudes et aux analyses de fiabilité dans une approche industrielle~\citep{Baudin2015}.
+
+Bayesian Analysis Tool for Modelling and uncertAinty quaNtification (batman) est un paquet Python open source dédié à l'analyse statistique basée sur une approche non intrusive~\cite{Roy2018b} développé au CERFACS. La bibliothèque Batman fournit un cadre pratique, modulaire et efficace pour la conception de DoE, de modèle de substitution et pour la quantification de l'incertitude -- voir~\cref{fig:batman_workflow}. Batman s'appuie sur des paquets python open source dédiés aux statistiques (OpenTURNS et Scikit-Learn~\citep{pedregosa2011}). Batman est sous licence CECILL-B ; il est activement développé et maintenu par les chercheurs du CERFACS via la plateforme GitLab. 
+
+Ce chapitre présente Batman, de sa genèse à son utilisation ainsi que quelques fonctionnalités clés.
+\end{chapquote}
+
 \section{Description}
 
 \lettrine{D}{ue to} the increasing interest in UQ over the last decade, a significant number of UQ-dedicated tools/libraries are now available for the scientific community. For example, OpenTURNS is a famous open-source (GNU LGPL) scientific library developed since 2005 by EDF, Airbus, Phimeca and IMACS and usable as a Python module dedicated to uncertainty treatment and reliability analysis in a structured industrial approach~\citep{Baudin2015}.
@@ -472,7 +480,7 @@ Last but not least, this method can be used to generate designs by mixing contin
 The ability to play both with the kernel and the selection criteria is really powerful as it allows to manage most of the challenges in constrained optimization problems, use sensitivity information, and sample by means of following individual PDFs for each parameter.
 
 %\cleardoublepage
-\section{Conclusion}%\label{sec:conclusion}
+\section{Summary}%\label{sec:conclusion}
 
 % 1. Novelty of the results
 This work proposes a new method to stochastically and iteratively sample a parameter space, referred to as KDOE method. This is a two-step process: \emph{(i)} through a Kernel Density Estimation (KDE) some candidates are generated, then \emph{(ii)} the best candidate is selected based on a criterion. This method does not take into account the physics of the problem of interest as adaptative strategies, but is purely iterative and case independent.
@@ -497,7 +505,7 @@ Les techniques présentées montrent une amélioration de la qualité prédictiv
 
 \section{Introduction}
 
-\lettrine{T}{he accuracy} of an uncertainty quantification being directly correlated to the quality of the surrogate model~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space.
+\lettrine{T}{he accuracy} of an UQ being directly correlated to the quality of the surrogate model~\cite{iooss2010}, the present work aims at improving its construction by using two new strategies for resampling the parameter space.
 
 Among the possibilities to refine a DoE, are the methods taking advantage of the QoI~\cite{Garud2017}. The methods presented are based on this principle, while constraining the hypercube to consider for refinement. Hence only a fraction of the original volume of the DoE is used in the optimization process to add a new sample. This reduced hypercube is build using the result of a LOO procedure. Only the area surrounding the most critical point is considered. This technique is called LOO-$\sigma$. This technique can be further constrained using sensitivity information. It leads to the LOO-\textit{Sobol'} technique.
 
@@ -505,9 +513,11 @@ The presented techniques show an improvement of the predictive quality of the mo
 
 \section{Presentation of the Methods}
 
-Aside from sequence designs that are intrinsically iterative, all designs can be increased step-by-step through several techniques. A natural way is to optimize the discrepancy or some other criteria such as the entropy or the distance between points~\cite{Fang2006}. These kinds of methods only take advantage of the position of the points in the parameter space. The expected quality of such method is, as expected (and from our testing, not presented in this work), at best close to a low discrepancy sequence.
+Aside from sequence designs that are intrinsically iterative, all designs can be increased step-by-step through several techniques. A natural way is to optimize the discrepancy or some other criteria such as the entropy or the distance between points~\cite{Fang2006}. These kinds of methods only take advantage of the position of the points in the parameter space as seen in~\cref{chap:doe}.
 
-A complementary strategy consists in exploring the space using as few points as possible and then refine the exploration around interesting zones. In the work of~\cite{scheidt2006,braconnier2011}, they used detection of optima, nul gradients and also information about the Gaussian processes variance. This method is denoted hereafter $\sigma$ method. One caveat with crude $\sigma$ method is that points are preferentially added at boundaries of the parameter space. This is further described in~\cref{sec:delta-space}. This behaviour motivates the research of new refinement methods that would use this information without being constrained to boundaries. Aside from this baseline, two novel strategies---LOO-$\sigma$ and LOO-\textit{Sobol'}---have been developed and are presented in this work. The common strategy is detailed in~\cref{alg:refine}.
+A complementary strategy consists in exploring the space using as few points as possible and then refine the exploration around interesting zones. This is the fundamental difference with the already presented methods. Here the forward model has to be evaluate in order to resample the DoE.
+
+In the work of~\cite{scheidt2006,braconnier2011}, a detection of optima, nul gradients and also information about the Gaussian processes variance. This method is denoted hereafter as the $\sigma$ method. One caveat with crude $\sigma$ method is that points are preferentially added at boundaries of the parameter space. This is further described in~\cref{sec:delta-space}. This behaviour motivates the research of new refinement methods that would use this information without being constrained to boundaries. Aside from this baseline, two novel strategies---LOO-$\sigma$ and LOO-\textit{Sobol'}---have been developed and are presented in this work. The common strategy is detailed in~\cref{alg:refine}.
 
 \begin{algorithm}
   \caption{Refinement strategy}
@@ -538,10 +548,10 @@ As stated in \cref{sec:GP}, one of the main advantages of Gaussian processes ove
 Global optimization of this indicator gives the new point to simulate~\cite{wales1997}.
 
 \item Leave-One-Out (LOO) and $\sigma$, \hfill\\
-A LOO is performed on the model and highlights the point where the model is the most sensitive. The strategy here is to add a new point around it. The creation of the hypercube is described in \cref{sec:hypercube}. Within this hypercube, a global optimization over $\sigma$ is conduced giving the new point.
+A LOO is performed on the model and highlights the point where the model is the most sensitive to. The strategy here is to add a new point in the surrounding area. The creation of the hypercube is described in \cref{sec:hypercube}. Within this hypercube, a global optimization over $\sigma$ is conduced giving the new point.
 
 \item  LOO-\textit{Sobol'}, \hfill\\
-Using the same steps as with the LOO-$\sigma$ method, the hypercube around the point is here truncated using prior information about \textit{Sobol'} total indices---see \cref{sec:uq}. For instance, in a 2-dimensional case if $S_{T_{x_1}} = 0.8, S_{T_{x_2}} = 0.2$, the hypercube will be shrunk by 80\% along $x_1$'s axis and by 20\% along $x_2$'s axis. The algorithm ensures indices to be bounded between 0.1 and 1. This prevents some dimensions from being squashed prematurely. The method requires that indices be close to convergence not to bias the result. However, the bias can be intentional depending on the insight we have about the case. 
+Using the same steps as with the LOO-$\sigma$ method, the hypercube around the point is here truncated using prior information about \textit{Sobol'} total indices---see \cref{sec:uq}. For instance, in a 2-dimensional case if $S_{T_{x_1}} = 0.8, S_{T_{x_2}} = 0.2$, the hypercube will be shrunk by 80\% along $x_1$'s axis and by 20\% along $x_2$'s axis. The algorithm ensures indices to be bounded between 0.1 and 1. This prevents some dimensions from being squashed prematurely. The method requires that indices be close to convergence to avoid bias in the result. However, the bias can be intentional depending on the insight we have about the case. 
 
 \item  Hybrid.\hfill\\
 This last method consists in a navigator composed by any combination of the previous methods.
@@ -561,15 +571,15 @@ To resample locally the parameter space, a hypercube is constructed around point
 \label{fig:hypercube}
 \end{figure}
 
-The hypercube is defined by the cartesian product of the intervals of the ${d}$ parameters \textit{i.e.} $[a_i, b_i]^{d}$. The constrained optimization problem consists in finding the coordinates of the hypercube, hence the problem writes:
+The hypercube is defined by the cartesian product of the intervals of the ${d}$ parameters \textit{i.e.} $[a_i, b_i]^{d}$. The constrained optimization problem consists in finding the coordinates of the hypercube, hence the problem reads
 \begin{align}
 \left\{\begin{array}{rc} \max  &\parallel (\mathbf{b} - \mathbf{a}) \parallel_{2} \\\mathcal{P} &\notin [a_i, b_i]^{d} \\ p &\in [a_i, b_i]^{d} \end{array}\right. .
 \end{align}
-A maximum cube-volume aspect ratio~\cite{smith1998} is also defined in order to preserve the locality. This gives the new constrain:
+A maximum cube-volume aspect ratio~\cite{smith1998} is also defined in order to preserve the locality. This gives the new constrain
 \begin{align}
 C : \sqrt[n]{\frac{\max (\mathbf{b} - \mathbf{a})}{\displaystyle\prod_{i = 1}^{d} \max (b_i - a_i)}} < \epsilon ,
 \end{align}
-with $\epsilon = 1.5$, set arbitrarily to prevent too elongated hypercubes. The global optimum is found using a two-step strategy: first, a discrete optimization using $\mathcal{P}$ gives an initial solution; second a basin-hopping algorithm~\cite{wales1997} finds the optimum coordinates of the hypercube.
+with $\epsilon = 1.5$, set arbitrarily to prevent too elongated hypercubes. The global optimum is found using a two-step strategy: first, a discrete optimization using $\mathcal{P}$ gives an initial solution; second a basin-hopping algorithm (see~\cref{sec:doe} for more details) finds the optimum coordinates of the hypercube.
 
 
 \section{Evaluation of the Methods}
@@ -636,7 +646,7 @@ As shown in~\cref{fig:outer-delta}, there is no benefit of adding points outside
  ~       
 \subfloat[Arcsine distribution]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/contributions/resample/5b_2column_color-online-only_response_outer-delta_arcsine.pdf}}
-\caption{Response surface of $Q_2$ function of the initial sample and the \textit{outer delta space}. Dots represent the simulations.}
+\caption{Response surface of $Q_2$ function of the initial sample and the \textit{outer delta space}. \emph{Black dots} represent the simulations.}
 \label{fig:outer-delta}
 \end{figure*}
 
@@ -647,7 +657,7 @@ As shown in~\cref{fig:outer-delta}, there is no benefit of adding points outside
  ~       
 \subfloat[Arcsine distribution]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/contributions/resample/6b_2column_color-online-only_response_inner-delta_arcsine.pdf}}
-\caption{Response surface of $Q_2$ function of the initial sample and the \textit{inner delta space}. Dots represent the simulations.}
+\caption{Response surface of $Q_2$ function of the initial sample and the \textit{inner delta space}. \emph{Black dots} represent the simulations.}
 \label{fig:inner-delta}
 \end{figure*}
 
@@ -670,7 +680,7 @@ The operating mechanism and catches of the methods can be visualized on the \tex
       
 \subfloat[LOO-\textit{Sobol'}: $Q_2 = 0.86$]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/contributions/resample/7c_2column_color-online-only_response_rosen_Ns12_loo-sobol.pdf}}
-\caption{Response surface of the \textit{Rosenbrock} function. In each case, the initial learning sample is composed of 12 simulations and there are 13 resampling points---respectively represented in dots and diamonds.}
+\caption{Response surface of the \textit{Rosenbrock} function. In each case, the initial learning sample is composed of 12 simulations and there are 13 resampling points---respectively represented in \emph{black dots} and \emph{red diamonds}.}
 \label{fig:methods-rosenbrock}
 \end{figure*}
 
@@ -722,20 +732,20 @@ Results are shown in~\cref{fig:methods-cv}. The $\sigma$ method appears to be on
  ~       
 \subfloat[RBF: $Q_2 = 0.83$]{
 \includegraphics[width=0.47\linewidth,height=\textheight,keepaspectratio]{fig/contributions/resample/9b_2column_color-online-only_response_rosen_Ns13_sigma-RBF.pdf}}
-\caption{Response surface of the \textit{Rosenbrock} function. Comparison between two models. The initial sample is composed of 13 simulations and 12 resampling points---respectively represented in dots and diamonds.}
+\caption{Response surface of the \textit{Rosenbrock} function. Comparison between two models. The initial sample is composed of 13 simulations and 12 resampling points---respectively represented in \emph{black dots} and \emph{red diamonds}.}
 \label{fig:methods-rosenbrock-nofit}
 \end{figure*}
 
 The other two methods share the $\sigma$ strategy, but the variability is conditioned by the LOO point. Indeed, the former only uses inference about the predictive variance whereas LOO's methods take into account the observed quality of the model.
 
-LOO-\textit{Sobol'} is even more stable especially when the contribution of the parameters to the QoI is not even. The quality evolves quasi-linearly with the initial sample size. This is due to the initial guess on the indices. The closer the indices are converged, the better the sizing of the hypercube used by the $\sigma$ strategy. Indeed, some dimension of the hypercube could be neglected due to the indices. In the \textit{Rosenbrock} case the method behaves like LOO-$\sigma$, the importance factors are close enough so that this collapse of dimension does not occur. On the other hand, with the \textit{g-function} 4-D and \textit{g-function (i)} 11-D, the total order \textit{Sobol'} indices of the last input parameters are so small that the algorithm tends not to take into account these dimensions. Finally, for the \textit{g-function (ii)} 11-D case, more input parameters are active---meaning that their total order \textit{Sobol'} indices are greater than 0.1---, so that the improvement is not as important as with the \textit{g-function (i)} 11-D case. Still, better results are found compared to the $\sigma$ strategy. These results are comparable to the \textit{Rosenbrock} case where LOO-\textit{Sobol'} perform similarly to LOO-$\sigma$. Indeed, as the number of active parameters grows, improving the $Q_2$ would imply a better coverage of the parameter space. Thus, as the number of active dimension increases, it is expected that the optimal $Q_2$, for a given number of samples, would converge to the $Q_2$ given by the use of a low discrepancy sampling. At worst the low discrepancy sampling's $Q_2$ will be a lower bound for these methods. In realistic engineering applications, the importance of the relative contributions of the input parameters being most of the time unknown, these methods seem promising.
+LOO-\textit{Sobol'} is even more stable especially when the contribution of the parameters to the QoI is not even. The quality evolves quasi-linearly with the initial sample size. This is due to the initial guess on the indices. The closer the indices are converged, the better the sizing of the hypercube used by the $\sigma$ strategy. Indeed, some dimension of the hypercube could be neglected due to the indices. In the \textit{Rosenbrock} case the method behaves like LOO-$\sigma$, the importance factors are close enough so that this collapse of dimension does not occur. On the other hand, with the \textit{g-function} 4-D and \textit{g-function} 11-D (i), the total order \textit{Sobol'} indices of the last input parameters are so small that the algorithm tends not to take into account these dimensions. Finally, for the \textit{g-function} 11-D (ii) case, more input parameters are active---meaning that their total order \textit{Sobol'} indices are greater than 0.1---, so that the improvement is not as important as with the \textit{g-function} 11-D (ii) case. Still, better results are found compared to the $\sigma$ strategy. These results are comparable to the \textit{Rosenbrock} case where LOO-\textit{Sobol'} perform similarly to LOO-$\sigma$. Indeed, as the number of active parameters grows, improving the $Q_2$ would imply a better coverage of the parameter space. Thus, as the number of active dimension increases, it is expected that the optimal $Q_2$, for a given number of samples, would converge to the $Q_2$ given by the use of a low discrepancy sampling. At worst the low discrepancy sampling's $Q_2$ will be a lower bound for these methods. In realistic engineering applications, the importance of the relative contributions of the input parameters being most of the time unknown, these methods seem promising.
 
 For each function, as the initial sample gets close to the budget, the expected improvement is reduced. This is clear with the \textit{Ishigami} function. When the initial sample is too small, the model is so poor that the points are not added efficiently. On the contrary, if we add an insufficient number of points, the impact is close to none but still there is an improvement. From the other cases, the effect of the ratio of the initial learning sample size over the total budget is not so clear. In 2-D the impact is null and after that, a ratio $>0.5$ seems appropriate.
 
 Thus, setting aside the possible non-fitting of the data, improving the quality of the surrogate model by resampling the parameter space appears to be guaranteed in high dimensional cases and using no more than half of the budget.
 
 
-\section{Conclusion}
+\section{Summary}
 
 Two new methods have been introduced in this work for resampling the parameter space in order to improve the predictivity coefficient of a surrogate model: namely LOO-$\sigma$ and LOO-\textit{Sobol'} methods. These methods do not only take advantage of the capability of Gaussian Process models to infer a prediction's variance, but they use information about the observed quality of the model. It was shown that an improvement of the quality of the model is guaranteed in high dimensional cases. Compared to a resampling method based on the predicted variance only, the proposed methods behaviour appears to be more stable and reliable. It was also found that the ratio of the initial learning sample space over the total budget of function evaluation should remain greater than $\numprint{0.5}$. Which is to say that no more than half of the budget should be allocated to resampling the parameter space. In any case, the initial quality of the model should be reasonable when considering these techniques.
 
@@ -744,7 +754,10 @@ By taking into account the physics in this process, the proposed methods will he
 \chapter{Uncertainty Visualization}\label{chap:visu}
 
 \begin{chapquote}
-Ce chapitre propose une solution pour visualiser des dimensions d'entrée et de sortie élevées. Cette solution s'appuie sur les HOPs appliqués à une surface de réponse fonctionnelle, les métriques HDR, et une version tridimensionnelle du Kiviat. Pour le 3D-Kiviat, chaque couche représente un résultat hypothétique (une réalisation) colorée par une valeur scalaire liée à une grandeur d'intérêt. Cette grandeur est soit la QoI à un point et à un instant donnés, soit une distance calculée à l'aide des mesures du RDH. Cette solution peut être complétée par une sonification des données pour tracer les métriques HDR.
+
+Ce chapitre présente de nouvelles stratégies de visualisation pour visualiser l'incertitude. Les méthodes sont conçues pour aider les praticiens de UQ en permettant la visualisation de l'espace des paramètres d'entrée et de la quantité d'intérêt (QoI) sur le même canevas.
+
+Cette solution s'appuie sur les HOPs appliqués à une surface de réponse fonctionnelle, les métriques HDR, et une version tridimensionnelle du Kiviat. Pour le 3D-Kiviat, chaque couche représente un résultat hypothétique (une réalisation) colorée par une valeur scalaire liée à une grandeur d'intérêt. Cette grandeur est soit la QoI à un point et à un instant donnés, soit une distance calculée à l'aide des mesures du RDH. Cette solution peut être complétée par une sonification des données pour tracer les métriques HDR.
 
 Le chapitre est rédigé comme suit : \cref{sec:uqvisu} présente une technique innovante pour visualiser les incertitudes de production basées sur f-HOPS avec sonification à partir de la métrique HDR. \Cref{sec:input} étend cette solution avancée à la visualisation des incertitudes d'entrée et de sortie en s'appuyant sur la représentation 3D-Kiviat augmentée de mesures HDR et de sonification. La~\cref{sec:visu_ccl} apporte des éléments de discussion et conclu sur ces travaux.
 \end{chapquote}
@@ -895,12 +908,12 @@ The specific case of a 2D input space is treated with a \emph{Tree plot} solutio
 \end{figure}
 
 
-\section{Conclusion}\label{sec:visu_ccl}
+\section{Summary}\label{sec:visu_ccl}
 
 This work proposes a systematic way to look at uncertainties when dealing with high-dimensional environment. As uncertainty quantification related analysis are moving toward high dimensionality, I believe that this tool could help data analysis.
 
 % Novelty of the results
-In this work, a new method to visualize input and output uncertainties  was presented. The concept of Hypothetical Outcomes Plot is taken a step further and applied to functional data (f-HOPs) considering the HDR boxplot information that estimates a distance to a reference realization (here the median). HDR metrics allow to reduce the output space to a limited number of principal components and compute, in this reduced space, a distance between dataset realizations taking into account temporal or spatial discretization. This metric allows to discriminate the realizations statistically regarding to the response variable value at a specific location and time. f-HOPs provides an animated version of members within a dataset; it can be augmented with data sonification which is efficient for outlier detection. Both input and output uncertainties are finally visualized with a 3-dimensional version of the Kiviat where each realization is represented by a plane surface. Realizations are stacked along the vertical axis and colour-coded. The 3D-Kiviat can be augmented with data sonification. Stacking, colouring and sounding strategies are chosen with respect to the response variable value or the HDR metric to highlight some information within the dataset.  
+In this work, a new method to visualize input and output uncertainties  was presented. The concept of Hypothetical Outcomes Plot is taken a step further and applied to functional data (f-HOPs) considering the HDR boxplot information that estimates a distance to a reference realization (here the median). HDR metrics allow to reduce the output space to a limited number of principal components and compute, in this reduced space, a distance between dataset realizations taking into account temporal or spatial discretization. This metric allows to discriminate the realizations statistically regarding to the response variable value at a specific location and time. f-HOPs provides an animated version of members within a dataset; it can be augmented with data sonification which is efficient for outlier detection. Both input and output uncertainties are finally visualized with a 3-dimensional version of the Kiviat where each realization is represented by a plane surface. Realizations are stacked along the vertical axis and colour-coded. The 3D-Kiviat can be augmented with data sonification. Stacking, colouring and sounding strategies are chosen with respect to the response variable value or the HDR metric to highlight some information within the dataset.
 
 % Local, specific, scientific benefits
 These visualization solutions were applied to two functional datasets: \emph{(i)}~El Niño and \emph{(ii)}~Hydrodynamics. The first one is a commonly used dataset that only provides temporal outputs, the second dataset presents an input-output relation with a large dimension output space and a 4-dimensional input space. For both datasets, f-HOPs and 3D-Kiviat have proven to be efficient at representing the nature of the dataset and highlighting important impact factors. Moreover, visualization of the 4-dimensional input space was eased by the Kiviat solution that was conveniently adapted to CAD objects for larger dimensions. 

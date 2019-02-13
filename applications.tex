@@ -1,6 +1,16 @@
 \chapter{Comparison of PC and GP surrogates for UQ of spatially distributed open-channel steady flows}\label{chap:mascaret}
 %\chaptermark{Comparison of PC and GP surrogates for UQ and correlation estimation of spatially distributed open-channel steady flows}
 
+\begin{chapquote}
+L'objectif de ce chapitre est d'évaluer la performance des models de substitutions PC et GP imitant le comportement des écoulement en canal ouvert 1-D pour réaliser une UQ et SA. La quantité d'intérêt est le niveau d'eau 1-D discrétisé le long de 50~km de la Garonne (Sud-Ouest de la France). Dans un premier temps, on se concentre sur des écoulements stationnaires tout en restant fluvial. Les principales sources d'incertitude sont le débit en amont qui est constant en régime permanent et le coefficient de frottement qui est une fonction constante par morceaux. Sous ces hypothèses, ce travail présente des entrées scalaires et des sorties spatialement variables en raison de l'hétérogénéité bathymétrique de la Garonne. Une étude de convergence est d'abord effectuée pour déterminer la taille de l'ensemble d'apprentissage $N$ qui est nécessaire pour construire un substitut valide en utilisant soit des PC ou des GP. Les substituts PC et GP sont ensuite comparés lorsqu'un budget de calcul est établi, i.e.~pour le même nombre de simulations $N$ utilisés pour construire chaque substituts. La comparaison est effectuée par rapport au regard des trois mesures suivantes : PDF ; indices de \emph{Sobol'} spatiaux et matrice de corrélation.
+
+Les deux substituts ont démontré leur capacité à remplacer correctement le simulateur par un faible nombre de simulations numériques. Dans un contexte opérationnel, le remplacement d'un simulateur numérique par un modèle de substitution est intéressant même si le modèle original n'est pas coûteux à évaluer. Il permet de produire plus fréquemment et avec plus de précision des prédictions à l'aide de matériel moins coûteux.
+
+La structure du chapitre est la suivante. \Cref{sec:hydrau} présente les équation qui sont résolus avec le code MASCARET et l'étude de cas de la Garonne. \Cref{sec:UQresults} présente les résultats de l'étude comparative entre PC et GP par rapport à une référence MC. Les conclusions et les perspectives sont présentées~\cref{sec:ccl}.
+
+\end{chapquote}
+
+
 \section{Introduction}
 
 \lettrine{T}{he predictive} skills of hydraulic models have greatly increased with advances in free surface flow numerical modelling and computational resources. Real-time flood forecasting relies on the use of sparse in situ observations as well as imperfect hydrology or hydraulic models usually solving the 1-D Shallow Water Equations (SWE). Assessing the predictive capabilities of these hyperbolic partial differential equations remains an important challenge as public safety and water resource management are at stake~\citep{weerts2011}. SWE solve for spatially varying water level and river discharge (referred to as the river state) using physical parameters (e.g.~friction coefficients, bathymetry), initial conditions and boundary conditions described as a hydrograph or water-level time series. These input data are subject to epistemic uncertainties due to an imperfect knowledge of the river properties as well as to aleatory uncertainties related to environmental and meteorological intrinsic hazards. Both types of errors translate into uncertainties in the simulated river state, thus preventing the hydraulic model from being effective in forecast mode. In practice, these uncertainties can be reduced when complementary data become available.
@@ -249,12 +259,17 @@ Those are crucial steps for the complementary use of surrogate models within dat
 \section{Introduction}
 
 \begin{chapquote}
-Le nombre de simulations CFD nécessaires à la formulation du modèle de substitution est défini par la complexité de la physique et le nombre de paramètres d'entrée à prendre en compte. La présente étude vise à améliorer sa construction en utilisant les deux nouvelles stratégies de rééchantillonnage de l'espace de paramètres présentées dans~\cref{chap:resample}. Une application industrielle est visée : l'analyse aérothermique autour de la pale \textit{LS89}. Une étude de quantification de l'incertitude a déjà été réalisée à l'aide de simulations RANS (\emph{Reynolds Averaged Navier-Stokes})~\cite{Gourdain2010,emory2016} mais la première analyse UQ utilisant la Simulation aux Grandes Échelles (SGE) est présentée ici. Les SGE sont des simulations instationnaires 3D haute fidélité (voir~\cref{sec:SGE} pour plus de détails). Cette approche entraîne un coût CPU élevé qui nécessite l'utilisation de ressources HPC (\emph{High Performance Computing}).
+Le nombre de simulations CFD nécessaires à la formulation du modèle de substitution est défini par la complexité de la physique et le nombre de paramètres d'entrée à prendre en compte. La présente étude vise à améliorer sa construction en utilisant les deux nouvelles stratégies de rééchantillonnage de l'espace de paramètres présentées dans~\cref{chap:resample}.
+
+Une application industrielle est visée : l'analyse aérothermique autour de la pale \textit{LS89}. Une étude de quantification de l'incertitude a déjà été réalisée à l'aide de simulations RANS (\emph{Reynolds Averaged Navier-Stokes})~\cite{Gourdain2010,emory2016} mais la première analyse UQ utilisant la Simulation aux Grandes Échelles (SGE) de cette configuration est ici présentée. Les SGE sont des simulations instationnaires 3D haute fidélité (voir~\cref{sec:LES} pour plus de détails). Cette approche entraîne un coût CPU élevé qui nécessite l'utilisation de ressources HPC (\emph{High Performance Computing}). Le code AVBP a été utilisé.
+
+La difficulté de prédire correctement les caractéristiques d'écoulement, même pour une telle simulation haute fidélité, est révélatrice de l'incertitude des conditions aux limites. L'intensité de la turbulence et l'angle d'attaque sont connus pour affecter le flux aérothermique. Cette quantité est d'un grand intérêt pour les partenaires industriels afin de déterminer le cycle de vie des composants de la turbine. L'étude a permis de trouver une sensibilité spatiale du fluide aux paramètres d'entrée.
 
 Le chapitre est rédigé comme suit : \cref{sec:ls89_case} présente le montage expérimental tandis que \cref{sec:ls89_num} présente la configuration de la simulation numérique. Enfin, \cref{sec:ls89_results} présente les résultats de l'analyse UQ.
+
 \end{chapquote}
 
-\lettrine{T}{he number} of CFD simulations that is required for the formulation of the surrogate model is defined by the complexity of the physics and the number of input parameters to take into account. The present study aims at improving its construction by using the two new strategies for resampling the parameter space presented in~\cref{chap:resample}. An industrial application is targeted: the aerothermal analysis around the \textit{LS89} vane~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but the first UQ analysis using Large Eddy Simulation (LES) is here presented. LES are high-fidelity full 3D unsteady simulations (see~\cref{sec:LES} for more details). This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
+\lettrine{T}{he number} of CFD simulations that is required for the formulation of the surrogate model is defined by the complexity of the physics and the number of input parameters to take into account. The present study aims at improving its construction by using the two new strategies for resampling the parameter space presented in~\cref{chap:resample}. An industrial application is targeted: the aerothermal analysis around the \textit{LS89} vane~\cite{arts1990}. An Uncertainty Quantification study has already been performed using Reynolds Averaged Navier-Stokes (RANS)~\cite{Gourdain2010,emory2016} but its first UQ analysis using Large Eddy Simulation (LES) is presented. LES are high-fidelity full 3D unsteady simulations (see~\cref{sec:LES} for more details). This approach comes at a high CPU cost which requires the use of High Performance Computing (HPC) resources.
 
 The chapter is tailored as follows; \cref{sec:ls89_case} presents the experimental setup while \cref{sec:ls89_num} presents its numerical simulation configuration. Finally, \cref{sec:ls89_results}  presents the results of the UQ.
 
@@ -440,7 +455,7 @@ The response surfaces of the models are plotted in \cref{fig:ls89-RS}. The heat 
 
 \subfloat[LOO-\textit{Sobol'} method]{
 \includegraphics[width=0.55\linewidth,height=\textheight,keepaspectratio]{fig/applications/ls89/12c_2column_color-online-only_response_ls89_loo-sobol.pdf}}
-\caption{Heat Transfer coefficient response surface. DoE is initially composed of 16 simulations sampled with \textit{Sobol'} sequence. Dots represent the initial LES simulations and diamonds represent the resampled points.}
+\caption{Heat Transfer coefficient response surface. DoE is initially composed of 16 simulations sampled with \textit{Sobol'} sequence. \emph{Black dots} represent the initial LES simulations and \emph{red diamonds} represent the resampled points.}
 \label{fig:ls89-RS}
 \end{figure*}
 
@@ -473,6 +488,22 @@ A first Uncertainty Quantification LES study of the \textit{LS89} is presented. 
 
 
 \chapter{UQ-Driven Robust Design Assessment of a Swirler Geometry}\label{chap:swirler}
+
+
+\begin{chapquote}
+
+Pour accompagner le développement de futurs moteurs, les simulations numériques sont devenues des outils de conception fiables et essentiels~\cite{Sacks1989,forrester2009}. Récemment, l'utilisation de SGE couplées à une stratégie d'adaptation du maillage a démontré sa capacité à identifier la physique adéquate des écoulements tourbillonnaires~\cite{Daviller2017}. 
+
+La conception d'un tourbillonneur se déroule en trois étapes : (\emph{i})~une phase exploratoire est d'abord réalisée à l'aide de calculs RANS ; (\emph{ii})~les géométries résultantes sont installées dans la chambre de combustion et simulées en utilisant des SGE de combustion turbulente ; (\emph{iii}) des prototypes sont fabriqués et des essais sont effectués.
+
+Pour cette dernière étape, la fabrication d'additifs métalliques (AM)~\cite{Frazier2014,Sames2016} est maintenant utilisée. La technologie AM a gagné beaucoup d'attention car elle n'impose aucune contrainte du point de vue de la conception sans sacrifier les propriétés mécaniques~\cite{Lewandowski2016}. Cependant, l'AM induit certaines incertitudes quant à la composition structurelle des systèmes métalliques produits, ce qui en fait un sujet de recherche actif.
+
+La présente étude vise à mesurer l'effet de l'AM sur l'écoulement du fluide. Ceci est réalisé par une UQ~\cite{iooss2016} basée sur des SGE en considérant une géométrie variable. Un POD est d'abord effectué pour construire un espace de paramètres réduit permettant de prendre en compte toutes les variables de conception. Ensuite, ces incertitudes sont propagées au travers de 30 SGE, fournissant des statistiques de synthèse. Cette étude a montré que les tolérances de fabrication pouvaient être réduites à mesure que l'impact de l'AM sur la QoI était comprise. D'un point de vue industriel, une telle analyse peut aider à réduire les coûts si la précision peut être réduite.
+
+Le chapitre est organisé comme suit : \cref{sec:swirler} présente la configuration étudiée ainsi que la configuration numérique LES. \Cref{sec:dim} détaille la méthodologie utilisée pour réduire l'espace des paramètres. Les résultats de l'étude de l'UQ sont ensuite présentés et analysés respectivement danscref{sec:res} et \cref{sec:disc}.
+
+\end{chapquote}
+
 
 \newcommand{\pdv}[2]{\frac{\partial{#1}}{\partial{#2}}}
 \newcommand{\tilda}[1]{\tilde{#1}}
@@ -750,6 +781,14 @@ The analysis of the intrinsic variability of the system did not exhibit any noti
 The UQ method used in this work, combining data reduction and high-fidelity LES, paves the way for systematic uncertainty studies in the design phase of industrial systems to take into account manufacturing defects. This may lead to the determination of optimized manufacturing tolerances, and finally to significant cost saving.
 
 \chapter{Optimization of Helically Roughened Heat Exchanger}\label{chap:optim}
+
+\begin{chapquote}
+L'augmentation artificielle de la rugosité des surfaces internes des échangeurs de chaleur est une méthode passive et efficace pour améliorer l'efficacité du transfert de chaleur, ce qui a conduit à de nombreuses conceptions. Le choix d'une forme de rugosité spécifique dépend du régime d'écoulement, des propriétés du fluide et peut dépendre de l'application du dispositif. Mais ce procédé induit toujours une augmentation de la perte de charge qui nuit à l'efficacité globale de l'échangeur de chaleur et doit être limitée.
+
+En raison de la grande variété de formes de rugosité possibles, toutes les géométries ne peuvent pas être testées expérimentalement ou numériquement et les formes de rugosité optimales pour les échangeurs de chaleur restent inconnues à ce jour. L'objectif de ce travail est de trouver une forme de rugosité optimale pour les applications d'échangeurs de chaleur industriels. Des séries de SGE sont utilisées pour construire un modèle de substitution (GP) fiable représentatif de l'efficacité de l'échangeur de chaleur pour différentes formes de rugosité. Ce modèle de substitution a permis de prédire une conception optimale, ce qui permet de comprendre le comportement complexe de l'écoulement aboutissant à un important transfert thermique et à une perte de pression limitée. L'une des principales conclusions de cette analyse est que l'effet d'interaction entre le pas des nervures et le rapport de séparation entre celles-ci est important.
+
+Le chapitre est conçu comme suit : \cref{sec:optim_case} présente la méthodologie numérique utilisée pour la simulation de l'écoulement turbulent chauffé. En particulier, la géométrie de la surface interne du tube, la méthode de maillage, les équations gouvernantes et la fonction objective à optimiser sont présentées. Après cette présentation méthodologique, \cref{sec:optim_results} présente les résultats de la procédure d'optimisation conduisant à une première géométrie de tube à nervures discontinues optimale, et étudie plus en détail la dynamique d'écoulement et le comportement thermique à l'intérieur. Enfin, \cref{sec:optim_ccl} résumant la contribution ainsi que les orientations possibles de ce travail.
+\end{chapquote}
 
 \section{Introduction}
 

@@ -61,6 +61,20 @@ In~\cref{chap:batman}, a new UQ open-source tool is introduced. It serves as a d
 
 \chapter{Literature Review}\label{chap:review}
 
+\begin{chapquote}
+Ce chapitre présente une revue de la littérature sur les concepts et les méthodes associées à la quantification des incertitudes (UQ) dans un environnement numérique coûteux : de la définition d'un plan d'expériences (DoE) pour construire un modèle de substitution, à l'utilisation de ce modèle de substitution pour calculer les statistiques et finalement visualiser les résultats.
+
+Les avancées et les limites actuelles du DoE sont présentées~\cref{sec:doe}. Les séquences OLHS et \emph{Sobol'} sont toutes deux considérées comme des pratiques de référence bien qu'elles présentent certaines limites telles que les propriétés itératives et la randomisation, respectivement.
+
+En utilisant cet échantillon, on peut effectuer une analyse UQ avec des méthodes détaillées~\cref{sec:uq}. L'analyse de sensibilité globale (GSA) est recommandée par rapport à une analyse locale de sensibilité. Concernant les méthodes à proprement dit, une SA basée sur la variance reste prédominante, mais les méthodes basées sur les moments semblent être un bon complément dans une étude. Dans un environnement numérique coûteux, il n'est pas possible d'effectuer directement une UQ et l'utilisation d'un modèle de substitution offre une solution. \Cref{sec:surrogate} expose deux des méthodes les plus utilisées : Processus Gaussien (GP) et Chaos polynomial (PC). Enfin, \cref{sec:visu} introduit le problème de la visualisation des incertitudes. Il s'agit d'un domaine relativement nouveau avec un corpus d'études limité. Il n'y a actuellement aucune recommandation claire sur la façon de visualiser les incertitudes. À partir de cette revue, \cref{chap:questions} détaille les trois questions auxquelles cette thèse vise à répondre :
+\begin{itemize}
+\item Comment construire un DoE dans un espace de paramètres à haute dimension ?
+\item Comment rééchantillonner un DoE en considérant la QoI d'expériences déjà évaluées ?
+\item Comment visualiser les incertitudes dans des cas de grande dimension ?
+\end{itemize}
+
+\end{chapquote}
+
 \section{Design of Experiments}\label{sec:doe}
 
 \lettrine{O}{ne} of the main objectives when performing numerical---or real---experiments is to understand the variation of a QoI with respect to the variation of some input parameters~\citep{Sacks1989}. Each experiment, or sample, corresponds to a particular set of input parameters $x_k$ with $k \in [1, \dots , d]$, where $d$ is the number of dimensions. As a result, the group of $N_s$ samples, or DoE, is noted as $\mathbf{X}^{N_s}_d$. For simplicity either the dimensionality $d$ or the number of samples $N_s$ is omitted in the manuscript. Nevertheless, the subscript denotes $d$ while the superscript denotes $N_s$. Then the forward model (or experiment) $\mathcal{M}$ can be simulated for each sample
