@@ -365,6 +365,8 @@ where the coefficients $\gamma_{a,i}$ and the basis functions $\Psi_i$ are calib
 
 \subsection{Snapshot Method}\label{sec:POD}
 
+% TODO Différence avec Kahrunen Loeve - SVD : maillage irrégulier
+
 The key idea of the snapshot method~\citep{sirovich1987} is to achieve a POD of the centred snapshot matrix $\mathcal{Y} \in \mathbb{M}_{M,N}(\mathbb{R})$, which gathers the discretized QoI for the $N_{s}$ snapshots, from which the sample mean is subtracted. For simplicity purpose, the QoI anomaly element $a$ is denoted $y$ in the following. Thus, $\mathcal{Y} = \left(y_{a_i}^{(j)}\right)_{1\leq i \leq M \atop 1\leq j \leq N_{s}}$. The snapshots correspond to the column vectors; the $k$th snapshot of size $M$ is denoted by $\mathbf{y}^{(k)}$.
 
 Based on many observations of a random vector, the POD gives the orthogonal directions of largest variances (or modes) in the probabilistic vector space in order to reduce the vector space dimension~\citep{chatterjee2000}. Note that for simplicity purpose, the adjective {\it centred} is dropped in the following when referring to the centred snapshot matrix $\mathcal{Y}$.
@@ -373,7 +375,7 @@ The POD of the snapshot covariance matrix $\mathbf{C} = N_{s}^{-1}\,\mathcal{Y}^
 \begin{align}
 \mathcal{Y} = \mathbf{U}\,\mathbf{\Lambda}\,\mathbf{V}^{\mathrm{T}} = \displaystyle\sum_{k = 1}^{r_{p}}\,\lambda_k\,\mathbf{u}_k\,\mathbf{v}_k^{\mathrm{T}},
 \end{align} 
-where $\mathbf{U} \in \mathbb{M}_M(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathcal{Y}\mathcal{Y}^{\mathrm{T}}$ ($\mathbf{u}_k$, the $k$th column of $\mathbf{U}$, is a left singular vector of $\mathcal{Y}$), where $\mathcal{V} \in \mathbb{M}_N(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathcal{Y}^{\mathrm{T}}\mathbf{Y}$ ($\mathbf{v}_k$, the $k$th column of $\mathbf{V}$, is a right singular vector of $\mathcal{Y}$), and where $\mathbf{\Lambda} \in \mathbb{M}_{M,N_{s}}(\mathbb{R})$ is a rectangular diagonal matrix including $r_{p}=\min(M,N_{s})$ singular values on its diagonal. The singular values $\lbrace \lambda_k \rbrace_{1 \leq k \leq r_{p}}$ are the square roots of the eigenvalues of $\mathbf{C}$. 
+where $\mathbf{U} \in \mathbb{M}_M(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathcal{Y}\mathcal{Y}^{\mathrm{T}}$ ($\mathbf{u}_k$, the $k$th column of $\mathbf{U}$, is a left singular vector of $\mathcal{Y}$), where $\mathcal{V} \in \mathbb{M}_{N_{s}}(\mathbb{R})$ is an orthogonal matrix diagonalizing $\mathcal{Y}^{\mathrm{T}}\mathbf{Y}$ ($\mathbf{v}_k$, the $k$th column of $\mathbf{V}$, is a right singular vector of $\mathcal{Y}$), and where $\mathbf{\Lambda} \in \mathbb{M}_{M,N_{s}}(\mathbb{R})$ is a rectangular diagonal matrix including $r_{p}=\min(M,N_{s})$ singular values on its diagonal. The singular values $\lbrace \lambda_k \rbrace_{1 \leq k \leq r_{p}}$ are the square roots of the eigenvalues of $\mathbf{C}$. 
 Note that in the following, we do not reduce further the rank of the snapshot matrix $\mathcal{Y}$. 
 
 For a given element $a$, any snapshot $h_a(\mathbf{x}^{(k)})$ can then be retrieved as a linear combination of $r_{p}$ modes $\{\Psi_i\}_{1\leq i \leq r_p}$:
