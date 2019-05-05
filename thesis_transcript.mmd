@@ -1,0 +1,419 @@
+
+# Uncertainty Quantification in High Dimensional Problem
+
+Merci M. le président du jury. Tout d'abord, je voudrais remercier les membres du jury pour avoir rapporté ma thèse ainsi que d'être présent aujourd'hui pour évaluer mon travail.
+
+[Ma thèse s'intitule : Quantification des incertitudes pour des problèmes de haute dimensions.]
+
+J'ai réalisé cette thèse au CERFACS sous la direction de Bénédicte Cuenot ainsi que de Jean-Christophe Jouhaud.
+
+# Context
+
+Je commencerais par vous introduire le context de ces travaux et les problématiques et objectifs qui en découlent.
+
+## From the book
+
+L'incertitude se définit comme quelque chose d'indéfinis, d'imprévisible ou qui n'est pas stable. La grande majorité des systèmes physiques sont incertains. Une approche naïve serait de considérer les incertitudes comme étant simplement l'ajout de barre d'erreur sur des courbes.
+
+## Why is it paramount?
+
+* Pourquoi est-ce important? Ceci est une vidéo de la navette spatiale *Challenger* filmé en 1986. Le matin de ce lancement tragique, la température était si faible que les ingénieurs ont dû faire des extrapolations sur le comportement des joints des deux propulseurs à poudre. La pression médiatique et politique reposant sur ce lancement était telle que le lancement fû maintenu.
+* Durant l'ascension de la navette, une défaillance sur un joint du propulseur droit causa sa désintégration. Cet incident traumatisa aussi bien l'opinion publique que la NASA qui créa une organisation responsable de la sécurité des missions et de la gestion des incertidues.
+
+## Different types of Uncertainties
+
+Revenons à la définition des incertitudes en prenant comme exemple un barreau en aluminium. L'on chauffe une extrémité et l'on observe à l'autre extrémité la température. Supposons que la conductivité thermique soit incertaine. À gauche, une barre d'aluminium brut, à droite un étalon utilisé pour caractériser le comportement mécanique d'un matériau. La différence de pureté entre les deux échantillons pourrait avoir un impact sur la valeur de ce coefficient.
+
+Ici, l'on cherche donc à caractériser l'impact sur la température du barreau lié à l'incertitude que l'on a sur la conductivité. 
+
+La conductivité constitue notre espace des paramètres ou DoE tandis que la température représente notre quantité d'intérêt ou QoI.
+
+## Aleatoric Uncertainty
+
+En perturbant l'espace des paramètres, l'on cherche à observer une variation sur la QoI. Nous cherchons a mesurer la variabilité intrinsèque au système.
+
+## Epistemic Uncertainty and Errors
+
+Par ailleurs, l'utilisation de système de mesure ou d'expérience numérique introduit un terme d'erreur épistémique. Ce terme représente notre incapacité à représenter fidèlement la physique.
+
+Au-delà de ces deux termes apparaît un dernier terme qui représente une erreur de modélisation ou encore une erreur d'interprétation.
+
+Dans un cas on sait ce que l'on ne sait pas et l'on peut tenter d'agir en conséquence tandis que dans le dernier cas on ne sait même pas ce que l'on ne sait pas.  <!-- et il est même possible que l'on croie savoir ce que l'on ne sait pas. -->
+
+Être en mesure de différentier et de quantifier correctement ces différentes incertitudes est une tâche complexe.
+
+* Dans cette thèse, nous supposons que notre modélisation est parfaite et faisons abstraction de l'erreur épistémique et des erreurs latentes.
+
+## Where do we define Uncertainties?
+
+Aussi, nous nous positionnons dans le cas où nous imposons des incertitudes sur des paramètres d'entrées afin d'observer une variation sur une QoI. Dans ce cas, les incertitudes sur chaque paramètre du DoE sont décrites de manière probabiliste. Chaque paramètre peut être soit un scalaire (dans le cas où l'on aurait une conductivité thermique unique), soit un vecteur (dans le cas où l'on aurait une conductivité thermique variable par exemple).
+
+## An uncertain world…
+
+Deux types d'analyses sont considérés : 
+
+- La propagation des incertitudes ;
+- et l'analyse de sensibilité.
+
+La propagation des incertitudes sur les paramètres d'entrées vers une QoI permet d'obtenir des informations sur les valeurs possibles de QoI ainsi que leurs probabilités. On peut par exemple vérifier que l'on ne dépasse pas un seuil.
+
+L'analyse de sensibilité consiste à déterminer quels sont les paramètres qui influent sur la QoI et aussi de hiérarchiser ces différentes contributions.
+
+Est-ce la valeur de la conductivité thermique qui a un impact sur la température du barreau, ça forme ou encore la couleur de celui-ci ?
+
+Ces analyses statistiques constituent la quantification des incertitudes.
+Je vais détailler par la suite les méthodes les plus courrament utilisées afin de réaliser ces deux étapes.
+
+## Uncertainty Propagation
+
+* Une fois que l'on a échantillonné notre système et obtenu pour chaque échantillon une valeur pour la QoI, on va chercher à estimer sa fonction de densité de probabilité ou PDF, noté f châpeau. Les méthodes à base de noyaux sont ici largement utilisées. Après avoir choisit un noyau K et une métrique D, on assigne à chaque valeur de QoI un noyau ayant une taille fixe. Les noyaux se supperposant sont sommé. 
+
+* En général l'on choisit un noyau Gaussien avec une métrique euclidienne ce qui nous donne la courbe noire.
+
+## Sensitivity Analysis with Sobol’ indices
+
+* Passons maintenant à l'analyse de sensibilité. La figure suivante est une représentation de la fonction d'Ishigami qui à trois paramètres. Chaque sous figure représente la QoI en fonction d'un des paramètres. C'est une représentation classique qui permet de voir de manière indépendente comment évolue la QoI.
+
+* Les indices de Sobol' permettent d'avoir une indication quantitative de l'impact des paramètres sur la QoI. Ils mesurent la part de variance expliqué par chaque paramètre de manière indépendentes ou conjugées.
+
+Le calcul des indices de Sobol' de premier ordre consiste à calculer la variance de la moyenne de la QoI en fixant un paramètre. L'on calcul pour chaque ligne la moyenne de la QoI en rouge et l'on observe la variance des points rouge. Plus cette quantité est importante et plus le paramètre est important au premier ordre. Sur cet exemple, on observe que la variance sur le paramètre X3 est nulle. Cependent on voit bien que ce paramètre à un impact sur la QoI pour de faibles et fortes valeurs. Ici l'on voit que la variance sur la QoI n'est pas constante en fonction de X3. On parle d'hétérosédasticité ce qui indique une intéraction croisée avec d'autres paramètres. La variance sur la QoI en X1 étant constante on parle d'homoscédasticité ce qui suggère que ce paramètre n'intéragit pas avec d'autres paramètres. Enfin, X1 est également hétérosédastique ce qui confirme que X1 et X3 sont conjugées.
+
+* Une analyse visuelle aussi poussée n'est possible qu'en faible dimension et au delà il devient très difficile de lier entre eux les paramètres. Ainsi le calcul des indices de Sobol' permet directement d'avoir cette analyse.
+
+Comme toute analyse statistique, la convergence des résultats dépend du nombre d'observations que l'on réalise. D'où la présence d'interval de confiance sur cette figure.
+
+## Curse of Dimensionality
+
+* En fonction de la statistique que l'on cherche, il faut plus ou moins d'observations. Un quantile élevé nécessitera bien plus d'observations que le calcul de la moyenne.
+
+En fonction du nombre de paramètres que l'on considère, l'on est rapidement confronté à ce que l'on appelle le fléau de la dimension. Si l'on veut couvrir de manière uniforme l'espace des paramètres, il faut un nombre exponentiel de points. De 10 points en 1D, l'on passe à 100 puis 1000 points en 2 et 3D.
+
+* Afin de construire un bon DoE, La littérature est très riche et les trois méthodes les plus courramment utilisées vont d'un simple Monte Carlo aux Latin Hypercube (LHS) et aux séquences à faible discrépance tel que Sobol' Lp-tau. Ces méthodes montrent de bonnes performances en haute dimension mais le LHS est difficilement rééchantillonable et il en est de même pour les séquence de Sobol' si l'on considère une randomisation.
+
+Il existe un grand nombre de métriques permettant d'évaluer la couverture de l'espace des paramètres. On parle couramment de discrépance.
+
+## High Computational Cost
+
+* Que l'on considère des expériences réelles ou des simulations numériques, il y a un compromis à faire entre précision et coût. Bornons ce schéma.
+
+* Renvoyer une valeur aléatoire est instantané, mais donne une précision nulle.
+* Tout comme une boucle infinie mais pour un coût prohibitif. 
+* À l'opposé, la situation est plus compliquée pour avoir une précision absolue pour un coût nul.
+
+* Dans cette thèse, nous avons utilisé des simulations numériques d'une grande fidélité ne permettant de réaliser que quelques 10ènes de simulations.
+
+## The need of Surrogate Models
+
+Ainsi, il n'est pas envisageable de réaliser une étude statistique avec si peu de simulations.
+
+* Pour pallier cette problématique, les quelques simulations que nous pouvons nous permettre sont utilisées dans le but de créer un modèle réduit. Là encore, littérature est très riche et nous nous sommes concentré sur les Polynômes du Chaos et les Processus Gaussien qui sont largement utilisés.
+* Une fois ce modèle créé, il est possible de ré échantillonner l'espace des paramètres pour un coût dérisoire.
+* La répartition de ces simulations dans l'espace des paramètres va déterminer l'aptitude du modèle à représenter la physique intrinsèque du système. On visualise ici la fonction Michalewicz qui est décrite par deux paramètres *x1* et *x2*.
+* Dans cet espace, prenons trois points de manière aléatoire. Sans information supplémentaire, le modèle qui sera construit sera constant sur tout le domaine, car il n'aura pas eu connaissance des discontinuités. C'est pourquoi il faut veiller à couvrir de manière optimale cet espace. 
+
+## Objectives of the Thesis
+
+L'objectif de mon travail est ainsi de proposer des méthodes permettant d'améliorer le traitement de la haute dimension dans un contexte de simulations numériques coûteuses.
+
+L'on s'est attaché à répondre à trois questions :
+
+1. Comment construire un espace des paramètres en haute dimension ?
+2. Comment ré-échantillonner un tel espace ?
+3. Et comment visualiser les incertitudes en haute dimension ?
+
+
+# Outline
+
+Après vous avoir présenté ma tentative de réponse à ces trois points, je vous présenterai un outil que nous avons développé ainsi que trois applications.
+
+** 9 mins **
+
+# Constructing a Design of Experiments
+
+Nous avons vu que la qualité d'un modèle réduit était déterminée par la qualité de l'échantillonnage de l'espace des paramètres. Je vous présente ici une nouvelle méthodologie permettant la génération du DoE en haute dimension. 
+
+Ce travail a permis la réalisation d'un article soumis dans European Journal of Operational Research.
+
+## An Iterative Sampling Strategy
+
+* L'objectif est de générer des DoE de manière itérative tout en étant capable d'incorporer des contraintes lors de la construction de cet espace. La méthode consiste en trois étapes.
+    1. La première étape constituant le coeur de la méthode. En fonction des points existants, l'on calcule un champ d'exclusion ;
+    2. Suivant ce champ, l'on réalise un échantillonnage aléatoire ;
+    3. L'on sélectionne, suivant un critère tel que la discrépance, de nouveaux échantillons.
+* Ce processus est répété jusqu'à l'obtention d'un DoE de la taille souhaité.
+
+## Kernel Density Estimation
+
+Détaillons la première étape qui consiste à construire un champ d'exclusion.
+
+* Si l'on considère un unique point dans un espace des paramètres à 2 dimensions, l'on peut estimer la densité de probabilité jointe en utilisant une méthode à base de noyaux. Cette loi nous permet d'obtenir un champ de probabilité qui correspond à la présence de point dans l'espace des paramètres. En utilisant cette loi, l'on peut ré-échantillonner l'espace afin d'obtenir de nouveaux points. En tant que tel, ce champ nous permettrait d'obtenir de nouveaux points proches du point initial. Ce qui ne permettrait pas de couvrir de manière optimale l'espace.
+* Maintenant si l'on inverse le champ, l'on va pénaliser les régions qui comportent des points. On peut donc maintenant rééchantilloner l'espace en favorisant des régions vides.
+* En jouant sur le noyau ou sa métrique, le champ peut être adapté afin par exemple d'exclure les axes à la manière d'un Latin Hypercube. C'est pourquoi je propose d'utiliser une distance de Minkowsky. Pour p=1 on retrouve la distance de Manhatann et pour p=2 on retrouve la norme Euclidienne. On prend ici p < 1 afin d'obtenir une forme en étoile afin de pénaliser les axes.
+* Les figures suivantes montrent l'interaction entre les champs lorsque l'on a plusieurs points dans l'espace. À gauche on a trois points dans un espace à 3 dimensions et l'on a sélectrionné un iso-contour de probabilité. À droite c'est un espace à 2 paramètres avec 2 points. Sur cette figure, on note bien que l'intéraction entre les champs va pénaliser le croisement des axes et ainsi prévenir d'une certaine symmétrie du DoE.
+
+<!-- J'ajouterai que si l'on augmente le nombre de dimensions, le volume d'exclusion va rester significatif, car les paramètres caractérisant le champ sont adaptés en fonction du nombre de points et du nombre de dimensions. -->
+
+## MCMC and Selection of a New Sample
+
+Une fois le champ créé, on l'utilise afin de générer un nouvel échantillon. Si l'on peut dériver une expression de la loi de probabilité inverse, alors il est possible de directement générer de nouveaux points. Ici, l'on se place dans un cadre général et de nouveaux échantillons sont générés à partir d'une chaîne de Markov. Ces échantillons sont représentés en carré rouge. On peut voir que certains points ont quand même été tirés dans la zone de faible densité de probabilité. Cela montre bien la souplesse de ce champ d'exclusion qui assigne simplement un faible niveau de probabilité dans les zones proches des échantillons existants.
+
+Une fois que l'on a pu générer un nombre donné d'échantillons, un nouveau point est sélectionné [en bleu] sur la base d'un critère qui dans cet exemple correspond à la discrépance centrée.
+
+Le DoE est maintenant constitué de 3 points et l'on procède de manière itérative jusqu'à atteindre l'échantillon de taille souhaité.
+
+## A Versatile Sampling Strategy
+
+La nouvelle méthode que je propose est versatile et très souple dans son utilisation.
+
+* C'est une méthode itérative et stochastique, à la différence des séquences à faible discrépance. Cela permet de générer des DoE différents à chaque génération.
+* Elle est performante avec un faible nombre de points et un grand nombre de dimension.
+* En jouant sur le champ d'exclusion, l'on peut aisément ajouter d'autres contraintes tels qu'une information sur des indices de sensibilité. Dans ce cas, l'on favorisera l'uniformité du DoE suivant certaines coordonnées au détriment des dimensions de faible importance.
+* De la même manière, le champ peut être adapté si l’on a des contraintes entre les paramètres. Dans le cas présent, on contraint la somme des paramètres à être comprise entre 0,5 et 1.
+
+Bien que cette méthode puisse être utilisée aussi bien pour la génération d'un DoE initial que d'un rééchantillonage, en l'état nous ne prenons pas en compte l'information sur la quantité d'intérêt de chaque simulation.
+
+Cette information pourrait être incorporé dans le calcul du champ d'exclusion ou encore au niveau de la sélection des points.
+
+** 14 mins (5) **
+
+# Resampling the Design of Experiments
+
+Ainsi, j'ai également développé de nouvelles méthodes de rééchantillonage prenant en compte cette information. Ces méthodes peuvent être bien entendu utilisées conjointement avec la méthodologie présentée précédemment.
+
+Ce travail a permis la réalisation d'un article publié dans International Journal of Numerical Methods in Fluids.
+
+## Gaussian Process Surrogate Model
+
+Les méthodes que je vais vous présenter permettent de rééchantilloner un DoE dans le but de créer un modèle réduit et plus spécifiquement un modèle réduit reposant sur des processus Gaussien. Outre la prédiction d'une QoI pour un point du DoE n'appartenant pas au DoE d'entrainement, cette méthode permet d'obtenir un interval de variation sur la prédiction.
+
+* Cette information découle des paramètres appris lors de l'entrainement du modèle et est, au premier ordre, assimilable à un critère de distance interpoints. Plus les points sont loin les uns des autres, et plus la variance prédite serra importante.
+
+* On peut également calculer la sensibilité du modèle aux points utilisé lors de l'entrainement. Dans le cas suivant, 6 points ont été utilisés pour construire le modèle réduit. En retirant le dernier point, on obtient un modèle différent et il est possible de calculer l'erreur que fait ce modèle avec la valeur au point que l'on a retiré. En répétant cette procédure, on parle de *Leave-One-Out*, on peut identifier le point qui est le plus critique quant à la stabilité du modèle.
+
+## Resampling to improve the Surrogate
+
+Les méthodes de rééchantillonage que je propose vont chercher à ajouter des points autour des points les plus critiques pour le modèle réduit. Une fois que le point le plus critique a été identifié, l'on construit un hypercube autour de ce point qui va être borné par le point le plus proche. C'est dans cet espace que l'on va chercher à ajouter un nouveau point. 
+
+Ici je propose de réaliser une optimisation sur l'estimation de la variance dans cet hypercube. On peut décider d'ajouter de multiples points ou encore avoir d'autres critères tel que les extrema locaux et un fort gradient.
+
+## Different Resampling Strategies
+
+Deux méthodes tirant parti de la construction d'un hypercube sont comparées à une simple optimisation sur tout le domaine.
+
+La méthode LOO-sigma cherche le point qui maximise la variance du modèle dans l'hypercube et la méthode LOO-sobol ajoute une contrainte sur l'hypercube. En utilisant une information a priori ou bien des indices de sensibilité estimés au fur et à mesure, on va privilégier les directions qui influent le plus sur la QoI. Cette solution vient limiter l'impact de la montée en dimension sur le volume de l'hypercube.
+
+## Performance of the Strategies
+
+Les méthodes ont été évaluées sur plusieurs fonctions analytiques complexes et je présente ici uniquement les résultats sur la G-function en 11D avec un budget de 80 simulations. En abscisse, on a le nombre de simulations constituant le DoE initial. Donc pour n = 20, on rajoute 60 points avec l'une des différentes méthodes. Et en ordonnée, on a l'erreur Q2 du modèle. Un modèle parfait ayant un Q2 = 1.
+
+La base de comparaison est représentée en pointillé avec un DoE non ré-échantillonné et constitué de 80 échantillons construit avec une suite à faible discrépance de Halton. La méthode de base qui consiste à rééchantilloner uniquement en tenant compte de la variance, produit des résultats très variables et souvent moins bons que sans rééchantillonnage. Dans le cas présent, LOO-sigma ne permet pas vraiment d'améliorer la situation, mais pour autant ne la dégrade pas. En revanche LOO-sobol permet à partir d'un DoE initial d'une certaine taille une bonne performance.
+
+Le comportement de ces nouvelles méthodes a été mesuré sur plusieurs fonctions complexes et il apparait que LOO-sobol est robuste et apporte un réel gain lorsque l'on est en mesure d'avoir une bonne estimation des indices de sensibilité de la fonction.
+
+** 18 mins (4) **
+
+# Visualize the Uncertainties
+
+Une fois que le modèle réduit est de qualité suffisante et qu'il a été utilisé pour propager des incertitudes, on veut pouvoir les visualiser. La problématique est en réalité double. On veut pouvoir visualiser les incertitudes en entrée du système, et également en sortie du système.
+
+Il est courant de visualiser un faible nombre de quantités incertaines. En revanche, la situation est plus complexe en haute dimension.
+
+ J'ai donc développé une nouvelle méthodologie permettant de visualiser les incertitudes en entrée comme en sortie dans un espace de grande dimension.
+
+Ce travail a permis la réalisation d'un article soumis dans IEEE Transactions on Visualization & Computer Graphics.
+
+## Visualization of the Inputs
+
+En premier lieu nous nous intéressons à la visualisation des incertitudes en entrée. La représentation suivante est habituellement utilisée pour visualiser tous les couples de variables. On parle de sous projection canonique du DoE. Sur la diagonale on a représenté la distribution suivant chaque sous-projection 1D.
+
+On peut donc avoir une idée de la qualité d'un espace de haute dimension plus facilement même si cet espace est en réalité bien plus creux que ce que ces visualisations laissent entendre du fait des projections. 
+
+Une autre possibilité est de tracer un cobweb où chaque axes représente un paramètre et chaque ligne représente un membre du DoE.
+
+Une fois que l'on a visualisé les entrées du système, on s'intéresse aux sorties.
+
+## Visualization of the Output
+
+La visualisation la plus courante consiste à calculer la densité de probabilité de la QoI. Dans le cas présent, la sortie est fonctionnelle. On peut ainsi en chaque point de la discrétisation calculer la PDF. À droite on observe la PDF d'une coupe de la fonctionnelle.
+
+L'interprétation de la PDF dans le cas d'une fonctionnelle peut être confuse. Lors de sa construction, on considère que chaque PDF de la discrétisation est indépendantes. On ne conserve donc aucune information spatiale. La courbe noire représentant la moyenne n'est ici que la jonction entre toutes les moyennes et ne correspond pas nécessairement à une possible réalisation moyenne.
+
+## Particularity with Functional Output
+
+La méthode HDR pour *Highest Density Region* est une réponse à cette problématique et permet de trouver la réalisation statistiquement la plus probable. Elle permet également d'avoir un interval de confiance et de détecter des extrêmes. C'est ce que l'on voit avec cet exemple sur le dataset *El Niño*.
+
+Au-delà du problème de justesse de la PDF se pose la question de l'interprétabilité de la PDF. Jessica Hullman a notamment montré que même un public scientifique avait du mal à en faire l'analyse. Elle a formalisé la visualisation dynamique de la PDF et on en fait ici l'extension à la PDF d'une fonctionnelle. On ajoute également une composante sonore.
+
+On voit ici défiler un échantillonnage construit avec HDR. Pour chaque réalisation, un son encode la probabilité ou toute autre quantité représentative de la réalisation. Au delà de l'aspect ludique de l'exercice, une telle méthode peut aider à la conception d'interface de contrôle et d'alerte ou encore à rapidement faire l'état d'un dataset qui serait trop gros pour être visualisé rapidement. Une approche similaire est utilisée par Robert Alexander pour visualiser un grand nombre de données satellitaire rapidement.
+
+On a vu des méthodes permettant de représenter les entrées et aussi les sorties. Mais il est tout aussi utilise de pouvoir faire le lien entre les entrées et les sorties.
+
+## Visualization of the Inputs and the Output
+
+* Lorsque le nombre de variables est faible, on peut représenter ces deux informations avec une surface de réponse. En utilisant des films ou bien différents types de symboles, on peut monter un peu en dimension, mais l'analyse devient rapidement difficile.
+
+* Le cobweb est couramment utilisé comme solution en ajoutant un axe pour représenter la sortie. Mais quid d'une sortie fonctionnel dans ce cas ? Aussi, l'analyse d'un grand nombre de membres est difficile. On peut filtrer certaines réalisations comme dans cet exemple où seules les réalisations ayant une QoI dépassant un seuil sont sélectionnées. Dans le cas présent, il est évident que de fortes valeurs de Q induisent une QoI élevée. L'analyse est en revanche plus complexe concernant les autres variables.
+
+## From Cobweb to Kiviat
+
+Si l'on considère un cobweb, on peut réarranger les axes afin d'avoir une représentation circulaire et avoir un Kiviat, appelé aussi Spyder plot. Chaque réalisation est représentée par un segment. On propose ici d'ajouter à cette visualisation une couleur qui va représenter la valeur de la QoI (ou une autre information). De ce fait, une surface permet de représenter un échantillon. Si l'on veut visualiser tous les échantillons, on utilise la 3e dimension en superposant toutes les surfaces. 
+
+## 3D Kiviat for N samples
+
+* Le résultat est donc un Kiviat en 3 dimensions qui est plus facilement interprétable qu'un cobweb. Chaque axe représente une variable et chaque réalisation est superposée par valeur croissante de QoI. En comparaison avec le précédent cobweb, on a plus d'information quant aux relations sur la 3e variable. On voit que la QoI augmente avec une faible valeur de ce paramètre.
+* Cette méthode offre de multiples interprétations. En bas à droite, les échantillons sont superposés par valeur croissante de QoI et colorés par valeur de la QoI. En haut à gauche, on colore par la probabilité sur la QoI. Cela permet de visualiser la PDF directement. En bas à gauche, l'ordre de superposition correspond à la croissance du paramètre Q. Et enfin, en haut à droite, l'information de HDR est utilisée dans le cas où la sortie est fonctionnelle.
+
+Ainsi, sur le même canevas on visualise à la fois l'espace d'entrée et l'espace de sortie. Dans le cas d'une sortie fonctionnelle, on peut utiliser HDR pour colorer ou arranger différemment les échantillons. Une autre possibilité étant d'utiliser le son et donc d'avoir une représentation 3D sonorisée.
+
+** 24 mins (6) **
+
+# An uncertain tool: Batman
+
+Tous les développements méthodologiques présentés ont été transférés dans un outil appelé BATMAN.
+
+Ce travail a permis la réalisation d'un article publié dans Journal of Open Source Software.
+
+## BATMAN: Python for UQ
+
+Batman est un outil open source Python développé en interne. Il est l’évolution du projet JPOD validé lors des projets SYMSAC et ALEF. Il  permettait de créer des modèles réduit et nous l’avons étendu à la UQ.
+
+Batman repose sur OpenTURNS qui est la librairie d'analyse statistique développée par EDF, Phymeca et Airbus. Batman est entièrement documenté et testé ce qui permet un prototypage efficace et donc une grande collaboration entre les équipes du CERFACS sur les méthodes d’incertitudes.
+
+## Battery included
+
+Batman propose un canevas simple et robuste qui permet de construire une étude d'incertitude pour un public non expert. Via un fichier de configuration, on peut donc aisément réaliser un DoE, construire un surrogate, raffiner l'espace et enfin calculer des statistiques.
+
+Il est également possible d'utiliser chaque sous-module de manière totalement indépendante en utilisant directement l'API de la librairie. C'est ce mode qui permet un accès à toutes les fonctionnalités de Batman.
+
+## How to?
+
+Je vais maintenant vous montrer les étapes permettant de traiter un cas.
+
+### Specify a Case
+
+Un cas d'étude est consitué : d'un dossier de donnée, d'un fichier de configuration ainsi que d'un dossier de résultats.
+
+### Define your case
+
+Le dossier de donnée contient les fichiers qui permettent de lancer un cas unitaire de notre code de calcul. Cela peut être un programme Python, un code comme industriel, ce que l'on veut. Le seul travail que l'utilisateur doit réaliser est de lire un fichier qui va contenir les paramètres d'un cas du DoE et de les donner à son code.
+
+### Filling the settings
+
+Ensuite, il faut remplir un fichier de configuration qui va décrire l'étude que l'on veut faire. Dans cet exemple, on considère deux paramètres Ks et Q. On va échantilloner 121 simulations avec la méthode Halton dans une loi jointe entre une loi Uniforme et une loi Normale. Puis on construira un modèle par PC avec une quadrature de degré 10 et enfin on calculera entre autre des indices de Sobol'.
+
+### Call BATMAN
+
+Une fois le cas mis en place et ce fichier de configuration renseigné, on peut lancer le cas. Toutes les étapes sont réalisées sans aucune intervention que ce soit pour la soumission des runs à un calculateur ou encore pour la génération des figures.
+
+C'est donc un outil qui permet sans effort de réaliser une étude UQ complète en tirant partit des derniers algorithmes.
+
+## BATMAN as a Collaborative Tool
+
+L'outil a d’ores et déjà été utilisé dans le cadre d'études avec nos partenaires industriels et académiques. Nous avons également beaucoup échangé avec la communauté et les développeurs d'OpenTURNS. À cet effet, j'ai effectué un transfert de code et créé des modules OT qui sont disponibles à la communauté OT.
+
+** 28 mins (4) **
+
+# Applications
+
+Je vais par la suite vous présenter trois applications réalisées avec cet outil. Je me concentrerai essentiellement sur l'aspect statistique qui constitue réellement le coeu de mon travail.
+
+## Comparison between PC and GP 1
+
+Le premier cas a consisté à faire une étude de l'écoulement de l'eau sur un tronçon de 50km de la Garonne entre Tonneins et La Réole. Nous nous sommes intéressés plus particulièrement à la hauteur d'eau sur la rivière en fonction du débit d'eau en amont ainsi que de la valeur du frottement.
+
+Ce travail a permis la réalisation d'un article publié dans Stochastic Environmental Research and Risk Assessment.
+
+Le code Mascaret a été utilisé afin de résoudre les équations de Saint Venant pour un régime stationnaire et en considérant une bathymétrie 1D. 
+
+* Nous avons propagé les incertitudes sur nos deux paramètres d'entrée afin de calculer la PDF de la hauteur d'eau le long de la rivière. La station de Marmande localisée au Km 36 constitue une station d'intérêt et est ici représentée en rouge.
+
+* Une analyse de sensibilité a également été conduite et a permis d'observer que l'impact du coefficient de frottement sur la hauteur d'eau devenait plus important à l'approche de la station de Marmande.
+
+Une telle étude nécessite d'évaluer plusieurs milliers de fois le code de calcul. Même si dans le cas de Mascaret l'évaluation se compte en seconde, il n'est pas envisageable dans un contexte opérationnel de lancer une telle étude. En effet, les stations de travail sont généralement de simples machines qui ne permettraient que de réaliser une étude par jour.
+
+## Comparison between PC and GP 2
+
+Nous avons donc eu recours à des modèles réduits et nous avons cherché à comparer la performance de deux méthodes couramment utilisées que sont les processus Gaussien (GP) et les Polynômes du Chaos (PC). 
+
+En bas à gauche, l'on visualize la PDF de la hauteur d'eau à la station de Marmande. Le caractère bi-modale est bien capturé par les deux méthodes avec une meilleur localisation du mode pour les PC. En revanche il a fallu 2 fois plus d'échantillons que pour un GP pour arriver à un modèle de qualité équivalente.
+
+Les figures de droite montrent quant-à elles l'erreur que font les modèles sur les indices de Sobol'.
+
+Dans les deux cas, nous avons montré qu'avec un nombre très réduit d'évaluations (de l'ordre de la centaine) il était possible de substituer presque parfaitement le code de calcul. Pour cette application, il apparait que les deux méthodes sont tout aussi performantes. 
+
+Pour un utilisateur novice, je recommanderais néanmoins de se tourner vers les Processus Gaussien du fait de leur facilité de mise en oeuvre et de leur robustesse. Aussi, au-delà de la compréhension des méthodes, l'implémentation et la configuration des polynômes du chaos sont indéniablement plus complexes.
+
+** 31 mins (3) **
+
+## UQ on the LS89 case 1
+
+* L'application suivante consistait à réaliser la premier étude d'incertitude sur le cas LS89 en utilisant des simulations aux grandes échelles (LES). 
+
+Ce travail a permis la réalisation d'un article publié dans International Journal of Numerical Methods in Fluids.
+
+Le cas expérimental conduit au VKI par Tony Arts consistait en une cascade de 5 aubes de turbine qui sont placés dans une veine. Dans l'expérience initiale, le flux de chaleur sur une aube a été mesuré pour plusieurs valeurs d'intensité de turubulence. Ils ont montrés une forte influence de ce paramètre.
+
+La physique de ce cas est très complexe et il a été montré nottament par Luis Segui que seul des calcul LES fin étaient en mesure de correctement prédire ce cas.
+
+* Ainsi, nous avons conduit une étude d'incertitudes en tirant partie de la capacité de la LES à correctement prédire l'écoulement de ce cas. Nous avons considéré 2 paramètres: l'intensité de turbulence et l'angle du flux incident. Chaque simulation a été réalisé avec AVBP qui est un code co-développé avec l'IFPeN. AVBP est un code de mécanique des fluides qui résoud les équations de Navier-Stockes compressible 3D. Chacune de ces simulations instationnaires à nécessité plus de 7000h de calcul et nous nous étions fixé un budget de 20 simulations.
+
+Les méthodes de rééchantillonnage que je vous ai présentées ont été utilisées et ont permis d'obtenir un modèle réduit de bonne qualité.
+
+## UQ on the LS89 case 2
+
+* À gauche, on visualise la PDF du flux de chaleur le long de l'abscice curviligne d'une aube de turbine. On note que la PDF est très contenue que ce soit au niveau du bord d'attaque qu'au niveau du choc. Mais on note surtout globalement un interval de variation important.
+
+À droite maintenant, on visualize les indices de Sobol' de manière spatial comme dans le cas précédent. Ici il est intéressant de noter que jusqu'au choc le paramètre le plus important est l'intensité de la turbulence mais après celui-ci c'est l'angle d'incidence qui devient le paramètre le plus important. Aussi, il apparait qu'il n'y a pas d'intéraction entre les deux paramètres. On a donc une influence spatiale des paramètres sur le flux de chaleur.
+
+Cette observation est intéressante dans le sens où ce n'étais pas un résultat connu ou attendus.
+
+** 35 mins (3) **
+
+## Robust Optimization
+
+Le dernier cas que je vous présente est plus attipique puisqu'il consiste en une optimisation géométrique associé à une quantification d'incertitudes.
+
+Ce travail réaliser en collaboration avec Robin Campet a permis la réalisation d'un article en préparation pour International Journal of Heat and Mass Transfert.
+
+Ceci est un film d'une simulation spatio-temporel d'un réacteur permettant le craquage thermique de l'ethilène. L'objectif était d'optimiser la géométrie du réacteur pour optimiser la production d'espèces chimiques. Un des paramètres clés est la température du fluide dans le tube. Sur ce film, on voit trois géométries différentes. Un tube simple, un tube avec à l'intérieur une rib hélicoïdale et notre géométrie optimisée.
+
+Afin de 
+
+
+** 37 mins (2) **
+
+# Conclusions
+
+* En premier lieu, j'ai développé une nouvelle méthode d'échantillonnage de l'espace des paramètres. Un champ d'exclusion est constuit autour des points existant et de manière itérative l'on va ajouter de nouveaux points. La méthode offre de bonne performances et s'avère être souple dans son utilisation. 
+
+Deux nouvelles méthodes de ré-échantillonnage ont également été présentées. Dans les deux cas, ces méthodes visent à augmenter un DoE servant à la construction d'un modèle réduit à base de processus Gaussien. Le point le plus sensible du DoE pour le modèle réduit est utilisé comme point d'encrage autour duquel le ré-échantillonnage est effectué. Là aussi, les deux méthodes on montrées de bonne performances en haute dimension.
+
+Une nouvelle approche pour visualiser les incertitudes est proposée. L'objectif est de pouvoir visualiser à la fois l'espace d'entrée et l'espace de sortie dans un même canevas. La méthode tire partie de plusieurs technologies telle que HDR, HOPs, la construction d'un Kiviat 3D et une sonification des données.
+
+* Les apports méthodologiques ont été consolidés dans un outil librement distribué et documenté nommé Batman. Aussi, j'ai réaliser un transfert de plusieurs méthodes vers l'outil OpenTURNS au travers de module. Le travail de cette thèse est ainsi rendu entièrement disponible, accessible et utilisable par la communauté.
+
+* Enfin, tout au long de cette thèse, j'ai appliqué mes méthodes et plus généralement les techniques constituant l'état de l'art de la quantification des incertitudes, à des cas complexes. Les trois applications que je vous ai présenté en sont un extract.
+
+## Conclusions: Publications
+
+Au cours de cette thèse, mes travaux auront permis la réalisation de 7 articles dont 3 sont acceptés, 3 sont soumis et un dernier est en préparation.
+
+## Conclusions: Conferences 
+
+J'ai également participé à 6 conférences et j'ai contribué à deux autres études qui seront respectivement présentées à SimHydro et SAMO cette année. Concernant SAMO, je fait partit du commité de lecture et dans le même registre, j'ai fait la réview de 3 articles dans des journaux de rang A.
+
+Pour finir, j'ai contribué à l'élaboration d'une formation UQ en ligne. Deux éditions ont été réalisées et j'y présentait dans les deux cas la session finale en directe.
+
+** 39 mins (2) **
+
+# Perspectives
+
+J'ai découpé en trois axes les perspectives offertes par ces travaux.
+
+...
+
+
+* Enfin,  Extension KDOE, Machine learning C2
+
+
+** 41 mins (2) **
