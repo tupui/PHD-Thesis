@@ -193,9 +193,9 @@
 % -------------------- Cover ---------------------------
 %\small
 
-\title{Uncertainty Quantification in High Dimensional Problem \\ Quantification des incertitudes pour des problèmes de dimensions élevées} 
+\title{Uncertainty Quantification in High Dimensional Problems \\ Quantification des incertitudes pour des problèmes de dimensions élevées} 
 \author{Pamphile Tupui ROY}
-\defencedate{soon}%1 Avril 2019}
+\defencedate{14 Mai 2019}
 %\lab{Centre Européen de Recherche et de Formation Avancée en Calcul Scientifique \\(CERFACS) - UMR 5318} 
 %\lab{CERFACS - UMR 5318} 
 \lab{Centre Européen de Recherche et de Formation Avancée en Calcul Scientifique}
@@ -298,31 +298,23 @@
 %\listoffigures
 %\listoftables
 
-
-%\stopcontents[parts]
 \part{Annexes}
-%\addcontentsline{toc}{part}{\protect\numberline{}Annexes}
-%\addcontentsline{toc}{part}{Annexes}
 \appendix
 
 \begin{parttoc}
     \include{appendix}
 \end{parttoc}
 
-%\startcontents[parts]
-%\printcontents[parts]{}{-1}{\setcounter{tocdepth}{5}}
-%\chapter{Annexe A}
-
-
-%\stopcontents[parts]
 \backmatter                                          %si book
 
-\renewcommand{\bibsection}{\chapter*{Bibliography}}  % Biblio as a chapter instead of section
-\addcontentsline{toc}{chapter}{Bibliography}
+\part*{Bibliography}
+\addcontentsline{toc}{part}{Bibliography}
+
+\renewcommand{\bibsection}{\newpage}
+%\renewcommand{\bibsection}{\chapter*{Bibliography}}  % Biblio as a chapter instead of section
 
 \bibliographystyle{chicagoa}
 \bibliography{global_these}
-
 
 %\printindex
 %\renewcommand*{\glossaryname}{Glossaire}
